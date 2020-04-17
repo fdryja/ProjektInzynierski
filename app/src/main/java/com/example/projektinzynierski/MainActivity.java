@@ -12,6 +12,8 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.SeekBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.widget.Toolbar;
@@ -25,6 +27,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private EditText editTextInput;
     private DrawerLayout drawer;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,18 +44,20 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        if(savedInstanceState == null){
+        if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                     new AddFragment()).commit();
             navigationView.setCheckedItem(R.id.nav_add);
         }
+
+
 
 //        editTextInput = findViewById(R.id.edit_text_input);
     }
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        switch(item.getItemId()){
+        switch (item.getItemId()) {
             case R.id.nav_add:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                         new AddFragment()).commit();
@@ -63,6 +68,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 break;
             case R.id.nav_help:
                 Toast.makeText(this, "Help", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.nav_dogs:
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                        new DogsFragment()).commit();
                 break;
         }
 
