@@ -3,13 +3,15 @@ package com.example.projektinzynierski;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.os.strictmode.SqliteObjectLeakedViolation;
+import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
-
 
 
 public class DatabaseHelper extends SQLiteOpenHelper {
@@ -28,7 +30,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        String createTable = "CREATE TABLE " + TABLE_NAME + " (ID INTEGER PRIMARY KEY AUTOINCREMENT, "+
+        String createTable = "CREATE TABLE " + TABLE_NAME + " (ID INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 " NAME TEXT, WEIGHT INTEGER, ACTIVITY_LEVEL INTEGER)";
         db.execSQL(createTable);
     }
@@ -38,7 +40,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);
     }
 
-    public boolean addData(String name, int weight, int activityLevel){
+    public boolean addData(String name, int weight, int activityLevel) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(COL2, name);
@@ -47,30 +49,36 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         long result = db.insert(TABLE_NAME, null, contentValues);
 
-        if(result == -1){
+        if (result == -1) {
             return false;
-        }else{
+        } else {
             return true;
         }
     }
-//    public boolean deleteData(int id){
-//        SQLiteDatabase db = this.getWritableDatabase();
-//        db.execSQL("DELETE FROM "+TABLE_NAME+" WHERE ID="+id);
-//        String idTab[] = {Integer.toString(id)};
-//        long result = db.delete(TABLE_NAME,"ID=", idTab);
-//        if(result == -1){
-//            return false;
-//        }else{
-//            return true;
-//        }
-//    }
-    public void deleteData(int id){
+
+
+    public void updateDogData(String newName, int id, int newWeight, int newActivityLevel) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = "UPDATE " + TABLE_NAME + " SET " + COL2 + "='" + newName + "', " + COL3 + "=" + newWeight + ", "
+                + COL4 + "=" + newActivityLevel + " WHERE " + COL1 + "=" + id;
+        try {
+            db.execSQL(query);
+            Log.e("tag",query);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            Log.e("tag",query);
+        }
+
+    }
+
+    public void deleteData(int id) {
         SQLiteDatabase db = this.getWritableDatabase();
         String query = "DELETE FROM " + TABLE_NAME + " WHERE "
                 + COL1 + " = '" + id + "'";
         db.execSQL(query);
     }
-    public Cursor showData(){
+
+    public Cursor showData() {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor data = db.rawQuery("SELECT * FROM " + TABLE_NAME, null);
         return data;

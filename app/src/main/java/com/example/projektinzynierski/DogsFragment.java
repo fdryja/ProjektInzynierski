@@ -4,7 +4,6 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,22 +16,25 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import java.lang.reflect.Array;
-import java.text.DateFormatSymbols;
 import java.util.ArrayList;
-import java.util.List;
 
-public class DogsFragment extends Fragment {
+public class DogsFragment extends Fragment implements UpdateDialog.UpdateDialogListener {
     private ListView listView;
     private DatabaseHelper dogsDB;
     private ArrayAdapter<String> dogsAdapter;
+    private int globalPosition = 0;
     private ArrayList<String> dogsList, ID, weight, activityLevel;
+//    private SeekBar seekBarDialog;
+//    private EditText editName, editWeight;
+//    private TextView poziomAktywnosciDialog;
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+
         super.onViewCreated(view, savedInstanceState);
         listView = getView().findViewById(R.id.listView);
         dogsList = new ArrayList<>();
+
         ID = new ArrayList<>();
         dogsDB = new DatabaseHelper(getActivity());
         weight = new ArrayList<>();
@@ -52,6 +54,22 @@ public class DogsFragment extends Fragment {
                 showMoreInfo(position);
             }
         });
+
+
+    }
+
+    @Override
+    public void applyTexts(String name, int weightt, int activityLevell) {
+        dogsDB.updateDogData(name,globalPosition,weightt,activityLevell);
+        globalPosition = 0;
+//        Toast.makeText(getActivity().getApplicationContext(), "Usunięto psa o imieniu " + imie, Toast.LENGTH_SHORT).show();
+        dogsAdapter.clear();
+        dogsList.clear();
+        activityLevel.clear();
+        weight.clear();
+        ID.clear();
+        listView.setAdapter(null);
+        loadData(getView());
     }
 
     private void showMoreInfo(int position) {
@@ -64,7 +82,7 @@ public class DogsFragment extends Fragment {
             poziomAktywności = "Wysoki";
         }
         display("Wybrany pies", "Imię: " + dogsList.get(position) + "\nMasa: "
-                + weight.get(position) + " kg" + "\nPoziom aktywności: " + poziomAktywności);
+                + weight.get(position) + " kg" + "\nPoziom aktywności: " + poziomAktywności,position);
     }
 
 
@@ -78,7 +96,7 @@ public class DogsFragment extends Fragment {
                         //usuwanie psa
                         String imie = dogsList.get(position);
                         dogsDB.deleteData(Integer.parseInt(ID.get(position)));
-                        Toast.makeText(getActivity().getApplicationContext(), "Usunięto psa o imieniu "+ imie, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getActivity().getApplicationContext(), "Usunięto psa o imieniu " + imie, Toast.LENGTH_SHORT).show();
                         dogsAdapter.clear();
                         dogsList.clear();
                         ID.clear();
@@ -95,18 +113,30 @@ public class DogsFragment extends Fragment {
         }).show();
     }
 
-    private void display(String title, String message) {
+    private void display(String title, String message, final int position) {
         final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle(title)
                 .setMessage(message)
-                .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                .setNeutralButton("Ok", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                }).show();
-    }
 
+                    }
+                }).setPositiveButton("Edytuj", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                openDialog(dogsList.get(position),weight.get(position),Integer.parseInt(activityLevel.get(position)));
+                globalPosition = Integer.parseInt(ID.get(position));
+
+            }
+        }).show();
+    }
+    public void openDialog(String name, String weight, int activityLevel){
+        UpdateDialog updateDialog = new UpdateDialog();
+        updateDialog.importData(name, weight,activityLevel);
+        updateDialog.show(getFragmentManager().beginTransaction(), "dialog");
+        updateDialog.setTargetFragment(DogsFragment.this, 1);
+    }
     private void loadData(View v) {
         //wypełnienie tablicy
         Cursor data = dogsDB.showData();

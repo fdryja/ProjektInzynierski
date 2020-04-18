@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:padding="16dp">
+
+
+
+    <EditText
+        android:id="@+id/editName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Imię" />
+    <EditText
+        android:id="@+id/editWeight"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Masa"
+        android:inputType="number"
+        android:layout_below="@+id/editName"
+        android:layout_alignParentStart="true"/>
+
+    <SeekBar
+        android:id="@+id/seekBarDialog"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/editWeight"
+        android:layout_centerInParent="true"
+        android:max="2"
+        android:progress="1"/>
+    <TextView
+        android:id="@+id/poziomAktywnosciDialog"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Normalny"
+        android:layout_below="@+id/activityLevelDialog"
+        android:layout_centerInParent="true"/>
+    <TextView
+        android:id="@+id/activityLevelDialog"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Poziom aktywności fizycznej"
+        android:layout_below="@+id/seekBarDialog"
+        android:layout_centerInParent="true"/>
+
+
+</RelativeLayout>
