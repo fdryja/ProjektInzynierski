@@ -22,11 +22,11 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 public class AddFragment extends Fragment {
-    TextView poziomAktywnosci;
-    SeekBar seekBar;
-    Button button;
-    EditText imiePsa, masaPsa;
-    DatabaseHelper dogsDB;
+    private TextView poziomAktywnosci;
+    private SeekBar seekBar;
+    private Button button;
+    private EditText imiePsa, masaPsa;
+    private DatabaseHelper dogsDB;
 
 
 
@@ -130,7 +130,7 @@ public class AddFragment extends Fragment {
             int activityLevel = seekBar.getProgress();
             boolean insertData = dogsDB.addData(name, weight, activityLevel);
 
-            if(insertData == true){
+            if(insertData){
                 Toast.makeText(getActivity().getApplicationContext(), "Dodano psa!", Toast.LENGTH_SHORT).show();
 
             }else{
