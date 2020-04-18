@@ -132,6 +132,9 @@ public class AddFragment extends Fragment {
 
             if(insertData){
                 Toast.makeText(getActivity().getApplicationContext(), "Dodano psa!", Toast.LENGTH_SHORT).show();
+                imiePsa.setText("");
+                masaPsa.setText("");
+                seekBar.setProgress(1);
 
             }else{
                 Toast.makeText(getActivity().getApplicationContext(), "Błąd przy dodawaniu psa!", Toast.LENGTH_SHORT).show();
