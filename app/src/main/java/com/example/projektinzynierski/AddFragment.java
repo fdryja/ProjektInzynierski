@@ -103,7 +103,7 @@ public class AddFragment extends Fragment {
         });
     }
 
-    public void display(String title, String message){
+    private void display(String title, String message){
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setCancelable(true);
         builder.setTitle(title);
@@ -119,7 +119,7 @@ public class AddFragment extends Fragment {
     }
 
 
-    public void dodajPsa(View view){
+    private void dodajPsa(View view){
 
         if(TextUtils.isEmpty(imiePsa.getText().toString() )|| TextUtils.isEmpty(masaPsa.getText().toString())){
             Toast.makeText(getActivity().getApplicationContext(), "Nie wypełniono wszystich pól", Toast.LENGTH_SHORT).show();

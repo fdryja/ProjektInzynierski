@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.os.strictmode.SqliteObjectLeakedViolation;
 import android.view.View;
 
 import androidx.annotation.Nullable;
@@ -51,6 +52,23 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }else{
             return true;
         }
+    }
+//    public boolean deleteData(int id){
+//        SQLiteDatabase db = this.getWritableDatabase();
+//        db.execSQL("DELETE FROM "+TABLE_NAME+" WHERE ID="+id);
+//        String idTab[] = {Integer.toString(id)};
+//        long result = db.delete(TABLE_NAME,"ID=", idTab);
+//        if(result == -1){
+//            return false;
+//        }else{
+//            return true;
+//        }
+//    }
+    public void deleteData(int id){
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = "DELETE FROM " + TABLE_NAME + " WHERE "
+                + COL1 + " = '" + id + "'";
+        db.execSQL(query);
     }
     public Cursor showData(){
         SQLiteDatabase db = this.getReadableDatabase();
