@@ -46,8 +46,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                    new AddFragment()).commit();
-            navigationView.setCheckedItem(R.id.nav_add);
+                    new DogsFragment()).commit();
+            navigationView.setCheckedItem(R.id.nav_dogs);
         }
 
 
@@ -72,6 +72,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case R.id.nav_dogs:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                         new DogsFragment()).commit();
+                break;
+            case R.id.nav_eating:
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                        new EatingFragment()).commit();
+                break;
+            case R.id.nav_calendar:
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                        new CalendarFragment()).commit();
                 break;
         }
 

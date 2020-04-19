@@ -21,6 +21,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String COL2 = "NAME";
     public static final String COL3 = "WEIGHT";
     public static final String COL4 = "ACTIVITY_LEVEL";
+    public static final String COL5 = "EATING_COUNT";
+    public static final String COL6 = "EATING";
 
 
 
@@ -31,7 +33,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         String createTable = "CREATE TABLE " + TABLE_NAME + " (ID INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                " NAME TEXT, WEIGHT INTEGER, ACTIVITY_LEVEL INTEGER)";
+                " NAME TEXT UNIQUE, WEIGHT INTEGER, ACTIVITY_LEVEL INTEGER, EATING_COUNT INTEGER DEFAULT 0, EATING INTEGER DEFAULT 0)";
         db.execSQL(createTable);
     }
 
@@ -53,6 +55,19 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             return false;
         } else {
             return true;
+        }
+    }
+
+    public void updateEating(int id, int eatingCount, int eating){
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = "UPDATE "+ TABLE_NAME + " SET " + COL5 + "=" + eatingCount + ", " + COL6+ "="+ eating
+                +" WHERE "+COL1+"="+id;
+        try {
+            db.execSQL(query);
+            Log.e("tag",query);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            Log.e("tag",query);
         }
     }
 

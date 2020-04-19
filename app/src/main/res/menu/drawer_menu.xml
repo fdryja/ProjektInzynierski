@@ -5,17 +5,25 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_alarm"
-            android:icon="@drawable/ic_alarm"
-            android:title="Alarm" />
+            android:id="@+id/nav_dogs"
+            android:icon="@drawable/ic_dogs"
+            android:title="Lista psów" />
         <item
             android:id="@+id/nav_add"
             android:icon="@drawable/ic_add"
             android:title="Dodaj psa" />
         <item
-            android:id="@+id/nav_dogs"
-            android:icon="@drawable/ic_dogs"
-            android:title="Lista psów" />
+            android:id="@+id/nav_alarm"
+            android:icon="@drawable/ic_alarm"
+            android:title="Alarm" />
+        <item
+            android:id="@+id/nav_eating"
+            android:icon="@drawable/ic_eating"
+            android:title="Opcje karmienia" />
+        <item
+            android:id="@+id/nav_calendar"
+            android:icon="@drawable/ic_calendar"
+            android:title="Terminarz" />
 
     </group>
 
