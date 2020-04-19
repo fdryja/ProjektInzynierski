@@ -33,7 +33,7 @@ public class EatingFragment extends Fragment implements AdapterView.OnItemSelect
     private String selectedDog;
     Button saveButton;
     EditText eating;
-    TextView textViewCount;
+    TextView textViewCount, wielkoscPorcji;
     SeekBar eatingCount;
     int globalPosition;
 
@@ -46,6 +46,7 @@ public class EatingFragment extends Fragment implements AdapterView.OnItemSelect
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        wielkoscPorcji = getActivity().findViewById(R.id.wielkoscPorcji);
         saveButton = getActivity().findViewById(R.id.saveButton);
         eating = getActivity().findViewById(R.id.eating);
         textViewCount = getActivity().findViewById(R.id.textViewCount);
@@ -60,6 +61,9 @@ public class EatingFragment extends Fragment implements AdapterView.OnItemSelect
         spinner.setOnItemSelectedListener(this);
         eatingCountChange();
         loadEating();
+        int grams = Integer.parseInt(eating.getText().toString());
+        int result = grams/eatingCount.getProgress();
+        wielkoscPorcji.setText("Wielkość porcji: "+result+"g");
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -85,9 +89,15 @@ public class EatingFragment extends Fragment implements AdapterView.OnItemSelect
     }
 
     private void eatingCountChange(){
+
+
         eatingCount.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                int grams = Integer.parseInt(eating.getText().toString());
+                int result = grams/progress;
+                wielkoscPorcji.setText("Wielkość porcji: "+result+"g");
+
                 if(progress == 1){
                     textViewCount.setText("1 raz dziennie");
                 }else if(progress == 2){
