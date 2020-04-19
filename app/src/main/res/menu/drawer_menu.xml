@@ -13,13 +13,14 @@
             android:icon="@drawable/ic_add"
             android:title="Dodaj psa" />
         <item
-            android:id="@+id/nav_alarm"
-            android:icon="@drawable/ic_alarm"
-            android:title="Alarm" />
-        <item
             android:id="@+id/nav_eating"
             android:icon="@drawable/ic_eating"
             android:title="Opcje karmienia" />
+        <item
+            android:id="@+id/nav_alarm"
+            android:icon="@drawable/ic_alarm"
+            android:title="Alarm" />
+
         <item
             android:id="@+id/nav_calendar"
             android:icon="@drawable/ic_calendar"
