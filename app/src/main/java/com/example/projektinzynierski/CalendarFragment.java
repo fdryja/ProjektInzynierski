@@ -77,7 +77,7 @@ public class CalendarFragment extends Fragment implements AdapterView.OnItemSele
 
         loadListeners();
         loadData(getView());
-        loadCalendar();
+        loadCalendar(globalPosition);
 
     }
 
@@ -85,7 +85,8 @@ public class CalendarFragment extends Fragment implements AdapterView.OnItemSele
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         Log.e("tag", parent.getItemAtPosition(position).toString());
         globalPosition = position;
-        loadCalendar();
+
+        loadCalendar(Integer.parseInt(ID.get(globalPosition)));
         Log.e("idglobal", ID.get(globalPosition));
 
 
@@ -96,9 +97,9 @@ public class CalendarFragment extends Fragment implements AdapterView.OnItemSele
 
     }
 
-    private void loadCalendar() {
+    private void loadCalendar(int id) {
         Log.e("błąd",ID.get(globalPosition));
-        Cursor data = dogsDB.showDates(Integer.parseInt(ID.get(0)));
+        Cursor data = dogsDB.showDates(Integer.parseInt(ID.get(globalPosition)));
         if (data.getCount() == 0) {
             Toast.makeText(getActivity().getApplicationContext(), "baza danych jest pusta", Toast.LENGTH_SHORT).show();
             isDbEmpty = true;
@@ -129,6 +130,11 @@ public class CalendarFragment extends Fragment implements AdapterView.OnItemSele
 
     private void loadData(View v) {
         //wypełnienie tablicy
+        ID.clear();
+        names.clear();
+        odrobaczenia.clear();
+        szczepienia.clear();
+
         Cursor data = dogsDB.showData();
         if (data.getCount() == 0) {
             isDbEmpty = true;
@@ -217,10 +223,11 @@ public class CalendarFragment extends Fragment implements AdapterView.OnItemSele
             dogsDB.addDataSzczepienie(dane, Integer.parseInt(ID.get(globalPosition)));
             names.clear();
 
-            ID.clear();
+
             spinner.setAdapter(null);
 
-            loadCalendar();
+            loadCalendar(globalPosition);
+            ID.clear();
             loadData(getView());
             spinner.setSelection(globalPosition);
         }
@@ -245,10 +252,11 @@ public class CalendarFragment extends Fragment implements AdapterView.OnItemSele
             dogsDB.addDataOdrobaczanie(dane, Integer.parseInt(ID.get(globalPosition)));
             names.clear();
 
-            ID.clear();
+
             spinner.setAdapter(null);
 
-            loadCalendar();
+            loadCalendar(globalPosition);
+            ID.clear();
             loadData(getView());
             spinner.setSelection(globalPosition);
         }
