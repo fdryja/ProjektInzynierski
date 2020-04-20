@@ -1,31 +1,42 @@
 package com.example.projektinzynierski;
 
 import android.app.DatePickerDialog;
+import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.provider.ContactsContract;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
-public class CalendarFragment extends Fragment {
-    Calendar calendar;
-    TextView szczepienieTextView, odrobaczanieTextView, textViewUstawSzczepienie, textViewUstawOdrobaczanie;
-    Button szczepienieButton, odrobaczanieButton, dzisiajSzczepienie, dzisiajOdrobaczanie;
-    int daySzczepienie, monthSzczepienie, yearSzczepienie,
+public class CalendarFragment extends Fragment implements AdapterView.OnItemSelectedListener{
+    private TextView szczepienieTextView, odrobaczanieTextView, textViewUstawSzczepienie, textViewUstawOdrobaczanie;
+    private Button szczepienieButton, odrobaczanieButton, dzisiajSzczepienie, dzisiajOdrobaczanie;
+    private int daySzczepienie, monthSzczepienie, yearSzczepienie,
             dayOdrobaczanie, mothOdrobaczanie, yearOdrobaczanie;
-    DatePickerDialog.OnDateSetListener setListenerSzczepienie, setListenerOdrobaczanie;
+    private DatePickerDialog.OnDateSetListener setListenerSzczepienie, setListenerOdrobaczanie;
+    private Spinner spinner;
+    private DatabaseHelper dogsDB;
+    private ArrayList<String> ID, names;
+    private ArrayAdapter<String> spinnerAdapter;
 
 
     @Nullable
@@ -37,6 +48,7 @@ public class CalendarFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        spinner = getActivity().findViewById(R.id.spinnerDate);
         textViewUstawSzczepienie = getActivity().findViewById(R.id.textViewUstawSzczepienie);
         textViewUstawOdrobaczanie = getActivity().findViewById(R.id.textViewUstawOdrobaczanie);
         szczepienieTextView = getActivity().findViewById(R.id.szczepienieTextView);
@@ -45,7 +57,11 @@ public class CalendarFragment extends Fragment {
         odrobaczanieButton = getActivity().findViewById(R.id.odrobaczanieButton);
         dzisiajSzczepienie = getActivity().findViewById(R.id.dzisiajSzczepienie);
         dzisiajOdrobaczanie = getActivity().findViewById(R.id.dzisiajOdrobaczanie);
+        dogsDB = new DatabaseHelper(getActivity());
+        ID = new ArrayList<>();
+        names = new ArrayList<>();
 
+        spinner.setOnItemSelectedListener(this);
         Calendar c = Calendar.getInstance();
         yearSzczepienie = c.get(Calendar.YEAR);
         monthSzczepienie = c.get(Calendar.MONTH);
@@ -56,6 +72,40 @@ public class CalendarFragment extends Fragment {
         yearOdrobaczanie = c.get(Calendar.YEAR);
 
         loadListeners();
+        loadData(getView());
+
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        Log.e("tag", parent.getItemAtPosition(position).toString());
+//        selectedDog = parent.getItemAtPosition(position).toString();
+//        globalPosition = position;
+//        loadEating();
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+
+    }
+
+    private void loadData(View v) {
+        //wypełnienie tablicy
+        Cursor data = dogsDB.showData();
+        if (data.getCount() == 0) {
+            Toast.makeText(getActivity().getApplicationContext(), "baza danych jest pusta", Toast.LENGTH_SHORT).show();
+
+        } else {
+            while (data.moveToNext()) {
+                Log.e("tag", data.getString(0));
+                ID.add(data.getString(0));
+                names.add(data.getString(1));
+
+
+            }
+        }
+        spinnerAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_dropdown_item, names);
+        spinner.setAdapter(spinnerAdapter);
 
     }
 

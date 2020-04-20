@@ -46,7 +46,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <Spinner
-            android:id="@+id/spinner"
+            android:id="@+id/spinnerDate"
             style="@style/Widget.AppCompat.Light.Spinner.DropDown.ActionBar"
             android:layout_width="200dp"
             android:layout_height="24dp"
@@ -96,7 +96,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.497"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/spinner" />
+            app:layout_constraintTop_toBottomOf="@+id/spinnerDate" />
 
         <TextView
             android:id="@+id/textViewUstawOdrobaczanie"
