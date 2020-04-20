@@ -18,16 +18,24 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String DATABASE_NAME = "dogs.db";
     public static final String TABLE_NAME = "dogs_table";
     public static final String TABLE_DATES = "dates_table";
+    public static final String TABLE_ALARM = "alarm_table";
+
     public static final String COL1 = "ID";
     public static final String COL2 = "NAME";
     public static final String COL3 = "WEIGHT";
     public static final String COL4 = "ACTIVITY_LEVEL";
     public static final String COL5 = "EATING_COUNT";
     public static final String COL6 = "EATING";
+
     public static final String COL1D = "ID";
     public static final String COL2D = "SZCZEPIENIE";
     public static final String COL3D = "ODROBACZANIE";
     public static final String COL4D = "DOG_ID";
+
+    public static final String COL1A = "ID";
+    public static final String COL2A = "ALARM_NUMBER";
+    public static final String COL3A = "ALARM";
+    public static final String COL4A = "DOG_ID";
 
 
 
@@ -43,6 +51,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         createTable = "CREATE TABLE "+TABLE_DATES+" (ID INTEGER PRIMARY KEY AUTOINCREMENT, SZCZEPIENIE TEXT DEFAULT 0, " +
                 "ODROBACZANIE TEXT DEFAULT 0, DOG_ID INTEGER, FOREIGN KEY(DOG_ID) REFERENCES "+TABLE_NAME+"(ID))";
+        db.execSQL(createTable);
+
+        createTable = "CREATE TABLE "+TABLE_ALARM+" (ID INTEGER PRIMARY KEY AUTOINCREMENT, ALARM_NUMBER INTEGER, ALARM TEXT DEFAULT 0, DOG_ID INTEGER, FOREIGN KEY(DOG_ID) REFERENCES "+TABLE_NAME+"(ID))";
         db.execSQL(createTable);
     }
 
@@ -68,6 +79,34 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
     }
 
+    public boolean addAlarm(int dogId, int number){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(COL2A,number);
+        contentValues.put(COL4A, dogId);
+
+        long result = db.insert(TABLE_DATES, null, contentValues);
+
+        if (result == -1) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    public void updateAlarm(String alarm, int dogId, int al){
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        String query = "UPDATE "+ TABLE_ALARM + " SET " + COL3A + "='" + alarm + "' WHERE "+COL1+"="+dogId;
+        try {
+            db.execSQL(query);
+            Log.e("tag",query);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            Log.e("tag",query);
+        }
+    }
+
     public boolean addDataDates(int dogId){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
@@ -87,7 +126,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         contentValues.put(COL2D, szczepienie);
         contentValues.put(COL4D, dogId);
 
-        String query = "UPDATE "+ TABLE_DATES + " SET " + COL2D + "='" + szczepienie + "' WHERE "+COL1+"="+dogId;
+        String query = "UPDATE "+ TABLE_DATES + " SET " + COL2D + "='" + szczepienie + "' WHERE "+COL4D+"="+dogId;
         try {
             db.execSQL(query);
             Log.e("tag",query);
@@ -103,7 +142,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         ContentValues contentValues = new ContentValues();
         contentValues.put(COL3D, odrobaczanie);
         contentValues.put(COL4D, dogId);
-        String query = "UPDATE "+ TABLE_DATES + " SET " + COL3D + "='" + odrobaczanie + "' WHERE "+COL1+"="+dogId;
+        String query = "UPDATE "+ TABLE_DATES + " SET " + COL3D + "='" + odrobaczanie + "' WHERE "+COL4D+"="+dogId;
         try {
             db.execSQL(query);
             Log.e("tag",query);
@@ -164,6 +203,17 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public Cursor showData() {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor data = db.rawQuery("SELECT * FROM " + TABLE_NAME, null);
+        return data;
+    }
+
+    public Cursor showAlarm(){
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor data = db.rawQuery("SELECT * FROM " + TABLE_ALARM, null);
+        return data;
+    }
+    public Cursor alarmCount(int dogId){
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor data = db.rawQuery("SELECT COUNT(*) FROM " + TABLE_ALARM+" WHERE DOG_ID="+dogId, null);
         return data;
     }
 }
