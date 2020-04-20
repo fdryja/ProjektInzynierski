@@ -2,6 +2,7 @@ package com.example.projektinzynierski;
 
 import android.app.DatePickerDialog;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -22,6 +23,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClickListener;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -29,7 +32,7 @@ import java.util.Date;
 
 public class CalendarFragment extends Fragment implements AdapterView.OnItemSelectedListener {
     private TextView szczepienieTextView, odrobaczanieTextView, textViewUstawSzczepienie, textViewUstawOdrobaczanie;
-    private Button szczepienieButton, odrobaczanieButton, dzisiajSzczepienie, dzisiajOdrobaczanie;
+    private Button szczepienieButton, odrobaczanieButton, dzisiajSzczepienie, dzisiajOdrobaczanie, zapiszDaty;
     private int daySzczepienie, monthSzczepienie, yearSzczepienie,
             dayOdrobaczanie, mothOdrobaczanie, yearOdrobaczanie;
     private DatePickerDialog.OnDateSetListener setListenerSzczepienie, setListenerOdrobaczanie;
@@ -61,6 +64,7 @@ public class CalendarFragment extends Fragment implements AdapterView.OnItemSele
         dzisiajOdrobaczanie = getActivity().findViewById(R.id.dzisiajOdrobaczanie);
         dogsDB = new DatabaseHelper(getActivity());
         ID = new ArrayList<>();
+        zapiszDaty = getActivity().findViewById(R.id.zapiszDaty);
         names = new ArrayList<>();
         szczepienia = new ArrayList<>();
         odrobaczenia = new ArrayList<>();
@@ -214,6 +218,40 @@ public class CalendarFragment extends Fragment implements AdapterView.OnItemSele
                 setOdrobaczanie();
             }
         });
+
+        zapiszDaty.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                zapiszDaty();
+            }
+        });
+    }
+
+    private void zapiszDaty(){
+        boolean flag = true;
+
+        try {
+            if(spinnerAdapter.isEmpty());
+        } catch (Exception e) {
+            e.printStackTrace();
+            flag = false;
+        }
+
+        if(flag){//tutaj zapis
+            String odrobaczanie = odrobaczanieTextView.getText().toString();
+            String szczepienie = szczepienieTextView.getText().toString();
+            if(szczepienie.equals("Brak")){
+                szczepienie = "0";
+            }else if(odrobaczanie == "Brak"){
+                odrobaczanie = "0";
+            }
+            dogsDB.addDataOdrobaczanie(odrobaczanie,Integer.parseInt(ID.get(globalPosition)));
+            dogsDB.addDataSzczepienie(szczepienie,Integer.parseInt(ID.get(globalPosition)));
+        }else{
+            Toast.makeText(getActivity().getApplicationContext(), "baza danych jest pusta", Toast.LENGTH_SHORT).show();
+
+        }
+
     }
 
     private void setSzczepienie() {
@@ -243,6 +281,7 @@ public class CalendarFragment extends Fragment implements AdapterView.OnItemSele
 
 
     }
+
 
     private void setOdrobaczanie() {
         if (isDbEmpty) {
@@ -285,5 +324,7 @@ public class CalendarFragment extends Fragment implements AdapterView.OnItemSele
                 mothOdrobaczanie, dayOdrobaczanie);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.show();
+
+
     }
 }
