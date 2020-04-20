@@ -169,10 +169,10 @@ public class AlarmFragment extends Fragment implements AdapterView.OnItemSelecte
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 //        loadData(getView());
-        Log.e("alarmCount",Integer.toString(alarmCount));
         globalPosition = position;
         Log.e("id teraz",ID.get(globalPosition));
         getAlarmCount(Integer.parseInt(ID.get(globalPosition)));
+        Log.e("alarmCount",Integer.toString(alarmCount));
         loadAlarms(Integer.parseInt( ID.get(globalPosition)));
 
 
