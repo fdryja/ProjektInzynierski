@@ -34,7 +34,7 @@ public class EatingFragment extends Fragment implements AdapterView.OnItemSelect
     private String selectedDog;
     Button saveButton;
     EditText eating;
-    TextView textViewCount, wielkoscPorcji;
+    TextView textViewCount, wielkoscPorcji, karmyNadzien;
     SeekBar eatingCount;
     int globalPosition = 0, grams = 0;
 
@@ -50,6 +50,7 @@ public class EatingFragment extends Fragment implements AdapterView.OnItemSelect
         wielkoscPorcji = getActivity().findViewById(R.id.wielkoscPorcji);
         saveButton = getActivity().findViewById(R.id.saveButton);
         eating = getActivity().findViewById(R.id.eating);
+        karmyNadzien = getActivity().findViewById(R.id.karmyNadzien);
         textViewCount = getActivity().findViewById(R.id.textViewCount);
         eatingCount = getActivity().findViewById(R.id.eatingCount);
         dogsDB = new DatabaseHelper(getActivity());
@@ -57,24 +58,20 @@ public class EatingFragment extends Fragment implements AdapterView.OnItemSelect
         ID = new ArrayList<>();
         eatingDB = new ArrayList<>();
         eatingCountDB = new ArrayList<>();
+
         spinner = getActivity().findViewById(R.id.spinner);
         loadData(getView());
         spinner.setOnItemSelectedListener(this);
+
         eatingCountChange();
         loadEating();
-        if(TextUtils.isEmpty(eating.getText())){
 
-        }else{
-            grams = Integer.parseInt(eating.getText().toString());
-        }
-        int result = grams/eatingCount.getProgress();
-        wielkoscPorcji.setText("Wielkość porcji: "+result+"g");
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(ID.isEmpty()){
-                    Toast.makeText(getActivity(),"Baza danych jest pusta",Toast.LENGTH_SHORT).show();
-                }else{
+                if (ID.isEmpty()) {
+                    Toast.makeText(getActivity(), "Baza danych jest pusta", Toast.LENGTH_SHORT).show();
+                } else {
                     updateEating(
                             Integer.parseInt(ID.get(globalPosition)),
                             eatingCount.getProgress(),
@@ -86,7 +83,9 @@ public class EatingFragment extends Fragment implements AdapterView.OnItemSelect
 
     }
 
-    private void updateEating(int id, int eatingCount, int eating){
+
+
+    private void updateEating(int id, int eatingCount, int eating) {
         dogsDB.updateEating(id, eatingCount, eating);
         ID.clear();
         dogsList.clear();
@@ -96,29 +95,33 @@ public class EatingFragment extends Fragment implements AdapterView.OnItemSelect
         loadData(getView());
         loadEating();
         spinner.setSelection(globalPosition);
+        int result = eating/eatingCount;
+        wielkoscPorcji.setText("Wielkość porcji: " + result + "g");
+
+
     }
 
-    private void eatingCountChange(){
+    private void eatingCountChange() {
 
 
         eatingCount.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                if(TextUtils.isEmpty(eating.getText())){
+                if (TextUtils.isEmpty(eating.getText())) {
 
-                }else{
+                } else {
                     grams = Integer.parseInt(eating.getText().toString());
                 }
-                int result = grams/progress;
-                wielkoscPorcji.setText("Wielkość porcji: "+result+"g");
+                int result = grams / progress;
+                wielkoscPorcji.setText("Wielkość porcji: " + result + "g");
 
-                if(progress == 1){
+                if (progress == 1) {
                     textViewCount.setText("1 raz dziennie");
-                }else if(progress == 2){
+                } else if (progress == 2) {
                     textViewCount.setText("2 razy dziennie");
-                }else if(progress == 3){
+                } else if (progress == 3) {
                     textViewCount.setText("3 razy dziennie");
-                }else{
+                } else {
                     textViewCount.setText("4 razy dziennie");
                 }
             }
@@ -140,8 +143,14 @@ public class EatingFragment extends Fragment implements AdapterView.OnItemSelect
         Cursor data = dogsDB.showData();
         if (data.getCount() == 0) {
             Toast.makeText(getActivity().getApplicationContext(), "baza danych jest pusta", Toast.LENGTH_SHORT).show();
-
         } else {
+            eating.setClickable(true);
+            saveButton.setVisibility(View.VISIBLE);
+            karmyNadzien.setVisibility(View.VISIBLE);
+            textViewCount.setVisibility(View.VISIBLE);
+            wielkoscPorcji.setVisibility(View.VISIBLE);
+            eating.setVisibility(View.VISIBLE);
+            eatingCount.setVisibility(View.VISIBLE);
             while (data.moveToNext()) {
                 Log.e("tag", data.getString(0));
                 ID.add(data.getString(0));
@@ -156,12 +165,12 @@ public class EatingFragment extends Fragment implements AdapterView.OnItemSelect
 
     }
 
-    private void loadEating(){
+    private void loadEating() {
         Cursor data = dogsDB.showData();
         if (data.getCount() == 0) {
             Toast.makeText(getActivity().getApplicationContext(), "baza danych jest pusta", Toast.LENGTH_SHORT).show();
 
-        }else{
+        } else {
             eating.setText(eatingDB.get(globalPosition));
             eatingCount.setProgress(Integer.parseInt(eatingCountDB.get(globalPosition)));
         }

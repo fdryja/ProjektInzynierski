@@ -75,9 +75,18 @@ public class CalendarFragment extends Fragment implements AdapterView.OnItemSele
         mothOdrobaczanie = c.get(Calendar.MONTH);
         yearOdrobaczanie = c.get(Calendar.YEAR);
 
-        loadListeners();
-        loadData(getView());
-        loadCalendar(globalPosition);
+
+        try {
+            loadListeners();
+            loadData(getView());
+            loadCalendar(globalPosition);
+        } catch (Exception e) {
+            e.printStackTrace();
+            Toast.makeText(getActivity().getApplicationContext(), "baza danych jest pusta", Toast.LENGTH_SHORT).show();
+
+        }
+
+
 
     }
 
@@ -98,7 +107,7 @@ public class CalendarFragment extends Fragment implements AdapterView.OnItemSele
     }
 
     private void loadCalendar(int id) {
-        Log.e("błąd",ID.get(globalPosition));
+        Log.e("błąd", ID.get(globalPosition));
         Cursor data = dogsDB.showDates(Integer.parseInt(ID.get(globalPosition)));
         if (data.getCount() == 0) {
             Toast.makeText(getActivity().getApplicationContext(), "baza danych jest pusta", Toast.LENGTH_SHORT).show();
@@ -208,9 +217,9 @@ public class CalendarFragment extends Fragment implements AdapterView.OnItemSele
     }
 
     private void setSzczepienie() {
-        if(isDbEmpty){
+        if (isDbEmpty) {
 
-        }else{
+        } else {
             SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
             Date date = new Date(System.currentTimeMillis());
             Calendar c = Calendar.getInstance();
@@ -233,13 +242,12 @@ public class CalendarFragment extends Fragment implements AdapterView.OnItemSele
         }
 
 
-
     }
 
     private void setOdrobaczanie() {
-        if(isDbEmpty){
+        if (isDbEmpty) {
 
-        }else{
+        } else {
             SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
             Date date = new Date(System.currentTimeMillis());
             Calendar c = Calendar.getInstance();
@@ -260,8 +268,6 @@ public class CalendarFragment extends Fragment implements AdapterView.OnItemSele
             loadData(getView());
             spinner.setSelection(globalPosition);
         }
-
-
 
 
     }

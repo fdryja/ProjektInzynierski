@@ -24,9 +24,6 @@ public class DogsFragment extends Fragment implements UpdateDialog.UpdateDialogL
     private ArrayAdapter<String> dogsAdapter;
     private int globalPosition = 0;
     private ArrayList<String> dogsList, ID, weight, activityLevel;
-//    private SeekBar seekBarDialog;
-//    private EditText editName, editWeight;
-//    private TextView poziomAktywnosciDialog;
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -57,6 +54,9 @@ public class DogsFragment extends Fragment implements UpdateDialog.UpdateDialogL
 
 
     }
+
+
+
 
     @Override
     public void applyTexts(String name, int weightt, int activityLevell) {
@@ -144,6 +144,7 @@ public class DogsFragment extends Fragment implements UpdateDialog.UpdateDialogL
             Toast.makeText(getActivity().getApplicationContext(), "baza danych jest pusta", Toast.LENGTH_SHORT).show();
 
         } else {
+
             while (data.moveToNext()) {
                 ID.add(data.getString(0));
                 dogsList.add(data.getString(1));
