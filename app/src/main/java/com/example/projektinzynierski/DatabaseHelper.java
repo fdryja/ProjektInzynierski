@@ -79,6 +79,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
     }
 
+
+
     public boolean addAlarm(int dogId, int number){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
@@ -96,8 +98,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public void updateAlarm(String alarm, int dogId, int al){
         SQLiteDatabase db = this.getWritableDatabase();
-
-        String query = "UPDATE "+ TABLE_ALARM + " SET " + COL3A + "='" + alarm + "' WHERE "+COL1+"="+dogId;
+        String query = "UPDATE "+ TABLE_ALARM + " SET " + COL3A + "='" + alarm + "' WHERE "+COL4A+"="+dogId+ " AND "+COL2A+"="+al;
         try {
             db.execSQL(query);
             Log.e("tag",query);
@@ -203,6 +204,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public Cursor showData() {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor data = db.rawQuery("SELECT * FROM " + TABLE_NAME, null);
+        return data;
+    }
+
+    public Cursor showCount(int dogId) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor data = db.rawQuery("SELECT EATING_COUNT FROM " + TABLE_NAME+ " WHERE ID="+dogId, null);
         return data;
     }
 

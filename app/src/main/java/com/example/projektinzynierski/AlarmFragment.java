@@ -42,6 +42,7 @@ public class AlarmFragment extends Fragment implements AdapterView.OnItemSelecte
         spinner = getActivity().findViewById(R.id.spinnerAlarm);
         alarmView1 = getActivity().findViewById(R.id.alarmView1);
         alarmView2 = getActivity().findViewById(R.id.alarmView2);
+        spinner.setOnItemSelectedListener(this);
         alarmView3 = getActivity().findViewById(R.id.alarmView3);
         alarmView4 = getActivity().findViewById(R.id.alarmView4);
         setAlarm1 = getActivity().findViewById(R.id.setAlarm1);
@@ -59,10 +60,72 @@ public class AlarmFragment extends Fragment implements AdapterView.OnItemSelecte
             Toast.makeText(getActivity().getApplicationContext(), "baza danych jest sss", Toast.LENGTH_SHORT).show();
         }
 
+        alarmVisibility(getView());
+        Log.e("alarmCount",Integer.toString(alarmCount));
+
+    }
+
+    private void alarmVisibility(View v){
+        if(alarmCount == 1){
+            alarmView1.setVisibility(View.VISIBLE);
+            setAlarm1.setVisibility(View.VISIBLE);
+            alarmView2.setVisibility(View.INVISIBLE);
+            setAlarm2.setVisibility(View.INVISIBLE);
+            alarmView3.setVisibility(View.INVISIBLE);
+            setAlarm3.setVisibility(View.INVISIBLE);
+            alarmView4.setVisibility(View.INVISIBLE);
+            setAlarm4.setVisibility(View.INVISIBLE);
+        }else if(alarmCount == 2){
+            alarmView1.setVisibility(View.VISIBLE);
+            setAlarm1.setVisibility(View.VISIBLE);
+            alarmView2.setVisibility(View.VISIBLE);
+            setAlarm2.setVisibility(View.VISIBLE);
+            alarmView3.setVisibility(View.INVISIBLE);
+            setAlarm3.setVisibility(View.INVISIBLE);
+            alarmView4.setVisibility(View.INVISIBLE);
+            setAlarm4.setVisibility(View.INVISIBLE);
+        }else if(alarmCount == 3){
+            alarmView1.setVisibility(View.VISIBLE);
+            setAlarm1.setVisibility(View.VISIBLE);
+            alarmView2.setVisibility(View.VISIBLE);
+            setAlarm2.setVisibility(View.VISIBLE);
+            alarmView3.setVisibility(View.VISIBLE);
+            setAlarm3.setVisibility(View.VISIBLE);
+            alarmView4.setVisibility(View.INVISIBLE);
+            setAlarm4.setVisibility(View.INVISIBLE);
+        }else if(alarmCount == 4){
+            alarmView1.setVisibility(View.VISIBLE);
+            setAlarm1.setVisibility(View.VISIBLE);
+            alarmView2.setVisibility(View.VISIBLE);
+            setAlarm2.setVisibility(View.VISIBLE);
+            alarmView3.setVisibility(View.VISIBLE);
+            setAlarm3.setVisibility(View.VISIBLE);
+            alarmView4.setVisibility(View.VISIBLE);
+            setAlarm4.setVisibility(View.VISIBLE);
+        }else{
+            alarmView1.setVisibility(View.INVISIBLE);
+            setAlarm1.setVisibility(View.INVISIBLE);
+            alarmView2.setVisibility(View.INVISIBLE);
+            setAlarm2.setVisibility(View.INVISIBLE);
+            alarmView3.setVisibility(View.INVISIBLE);
+            setAlarm3.setVisibility(View.INVISIBLE);
+            alarmView4.setVisibility(View.INVISIBLE);
+            setAlarm4.setVisibility(View.INVISIBLE);
+        }
+    }
+
+    private void loadAlarms(int id){
+
+        alarmVisibility(getView());
 
     }
 
     private void loadData(View view) {
+        ID.clear();
+        names.clear();
+        alarmCount = 0;
+        alarm.clear();
+
         Cursor data = dogsDB.showData();
         if (data.getCount() == 0) {
 
@@ -71,18 +134,47 @@ public class AlarmFragment extends Fragment implements AdapterView.OnItemSelecte
         } else {
 
             while (data.moveToNext()) {
-                Log.e("id", data.getString(0));
+//                Log.e("id", data.getString(0));
                 ID.add(data.getString(0));
                 names.add(data.getString(1));
+
+            }
+            Log.e("id teraz",ID.get(globalPosition));
+
+            Cursor count = dogsDB.showCount(Integer.parseInt(ID.get(globalPosition)) );
+            while (count.moveToNext()) {
+
+                alarmCount = count.getInt(0);
+
             }
         }
+
+
+        Log.e("alarmCount",Integer.toString(alarmCount));
 
         spinnerAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_dropdown_item, names);
         spinner.setAdapter(spinnerAdapter);
     }
 
+    private void getAlarmCount(int id){
+        Cursor data = dogsDB.showCount(Integer.parseInt( ID.get(globalPosition)));
+        while (data.moveToNext()) {
+
+            alarmCount = data.getInt(0);
+
+        }
+
+    }
+
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+//        loadData(getView());
+        Log.e("alarmCount",Integer.toString(alarmCount));
+        globalPosition = position;
+        Log.e("id teraz",ID.get(globalPosition));
+        getAlarmCount(Integer.parseInt(ID.get(globalPosition)));
+        loadAlarms(Integer.parseInt( ID.get(globalPosition)));
+
 
     }
 
