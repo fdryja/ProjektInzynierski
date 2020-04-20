@@ -5,6 +5,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.hardware.SensorEventListener;
 import android.os.Bundle;
 import android.provider.ContactsContract;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -35,7 +36,7 @@ public class EatingFragment extends Fragment implements AdapterView.OnItemSelect
     EditText eating;
     TextView textViewCount, wielkoscPorcji;
     SeekBar eatingCount;
-    int globalPosition;
+    int globalPosition = 0, grams = 0;
 
     @Nullable
     @Override
@@ -61,16 +62,25 @@ public class EatingFragment extends Fragment implements AdapterView.OnItemSelect
         spinner.setOnItemSelectedListener(this);
         eatingCountChange();
         loadEating();
-        int grams = Integer.parseInt(eating.getText().toString());
+        if(TextUtils.isEmpty(eating.getText())){
+
+        }else{
+            grams = Integer.parseInt(eating.getText().toString());
+        }
         int result = grams/eatingCount.getProgress();
         wielkoscPorcji.setText("Wielkość porcji: "+result+"g");
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                updateEating(
-                        Integer.parseInt(ID.get(globalPosition)),
-                        eatingCount.getProgress(),
-                        Integer.parseInt(eating.getText().toString()));
+                if(ID.isEmpty()){
+                    Toast.makeText(getActivity(),"Baza danych jest pusta",Toast.LENGTH_SHORT).show();
+                }else{
+                    updateEating(
+                            Integer.parseInt(ID.get(globalPosition)),
+                            eatingCount.getProgress(),
+                            Integer.parseInt(eating.getText().toString()));
+                }
+
             }
         });
 
@@ -94,7 +104,11 @@ public class EatingFragment extends Fragment implements AdapterView.OnItemSelect
         eatingCount.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                int grams = Integer.parseInt(eating.getText().toString());
+                if(TextUtils.isEmpty(eating.getText())){
+
+                }else{
+                    grams = Integer.parseInt(eating.getText().toString());
+                }
                 int result = grams/progress;
                 wielkoscPorcji.setText("Wielkość porcji: "+result+"g");
 

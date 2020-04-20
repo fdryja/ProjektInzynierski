@@ -17,12 +17,17 @@ import androidx.annotation.Nullable;
 public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String DATABASE_NAME = "dogs.db";
     public static final String TABLE_NAME = "dogs_table";
+    public static final String TABLE_DATES = "dates_table";
     public static final String COL1 = "ID";
     public static final String COL2 = "NAME";
     public static final String COL3 = "WEIGHT";
     public static final String COL4 = "ACTIVITY_LEVEL";
     public static final String COL5 = "EATING_COUNT";
     public static final String COL6 = "EATING";
+    public static final String COL1D = "ID";
+    public static final String COL2D = "SZCZEPIENIE";
+    public static final String COL3D = "ODROBACZANIE";
+    public static final String COL4D = "DOG_ID";
 
 
 
@@ -35,11 +40,16 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         String createTable = "CREATE TABLE " + TABLE_NAME + " (ID INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 " NAME TEXT UNIQUE, WEIGHT INTEGER, ACTIVITY_LEVEL INTEGER, EATING_COUNT INTEGER DEFAULT 0, EATING INTEGER DEFAULT 0)";
         db.execSQL(createTable);
+
+        createTable = "CREATE TABLE "+TABLE_DATES+" (ID INTEGER PRIMARY KEY AUTOINCREMENT, SZCZEPIENIE TEXT DEFAULT 0, " +
+                "ODROBACZANIE TEXT DEFAULT 0, DOG_ID INTEGER, FOREIGN KEY(DOG_ID) REFERENCES "+TABLE_NAME+"(ID))";
+        db.execSQL(createTable);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);
+        db.execSQL("DROP TABLE IF EXISTS "+TABLE_DATES);
     }
 
     public boolean addData(String name, int weight, int activityLevel) {
@@ -56,6 +66,64 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         } else {
             return true;
         }
+    }
+
+    public boolean addDataDates(int dogId){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(COL4D, dogId);
+
+        long result = db.insert(TABLE_DATES, null, contentValues);
+
+        if (result == -1) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+    public void addDataSzczepienie(String szczepienie, int dogId){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(COL2D, szczepienie);
+        contentValues.put(COL4D, dogId);
+
+        String query = "UPDATE "+ TABLE_DATES + " SET " + COL2D + "='" + szczepienie + "' WHERE "+COL1+"="+dogId;
+        try {
+            db.execSQL(query);
+            Log.e("tag",query);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            Log.e("tag",query);
+        }
+
+    }
+
+    public void addDataOdrobaczanie(String odrobaczanie, int dogId){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(COL3D, odrobaczanie);
+        contentValues.put(COL4D, dogId);
+        String query = "UPDATE "+ TABLE_DATES + " SET " + COL3D + "='" + odrobaczanie + "' WHERE "+COL1+"="+dogId;
+        try {
+            db.execSQL(query);
+            Log.e("tag",query);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            Log.e("tag",query);
+        }
+    }
+
+    public Cursor showDates(int id){
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor data = db.rawQuery("SELECT * FROM " + TABLE_DATES+" WHERE "+COL4D+"="+id, null);
+        return data;
+    }
+
+    public Cursor getLastId(){
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor data = db.rawQuery("SELECT last_insert_rowid()", null);
+        return data;
+
     }
 
     public void updateEating(int id, int eatingCount, int eating){

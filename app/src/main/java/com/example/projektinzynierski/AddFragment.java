@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,6 +28,7 @@ public class AddFragment extends Fragment {
     private Button button;
     private EditText imiePsa, masaPsa;
     private DatabaseHelper dogsDB;
+    int dogID = -1;
 
 
 
@@ -119,6 +121,10 @@ public class AddFragment extends Fragment {
     }
 
 
+    public int passDogID(int id){
+        return id;
+    }
+
     private void dodajPsa(View view){
 
         if(TextUtils.isEmpty(imiePsa.getText().toString() )|| TextUtils.isEmpty(masaPsa.getText().toString())){
@@ -130,15 +136,27 @@ public class AddFragment extends Fragment {
             int activityLevel = seekBar.getProgress();
             boolean insertData = dogsDB.addData(name, weight, activityLevel);
 
+
             if(insertData){
                 Toast.makeText(getActivity().getApplicationContext(), "Dodano psa!", Toast.LENGTH_SHORT).show();
                 imiePsa.setText("");
                 masaPsa.setText("");
                 seekBar.setProgress(1);
+                Cursor cursor = dogsDB.getLastId();
+                if(cursor.getCount()==0){
+                    Toast.makeText(getActivity().getApplicationContext(), "baza danych jest pusta", Toast.LENGTH_SHORT).show();
+                }else{
+                    while (cursor.moveToNext()) {
+                        Log.e("tag", cursor.getString(0));
+                        dogID = Integer.parseInt(cursor.getString(0));
+                        dogsDB.addDataDates(dogID);
+                    }
+
+
+                }
 
             }else{
                 Toast.makeText(getActivity().getApplicationContext(), "Błąd przy dodawaniu psa!", Toast.LENGTH_SHORT).show();
-
             }
 
         }
