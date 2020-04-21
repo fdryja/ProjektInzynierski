@@ -206,6 +206,7 @@ public class AlarmFragment extends Fragment implements AdapterView.OnItemSelecte
         ID.clear();
         names.clear();
         alarm.clear();
+        alarmManager.clear();
         intentArrayList.clear();
         Log.e("USTAWIANIE ALARMU", "ODPALONA FUNKCJA");
         //funkcja która ładuje wszystkie rekordy z tabeli alarmów i aktywuje każdy istniejący w niej alarm, jeżeli jest "Brak" to
@@ -245,7 +246,7 @@ public class AlarmFragment extends Fragment implements AdapterView.OnItemSelecte
 
             String h = "", m = "";
             if (alarm.get(i).equals("Brak")) {
-
+                alarmManager.add((AlarmManager) getContext().getApplicationContext().getSystemService(ALARM_SERVICE));
             } else {
                 String[] parts = alarm.get(i).split(":");
                 h = parts[0];
@@ -271,6 +272,7 @@ public class AlarmFragment extends Fragment implements AdapterView.OnItemSelecte
                 alarmManager.add((AlarmManager) getContext().getApplicationContext().getSystemService(ALARM_SERVICE));
 
                 //wywołanie na czas
+                //tutaj wywala     java.lang.IndexOutOfBoundsException: Index: 1, Size: 1
                 alarmManager.get(i).setInexactRepeating(AlarmManager.RTC_WAKEUP, c.getTimeInMillis(),
                         AlarmManager.INTERVAL_DAY, pendingIntent);
                 ileAlarmowPo++;
@@ -310,8 +312,8 @@ public class AlarmFragment extends Fragment implements AdapterView.OnItemSelecte
 
         //tutaj się crashuje jak dwa razy się kliknie zapisz na alarmach
 
-//        Log.e("CO JEST NULL", Integer.toString(intentArrayList.size()));
-//        Log.e("CO JEST NULL",Integer.toString(alarmManager.size()));
+        Log.e("CO JEST NULL", Integer.toString(intentArrayList.size()));
+        Log.e("CO JEST NULL",Integer.toString(alarmManager.size()));
 
         for (int i = 0; i < intentArrayList.size(); i++) {
             alarmManager.get(i).cancel(intentArrayList.get(i));
@@ -323,7 +325,6 @@ public class AlarmFragment extends Fragment implements AdapterView.OnItemSelecte
 
     private void resetAlarms() {
         cancelAlarm();
-
         alarmView1.setText("Brak");
         alarmView2.setText("Brak");
         alarmView3.setText("Brak");
