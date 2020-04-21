@@ -183,6 +183,18 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     }
 
+    public void deleteFromEverywhere(int id){
+        deleteData(id);
+        deleteAlarm(id);
+        deleteDates(id);
+    }
+    public void deleteDates(int id){
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = "DELETE FROM " + TABLE_DATES + " WHERE "
+                + COL4D + " = " + id;
+        db.execSQL(query);
+    }
+
     public void updateEating(int id, int eatingCount, int eating){
         SQLiteDatabase db = this.getWritableDatabase();
         String query = "UPDATE "+ TABLE_NAME + " SET " + COL5 + "=" + eatingCount + ", " + COL6+ "="+ eating

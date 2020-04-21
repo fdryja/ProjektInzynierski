@@ -95,7 +95,7 @@ public class DogsFragment extends Fragment implements UpdateDialog.UpdateDialogL
                     public void onClick(DialogInterface dialog, int which) {
                         //usuwanie psa
                         String imie = dogsList.get(position);
-                        dogsDB.deleteData(Integer.parseInt(ID.get(position)));
+                        dogsDB.deleteFromEverywhere(Integer.parseInt(ID.get(position)));
                         Toast.makeText(getActivity().getApplicationContext(), "Usunięto psa o imieniu " + imie, Toast.LENGTH_SHORT).show();
                         dogsAdapter.clear();
                         dogsList.clear();

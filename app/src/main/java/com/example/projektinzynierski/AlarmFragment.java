@@ -247,6 +247,8 @@ public class AlarmFragment extends Fragment implements AdapterView.OnItemSelecte
             String h = "", m = "";
             if (alarm.get(i).equals("Brak")) {
                 alarmManager.add((AlarmManager) getContext().getApplicationContext().getSystemService(ALARM_SERVICE));
+                intentArrayList.add(PendingIntent.getBroadcast(getActivity(), i, intent[i], 0));
+
             } else {
                 String[] parts = alarm.get(i).split(":");
                 h = parts[0];
