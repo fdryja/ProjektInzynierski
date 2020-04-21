@@ -330,6 +330,7 @@ public class AlarmFragment extends Fragment implements AdapterView.OnItemSelecte
         alarmView3.setText("Brak");
         alarmView4.setText("Brak");
         saveAlarms();
+        loadAlarms(Integer.parseInt(ID.get(globalPosition)));
 
     }
 
@@ -337,23 +338,23 @@ public class AlarmFragment extends Fragment implements AdapterView.OnItemSelecte
 
         cancelAlarm();
 
-        if (alarm.size() == 0) {
+        if (alarmCount == 0) {
             Toast.makeText(getActivity().getApplicationContext(), "baza danych jest pusta", Toast.LENGTH_SHORT).show();
-        } else if (alarm.size() == 1) {
+        } else if (alarmCount == 1) {
             dogsDB.updateAlarm(alarmView1.getText().toString(), Integer.parseInt(ID.get(globalPosition)), 1);
             Toast.makeText(getActivity().getApplicationContext(), "Zapisano", Toast.LENGTH_SHORT).show();
 
-        } else if (alarm.size() == 2) {
+        } else if (alarmCount == 2) {
             dogsDB.updateAlarm(alarmView1.getText().toString(), Integer.parseInt(ID.get(globalPosition)), 1);
             dogsDB.updateAlarm(alarmView2.getText().toString(), Integer.parseInt(ID.get(globalPosition)), 2);
             Toast.makeText(getActivity().getApplicationContext(), "Zapisano", Toast.LENGTH_SHORT).show();
-        } else if (alarm.size() == 3) {
+        } else if (alarmCount == 3) {
             dogsDB.updateAlarm(alarmView1.getText().toString(), Integer.parseInt(ID.get(globalPosition)), 1);
             dogsDB.updateAlarm(alarmView2.getText().toString(), Integer.parseInt(ID.get(globalPosition)), 2);
             dogsDB.updateAlarm(alarmView3.getText().toString(), Integer.parseInt(ID.get(globalPosition)), 3);
             Toast.makeText(getActivity().getApplicationContext(), "Zapisano", Toast.LENGTH_SHORT).show();
 
-        } else if (alarm.size() == 4) {
+        } else if (alarmCount == 4) {
             dogsDB.updateAlarm(alarmView1.getText().toString(), Integer.parseInt(ID.get(globalPosition)), 1);
             dogsDB.updateAlarm(alarmView2.getText().toString(), Integer.parseInt(ID.get(globalPosition)), 2);
             dogsDB.updateAlarm(alarmView3.getText().toString(), Integer.parseInt(ID.get(globalPosition)), 3);
