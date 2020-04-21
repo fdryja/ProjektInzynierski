@@ -310,7 +310,6 @@ public class AlarmFragment extends Fragment implements AdapterView.OnItemSelecte
     private void cancelAlarm() {
 
 
-        //tutaj się crashuje jak dwa razy się kliknie zapisz na alarmach
 
         Log.e("CO JEST NULL", Integer.toString(intentArrayList.size()));
         Log.e("CO JEST NULL",Integer.toString(alarmManager.size()));

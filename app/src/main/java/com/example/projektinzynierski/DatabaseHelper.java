@@ -171,7 +171,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         Cursor data = db.rawQuery("SELECT * FROM " + TABLE_DATES+" WHERE "+COL4D+"="+id, null);
         return data;
     }
-
+    public Cursor showDates(){
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor data = db.rawQuery("SELECT * FROM " + TABLE_DATES, null);
+        return data;
+    }
     public Cursor getLastId(){
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor data = db.rawQuery("SELECT last_insert_rowid()", null);
