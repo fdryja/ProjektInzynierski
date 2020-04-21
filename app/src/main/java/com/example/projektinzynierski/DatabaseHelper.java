@@ -220,6 +220,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return data;
     }
 
+    public Cursor showName(int dogId) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor data = db.rawQuery("SELECT NAME FROM " + TABLE_NAME+ " WHERE ID="+dogId, null);
+        return data;
+    }
+
     public Cursor showCount(int dogId) {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor data = db.rawQuery("SELECT EATING_COUNT FROM " + TABLE_NAME+ " WHERE ID="+dogId, null);

@@ -9,8 +9,11 @@ import android.os.Build;
 
 import androidx.core.app.NotificationCompat;
 
+import java.util.ArrayList;
+
 
 public class NotificationHelper extends ContextWrapper {
+    private ArrayList<String> dgs;
     public static final String channelID = "channelID";
     public static final String channelName = "Channel Name";
 
@@ -39,6 +42,8 @@ public class NotificationHelper extends ContextWrapper {
     }
 
     public NotificationCompat.Builder getChannelNotification() {
+        AlarmFragment af = new AlarmFragment();
+        dgs = af.passName();
         return new NotificationCompat.Builder(getApplicationContext(), channelID)
                 .setContentTitle("Pora na jedzenie!")
                 .setContentText("Daj swojemu psu jeść!")

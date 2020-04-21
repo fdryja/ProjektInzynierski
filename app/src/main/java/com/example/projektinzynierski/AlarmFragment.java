@@ -44,7 +44,7 @@ public class AlarmFragment extends Fragment implements AdapterView.OnItemSelecte
     private Button setAlarm1, setAlarm2, setAlarm3, setAlarm4, saveAlarm, resetAlarm;
     private DatabaseHelper dogsDB;
     private ArrayAdapter<String> spinnerAdapter;
-    private ArrayList<String> ID, names, alarm;
+    private ArrayList<String> ID, names, alarm, alarmName,dogName;
     private ArrayList<Integer> alarmNumber;
     private int alarmCount, globalPosition = 0, alarm1hour, alarm2hour, alarm3hour, alarm4hour, alarm1minute, alarm2minute, alarm3minute, alarm4minute;
     private TimePickerDialog.OnTimeSetListener setListenerAlarm1, setListenerAlarm2, setListenerAlarm3, setListenerAlarm4;
@@ -53,6 +53,7 @@ public class AlarmFragment extends Fragment implements AdapterView.OnItemSelecte
 //    private ArrayList<Intent> intent;
     private AlarmManager[] alarmManager;
     private int ileAlarmow;
+
     ArrayList<PendingIntent> intentArrayList;
 
     @Nullable
@@ -74,6 +75,7 @@ public class AlarmFragment extends Fragment implements AdapterView.OnItemSelecte
         alarmView3 = getActivity().findViewById(R.id.alarmView3);
         alarmView4 = getActivity().findViewById(R.id.alarmView4);
         setAlarm1 = getActivity().findViewById(R.id.setAlarm1);
+        alarmName = new ArrayList<>();
         setAlarm2 = getActivity().findViewById(R.id.setAlarm2);
         setAlarm3 = getActivity().findViewById(R.id.setAlarm3);
 
@@ -199,6 +201,7 @@ public class AlarmFragment extends Fragment implements AdapterView.OnItemSelecte
     }
 
     private void saveAllAlarms() {
+        int dogId;
         ID.clear();
         names.clear();
         alarm.clear();
@@ -213,6 +216,7 @@ public class AlarmFragment extends Fragment implements AdapterView.OnItemSelecte
         } else {
             while (data.moveToNext()) {
                 alarm.add(data.getString(2));
+                alarmName.add(data.getString(3));
                 ileAlarmow++;
             }
         }
@@ -239,6 +243,7 @@ public class AlarmFragment extends Fragment implements AdapterView.OnItemSelecte
             h = parts[0];
             m = parts[1];
 
+            dogId = Integer.parseInt(alarmName.get(i)) ;
             Calendar c = Calendar.getInstance();
             c.getTimeInMillis();
             c.set(Calendar.HOUR_OF_DAY, Integer.parseInt(h));
@@ -264,6 +269,10 @@ public class AlarmFragment extends Fragment implements AdapterView.OnItemSelecte
 
             intentArrayList.add(pendingIntent);
 
+            Cursor nameCursor = dogsDB.showName(dogId);
+            while (nameCursor.moveToNext()) {
+                dogName.add(nameCursor.getString(0));
+            }
 
         }
         Log.e("USTAWIANIE ALARMU", "LICZBA ALARMOW PO: " + ileAlarmow);
@@ -277,15 +286,12 @@ public class AlarmFragment extends Fragment implements AdapterView.OnItemSelecte
 
             }
         }
+        passName();
     }
 
-    private void startAlarm(Calendar c, int id) {
 
-
-        //wywołanie od razu
-//        alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, Calendar.getInstance().getTimeInMillis(),
-//                AlarmManager.INTERVAL_DAY,pendingIntent);
-
+    public ArrayList<String> passName (){
+        return dogName;
     }
 
     private void cancelAlarm() {
