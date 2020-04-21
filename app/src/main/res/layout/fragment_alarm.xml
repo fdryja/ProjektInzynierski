@@ -32,12 +32,13 @@
             app:layout_constraintTop_toBottomOf="@+id/alarmView4" />
 
         <TextView
-            android:visibility="invisible"
             android:id="@+id/alarmView4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="32dp"
+            android:text="Brak"
             android:textSize="22sp"
+            android:visibility="invisible"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/setAlarm3" />
@@ -58,6 +59,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="32dp"
+            android:text="Brak"
             android:textSize="22sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -79,6 +81,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="32dp"
+            android:text="Brak"
             android:textSize="22sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -99,6 +102,7 @@
             android:id="@+id/alarmView1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:text="Brak"
             android:layout_marginTop="52dp"
             android:textSize="22sp"
             app:layout_constraintEnd_toEndOf="parent"

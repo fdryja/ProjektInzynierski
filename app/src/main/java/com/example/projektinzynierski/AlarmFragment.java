@@ -2,6 +2,8 @@ package com.example.projektinzynierski;
 
 import android.app.TimePickerDialog;
 import android.database.Cursor;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -12,6 +14,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -27,7 +30,7 @@ public class AlarmFragment extends Fragment implements AdapterView.OnItemSelecte
     private DatabaseHelper dogsDB;
     private ArrayAdapter<String> spinnerAdapter;
     private ArrayList<String> ID, names, alarm;
-    private int alarmCount, globalPosition = 0;
+    private int alarmCount, globalPosition = 0, alarm1hour, alarm2hour, alarm3hour, alarm4hour, alarm1minute, alarm2minute, alarm3minute, alarm4minute;
     private TimePickerDialog.OnTimeSetListener setListenerAlarm1,setListenerAlarm2,setListenerAlarm3,setListenerAlarm4;
 
     @Nullable
@@ -50,11 +53,13 @@ public class AlarmFragment extends Fragment implements AdapterView.OnItemSelecte
         setAlarm3 = getActivity().findViewById(R.id.setAlarm3);
         setAlarm4 = getActivity().findViewById(R.id.setAlarm4);
         ID = new ArrayList<>();
+        saveAlarm = getActivity().findViewById(R.id.saveAlarm);
         names = new ArrayList<>();
         alarm = new ArrayList<>();
         dogsDB = new DatabaseHelper(getActivity());
         try {
             loadData(getView());
+            loadListeners();
         } catch (Exception e) {
             e.printStackTrace();
             Toast.makeText(getActivity().getApplicationContext(), "baza danych jest sss", Toast.LENGTH_SHORT).show();
@@ -65,10 +70,120 @@ public class AlarmFragment extends Fragment implements AdapterView.OnItemSelecte
 
     }
 
+    private void loadListeners(){
+        //buttony
+        setAlarm1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getAlarm1();
+            }
+        });
+        setAlarm2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getAlarm2();
+            }
+        });
+        setAlarm3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getAlarm3();
+            }
+        });
+        setAlarm4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getAlarm4();
+            }
+        });
+
+
+        //listenery time
+        setListenerAlarm1 = new TimePickerDialog.OnTimeSetListener() {
+            @Override
+            public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                String godzina = "Brak";
+                if(minute<10){
+                    String minuteString = "0"+minute;
+                    godzina = hourOfDay+":"+minuteString;
+                }else{
+                    godzina = hourOfDay+":"+minute;
+                }
+                alarmView1.setText(godzina);
+            }
+        };
+        setListenerAlarm2 = new TimePickerDialog.OnTimeSetListener() {
+            @Override
+            public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                String godzina = "Brak";
+                if(minute<10){
+                    String minuteString = "0"+minute;
+                    godzina = hourOfDay+":"+minuteString;
+                }else{
+                    godzina = hourOfDay+":"+minute;
+                }                alarmView2.setText(godzina);
+            }
+        };
+        setListenerAlarm3 = new TimePickerDialog.OnTimeSetListener() {
+            @Override
+            public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                String godzina = "Brak";
+                if(minute<10){
+                    String minuteString = "0"+minute;
+                    godzina = hourOfDay+":"+minuteString;
+                }else{
+                    godzina = hourOfDay+":"+minute;
+                }                alarmView3.setText(godzina);
+            }
+        };
+        setListenerAlarm4 = new TimePickerDialog.OnTimeSetListener() {
+            @Override
+            public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                String godzina = "Brak";
+                if(minute<10){
+                    String minuteString = "0"+minute;
+                    godzina = hourOfDay+":"+minuteString;
+                }else{
+                    godzina = hourOfDay+":"+minute;
+                }                alarmView4.setText(godzina);
+            }
+        };
+    }
+
+    private void getAlarm1(){
+        TimePickerDialog dialog = new TimePickerDialog(getContext(),
+                android.R.style.Theme_Holo_Dialog_MinWidth,
+                setListenerAlarm1,alarm1hour,alarm1minute,true);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.show();
+    }
+    private void getAlarm2(){
+        TimePickerDialog dialog = new TimePickerDialog(getContext(),
+                android.R.style.Theme_Holo_Dialog_MinWidth,
+                setListenerAlarm2,alarm2hour,alarm2minute,true);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.show();
+    }
+    private void getAlarm3(){
+        TimePickerDialog dialog = new TimePickerDialog(getContext(),
+                android.R.style.Theme_Holo_Dialog_MinWidth,
+                setListenerAlarm3,alarm3hour,alarm3minute,true);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.show();
+    }
+    private void getAlarm4(){
+        TimePickerDialog dialog = new TimePickerDialog(getContext(),
+                android.R.style.Theme_Holo_Dialog_MinWidth,
+                setListenerAlarm4,alarm4hour,alarm4minute,true);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.show();
+    }
+
     private void alarmVisibility(View v){
         if(alarmCount == 1){
             alarmView1.setVisibility(View.VISIBLE);
             setAlarm1.setVisibility(View.VISIBLE);
+            saveAlarm.setVisibility(View.VISIBLE);
             alarmView2.setVisibility(View.INVISIBLE);
             setAlarm2.setVisibility(View.INVISIBLE);
             alarmView3.setVisibility(View.INVISIBLE);
@@ -84,6 +199,7 @@ public class AlarmFragment extends Fragment implements AdapterView.OnItemSelecte
             setAlarm3.setVisibility(View.INVISIBLE);
             alarmView4.setVisibility(View.INVISIBLE);
             setAlarm4.setVisibility(View.INVISIBLE);
+            saveAlarm.setVisibility(View.VISIBLE);
         }else if(alarmCount == 3){
             alarmView1.setVisibility(View.VISIBLE);
             setAlarm1.setVisibility(View.VISIBLE);
@@ -92,6 +208,7 @@ public class AlarmFragment extends Fragment implements AdapterView.OnItemSelecte
             alarmView3.setVisibility(View.VISIBLE);
             setAlarm3.setVisibility(View.VISIBLE);
             alarmView4.setVisibility(View.INVISIBLE);
+            saveAlarm.setVisibility(View.VISIBLE);
             setAlarm4.setVisibility(View.INVISIBLE);
         }else if(alarmCount == 4){
             alarmView1.setVisibility(View.VISIBLE);
@@ -102,6 +219,7 @@ public class AlarmFragment extends Fragment implements AdapterView.OnItemSelecte
             setAlarm3.setVisibility(View.VISIBLE);
             alarmView4.setVisibility(View.VISIBLE);
             setAlarm4.setVisibility(View.VISIBLE);
+            saveAlarm.setVisibility(View.VISIBLE);
         }else{
             alarmView1.setVisibility(View.INVISIBLE);
             setAlarm1.setVisibility(View.INVISIBLE);
@@ -111,6 +229,7 @@ public class AlarmFragment extends Fragment implements AdapterView.OnItemSelecte
             setAlarm3.setVisibility(View.INVISIBLE);
             alarmView4.setVisibility(View.INVISIBLE);
             setAlarm4.setVisibility(View.INVISIBLE);
+            saveAlarm.setVisibility(View.INVISIBLE);
         }
     }
 
