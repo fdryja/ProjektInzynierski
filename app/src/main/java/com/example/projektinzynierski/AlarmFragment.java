@@ -44,14 +44,14 @@ public class AlarmFragment extends Fragment implements AdapterView.OnItemSelecte
     private Button setAlarm1, setAlarm2, setAlarm3, setAlarm4, saveAlarm, resetAlarm;
     private DatabaseHelper dogsDB;
     private ArrayAdapter<String> spinnerAdapter;
-    private ArrayList<String> ID, names, alarm, alarmName,dogName;
+    private ArrayList<String> ID, names, alarm, alarmName, dogName;
     private ArrayList<Integer> alarmNumber;
     private int alarmCount, globalPosition = 0, alarm1hour, alarm2hour, alarm3hour, alarm4hour, alarm1minute, alarm2minute, alarm3minute, alarm4minute;
     private TimePickerDialog.OnTimeSetListener setListenerAlarm1, setListenerAlarm2, setListenerAlarm3, setListenerAlarm4;
     private NotificationManagerCompat notificationManagerCompat;
-    //    private ArrayList<AlarmManager> alarmManager;
-//    private ArrayList<Intent> intent;
-    private AlarmManager[] alarmManager;
+    private ArrayList<AlarmManager> alarmManager;
+    //    private ArrayList<Intent> intent;
+//    private AlarmManager[] alarmManager;
     private int ileAlarmow;
 
     ArrayList<PendingIntent> intentArrayList;
@@ -66,6 +66,7 @@ public class AlarmFragment extends Fragment implements AdapterView.OnItemSelecte
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         spinner = getActivity().findViewById(R.id.spinnerAlarm);
+        alarmManager = new ArrayList<>();
         alarmView1 = getActivity().findViewById(R.id.alarmView1);
         intentArrayList = new ArrayList<>();
         alarmView2 = getActivity().findViewById(R.id.alarmView2);
@@ -221,17 +222,21 @@ public class AlarmFragment extends Fragment implements AdapterView.OnItemSelecte
             }
         }
 
-        for (int k = 0; k < ileAlarmow; k++) {
+        for (int k = 0; k < alarm.size(); k++) {
 
-
-            String godzina = alarm.get(k);
-            if (godzina.equals("Brak")) {
+            if (alarm.get(k).equals("Brak")) {
                 ileAlarmow--;
+                alarm.remove(k);
             }
+
+
         }
 
-        alarmManager = new AlarmManager[ileAlarmow];
+//        alarmManager = new AlarmManager[ileAlarmow];
         Intent[] intent = new Intent[ileAlarmow];
+
+        int ileAlarmowPo = 0;
+
 
         Log.e("USTAWIANIE ALARMU", "LICZBA ALARMOW: " + ileAlarmow);
         for (int i = 0; i < ileAlarmow; i++) {
@@ -239,43 +244,49 @@ public class AlarmFragment extends Fragment implements AdapterView.OnItemSelecte
             intent[i] = new Intent(getContext().getApplicationContext(), AlertReceiver.class);
 
             String h = "", m = "";
-            String[] parts = alarm.get(i).split(":");
-            h = parts[0];
-            m = parts[1];
+            if (alarm.get(i).equals("Brak")) {
 
-            dogId = Integer.parseInt(alarmName.get(i)) ;
-            Calendar c = Calendar.getInstance();
-            c.getTimeInMillis();
-            c.set(Calendar.HOUR_OF_DAY, Integer.parseInt(h));
-            c.set(Calendar.MINUTE, Integer.parseInt(m));
-            c.set(Calendar.SECOND, 0);
+            } else {
+                String[] parts = alarm.get(i).split(":");
+                h = parts[0];
+                m = parts[1];
+
+//            dogId = Integer.parseInt(alarmName.get(i)) ;
+                Calendar c = Calendar.getInstance();
+                c.getTimeInMillis();
+                c.set(Calendar.HOUR_OF_DAY, Integer.parseInt(h));
+                c.set(Calendar.MINUTE, Integer.parseInt(m));
+                c.set(Calendar.SECOND, 0);
 //            Log.e("PRZESZLO DALEJ", "W TELEFONIE: " + new Date());
-            Log.e("PRZESZLO DALEJ", "DATATATATAT: " + c.getTime());
+                Log.e("PRZESZLO DALEJ", "DATATATATAT: " + c.getTime());
 //                startAlarm(c,i);
-            PendingIntent pendingIntent = PendingIntent.getBroadcast(getActivity(), i, intent[i], 0);
+                PendingIntent pendingIntent = PendingIntent.getBroadcast(getActivity(), i, intent[i], 0);
 
 
-            if (c.before(Calendar.getInstance())) {
-                c.add(Calendar.DATE, 1);
-                Log.e("UPDATED INSTANCE", c.getTime().toString());
-            }
+                if (c.before(Calendar.getInstance())) {
+                    c.add(Calendar.DATE, 1);
+                    Log.e("UPDATED INSTANCE", c.getTime().toString());
+                }
 
-            alarmManager[i] = (AlarmManager)getContext().getApplicationContext().getSystemService(ALARM_SERVICE);
+                alarmManager.add((AlarmManager) getContext().getApplicationContext().getSystemService(ALARM_SERVICE));
 
-            //wywołanie na czas
-            alarmManager[i].setInexactRepeating(AlarmManager.RTC_WAKEUP, c.getTimeInMillis(),
-                    AlarmManager.INTERVAL_DAY, pendingIntent);
-            Log.e("CREATED ALARM", c.getTime().toString());
+                //wywołanie na czas
+                alarmManager.get(i).setInexactRepeating(AlarmManager.RTC_WAKEUP, c.getTimeInMillis(),
+                        AlarmManager.INTERVAL_DAY, pendingIntent);
+                ileAlarmowPo++;
+                Log.e("CREATED ALARM", c.getTime().toString());
 
-            intentArrayList.add(pendingIntent);
+                intentArrayList.add(pendingIntent);
 
-            Cursor nameCursor = dogsDB.showName(dogId);
-            while (nameCursor.moveToNext()) {
-                dogName.add(nameCursor.getString(0));
+//            Cursor nameCursor = dogsDB.showName(dogId);
+//            while (nameCursor.moveToNext()) {
+//                dogName.add(nameCursor.getString(0));
+//            }
+
             }
 
         }
-        Log.e("USTAWIANIE ALARMU", "LICZBA ALARMOW PO: " + ileAlarmow);
+        Log.e("USTAWIANIE ALARMU", "LICZBA ALARMOW PO: " + ileAlarmowPo);
         Cursor cursor = dogsDB.showData();
         if (cursor.getCount() == 0) {
             Toast.makeText(getActivity().getApplicationContext(), "baza danych jest pusta", Toast.LENGTH_SHORT).show();
@@ -286,19 +297,24 @@ public class AlarmFragment extends Fragment implements AdapterView.OnItemSelecte
 
             }
         }
-        passName();
+//        passName();
     }
 
 
-    public ArrayList<String> passName (){
+    public ArrayList<String> passName() {
         return dogName;
     }
 
     private void cancelAlarm() {
 
 
+        //tutaj się crashuje jak dwa razy się kliknie zapisz na alarmach
+
+//        Log.e("CO JEST NULL", Integer.toString(intentArrayList.size()));
+//        Log.e("CO JEST NULL",Integer.toString(alarmManager.size()));
+
         for (int i = 0; i < intentArrayList.size(); i++) {
-            alarmManager[i].cancel(intentArrayList.get(i));
+            alarmManager.get(i).cancel(intentArrayList.get(i));
         }
 
 
