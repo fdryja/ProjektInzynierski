@@ -49,4 +49,14 @@ public class NotificationHelper extends ContextWrapper {
                 .setContentText("Daj swojemu psu jeść!")
                 .setSmallIcon(R.drawable.ic_android);
     }
+
+    public NotificationCompat.Builder getChannelNotificationCalendar() {
+        AlarmFragment af = new AlarmFragment();
+        dgs = af.passName();
+        return new NotificationCompat.Builder(getApplicationContext(), channelID)
+                .setContentTitle("Pora na jedzenie!")
+                .setContentText("Daj swojemu psu jeść!")
+                .setSmallIcon(R.drawable.ic_android);
+    }
+
 }
