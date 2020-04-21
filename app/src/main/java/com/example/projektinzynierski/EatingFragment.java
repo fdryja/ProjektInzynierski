@@ -76,6 +76,7 @@ public class EatingFragment extends Fragment implements AdapterView.OnItemSelect
                             Integer.parseInt(ID.get(globalPosition)),
                             eatingCount.getProgress(),
                             Integer.parseInt(eating.getText().toString()));
+
                 }
 
             }
@@ -87,6 +88,12 @@ public class EatingFragment extends Fragment implements AdapterView.OnItemSelect
 
     private void updateEating(int id, int eatingCount, int eating) {
         dogsDB.updateEating(id, eatingCount, eating);
+        dogsDB.deleteAlarm(id);
+
+        for(int i = 1; i<=eatingCount;i++){
+            dogsDB.addAlarm(id, i);
+        }
+
         ID.clear();
         dogsList.clear();
         eatingDB.clear();

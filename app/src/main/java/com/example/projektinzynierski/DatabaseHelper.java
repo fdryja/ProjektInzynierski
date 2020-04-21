@@ -53,7 +53,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 "ODROBACZANIE TEXT DEFAULT 0, DOG_ID INTEGER, FOREIGN KEY(DOG_ID) REFERENCES "+TABLE_NAME+"(ID))";
         db.execSQL(createTable);
 
-        createTable = "CREATE TABLE "+TABLE_ALARM+" (ID INTEGER PRIMARY KEY AUTOINCREMENT, ALARM_NUMBER INTEGER, ALARM TEXT DEFAULT 0, DOG_ID INTEGER, FOREIGN KEY(DOG_ID) REFERENCES "+TABLE_NAME+"(ID))";
+        createTable = "CREATE TABLE "+TABLE_ALARM+" (ID INTEGER PRIMARY KEY AUTOINCREMENT, ALARM_NUMBER INTEGER, ALARM TEXT DEFAULT 'Brak', DOG_ID INTEGER, FOREIGN KEY(DOG_ID) REFERENCES "+TABLE_NAME+"(ID))";
         db.execSQL(createTable);
     }
 
@@ -87,7 +87,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         contentValues.put(COL2A,number);
         contentValues.put(COL4A, dogId);
 
-        long result = db.insert(TABLE_DATES, null, contentValues);
+        long result = db.insert(TABLE_ALARM, null, contentValues);
 
         if (result == -1) {
             return false;
@@ -99,6 +99,18 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public void updateAlarm(String alarm, int dogId, int al){
         SQLiteDatabase db = this.getWritableDatabase();
         String query = "UPDATE "+ TABLE_ALARM + " SET " + COL3A + "='" + alarm + "' WHERE "+COL4A+"="+dogId+ " AND "+COL2A+"="+al;
+        try {
+            db.execSQL(query);
+            Log.e("tag",query);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            Log.e("tag",query);
+        }
+    }
+    public void deleteAlarm(int dogId){
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        String query = "DELETE FROM "+TABLE_ALARM+" WHERE DOG_ID="+dogId;
         try {
             db.execSQL(query);
             Log.e("tag",query);
@@ -213,9 +225,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return data;
     }
 
-    public Cursor showAlarm(){
+    public Cursor showAlarm(int id){
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor data = db.rawQuery("SELECT * FROM " + TABLE_ALARM, null);
+        Cursor data = db.rawQuery("SELECT * FROM " + TABLE_ALARM+" WHERE DOG_ID="+id, null);
         return data;
     }
     public Cursor alarmCount(int dogId){
