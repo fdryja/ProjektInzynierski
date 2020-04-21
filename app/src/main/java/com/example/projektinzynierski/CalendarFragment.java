@@ -26,7 +26,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
-public class CalendarFragment extends Fragment implements AdapterView.OnItemSelectedListener {
+public class CalendarFragment extends Fragment implements AdapterView.OnItemSelectedListener{
     private TextView szczepienieTextView, odrobaczanieTextView, textViewUstawSzczepienie, textViewUstawOdrobaczanie;
     private Button szczepienieButton, odrobaczanieButton, dzisiajSzczepienie, dzisiajOdrobaczanie, zapiszDaty;
     private int daySzczepienie, monthSzczepienie, yearSzczepienie,
@@ -100,6 +100,8 @@ public class CalendarFragment extends Fragment implements AdapterView.OnItemSele
 
 
     }
+
+
 
     @Override
     public void onNothingSelected(AdapterView<?> parent) {

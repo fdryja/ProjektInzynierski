@@ -98,18 +98,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     }
 
-    public void startService(View v) {
-        String input = editTextInput.getText().toString();
-
-        Intent serviceIntent = new Intent(this, ExampleService.class);
-        serviceIntent.putExtra("inputExtra", input);
-        startService(serviceIntent);
-    }
-
-    public void stopService(View v) {
-        Intent serviceIntent = new Intent(this, ExampleService.class);
-        stopService(serviceIntent);
-    }
 
 }
 

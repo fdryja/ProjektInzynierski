@@ -1,6 +1,11 @@
 package com.example.projektinzynierski;
 
+import android.app.AlarmManager;
+import android.app.Notification;
+import android.app.PendingIntent;
 import android.app.TimePickerDialog;
+import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -19,9 +24,19 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 import androidx.fragment.app.Fragment;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.logging.SimpleFormatter;
+
+import static android.content.Context.ALARM_SERVICE;
+import static com.example.projektinzynierski.App.CHANNEL_2_ID;
 
 public class AlarmFragment extends Fragment implements AdapterView.OnItemSelectedListener {
     private Spinner spinner;
@@ -33,6 +48,7 @@ public class AlarmFragment extends Fragment implements AdapterView.OnItemSelecte
     private ArrayList<Integer> alarmNumber;
     private int alarmCount, globalPosition = 0, alarm1hour, alarm2hour, alarm3hour, alarm4hour, alarm1minute, alarm2minute, alarm3minute, alarm4minute;
     private TimePickerDialog.OnTimeSetListener setListenerAlarm1, setListenerAlarm2, setListenerAlarm3, setListenerAlarm4;
+    private NotificationManagerCompat notificationManagerCompat;
 
     @Nullable
     @Override
@@ -47,6 +63,7 @@ public class AlarmFragment extends Fragment implements AdapterView.OnItemSelecte
         alarmView1 = getActivity().findViewById(R.id.alarmView1);
         alarmView2 = getActivity().findViewById(R.id.alarmView2);
         resetAlarm = getActivity().findViewById(R.id.resetAlarm);
+        notificationManagerCompat = NotificationManagerCompat.from(getContext());
         spinner.setOnItemSelectedListener(this);
         alarmView3 = getActivity().findViewById(R.id.alarmView3);
         alarmView4 = getActivity().findViewById(R.id.alarmView4);
@@ -103,6 +120,11 @@ public class AlarmFragment extends Fragment implements AdapterView.OnItemSelecte
             @Override
             public void onClick(View v) {
                 saveAlarms();
+
+
+                saveAllAlarms();
+
+
             }
         });
         resetAlarm.setOnClickListener(new View.OnClickListener() {
@@ -168,7 +190,137 @@ public class AlarmFragment extends Fragment implements AdapterView.OnItemSelecte
         };
     }
 
+    private void saveAllAlarms() {
+        ID.clear();
+        names.clear();
+        alarm.clear();
+        Log.e("USTAWIANIE ALARMU", "ODPALONA FUNKCJA");
+        //funkcja która ładuje wszystkie rekordy z tabeli alarmów i aktywuje każdy istniejący w niej alarm, jeżeli jest "Brak" to
+        //nie aktywuje tego alarmu;
+        Cursor data = dogsDB.showAlarm();
+        int ileAlarmow = 0;
+        if (data.getCount() == 0) {
+            Toast.makeText(getActivity().getApplicationContext(), "baza danych jest pusta", Toast.LENGTH_SHORT).show();
+        } else {
+            while (data.moveToNext()) {
+                alarm.add(data.getString(2));
+                ileAlarmow++;
+            }
+        }
+
+        Log.e("USTAWIANIE ALARMU", "LICZBA ALARMOW: " + ileAlarmow);
+        for (int i = 0; i < ileAlarmow; i++) {
+
+            Log.e("ITERACJA NA POCZĄTKU", "NUMER: " + i);
+
+            String godzina = alarm.get(i);
+
+            String h = "", m = "";
+
+            String[] parts = godzina.split(":");
+            h = parts[0];
+            m = parts[1];
+
+//            for(int j = 0; j<godzina.length();j++){
+//                if(godzina.charAt(j)!=':'){
+//                    h+= godzina.charAt(j);
+//                }else{
+//
+//                }
+//            }
+            Calendar c = Calendar.getInstance();
+            c.getTimeInMillis();
+            c.set(Calendar.HOUR_OF_DAY, Integer.parseInt(h));
+            c.set(Calendar.MINUTE, Integer.parseInt(m));
+            c.set(Calendar.SECOND, 0);
+            Log.e("PRZESZLO DALEJ", "W TELEFONIE: " + new Date());
+            Log.e("PRZESZLO DALEJ", "DATATATATAT: " + c.getTime());
+            startAlarm(c,i);
+//            SimpleDateFormat formatter = new SimpleDateFormat("HH:mm");
+
+//            Date date = null;
+//            try {
+//                date = formatter.parse(godzina);
+//            } catch (ParseException e) {
+//                e.printStackTrace();
+//                Log.e("USTAWIANIE ALARMU", "exception w try catchu");
+//
+//            }
+//            Log.e("USTAWIANIE ALARMU", "godzina: " + godzina);
+//            Log.e("USTAWIANIE ALARMU", "date: " + new Date());
+////                c.setTime(new Date());
+//            c.getTimeInMillis();
+//            try {
+//                date.equals(null);
+//
+////                c.set(Calendar.HOUR, date.getHours()-12);
+////                c.set(Calendar.MINUTE, date.getMinutes());
+//                c.set(Calendar.SECOND, 0);
+////                c.setTime(date);
+//                Log.e("PRZESZLO DALEJ", "DATATATATAT: " + c.getTime());
+//                Log.e("DATE", "GODZINA: " + date.getHours());
+//                Log.e("DATE", "MINUTY: " + date.getMinutes());
+//
+//                startAlarm(c, i);
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//                Log.e("NIE PRZESZLO DALEJ", "ENENENENEENE " + c.getTime());
+//
+//            }
+
+
+        }
+
+        Cursor cursor = dogsDB.showData();
+        if (cursor.getCount() == 0) {
+            Toast.makeText(getActivity().getApplicationContext(), "baza danych jest pusta", Toast.LENGTH_SHORT).show();
+        } else {
+            while (cursor.moveToNext()) {
+                ID.add(cursor.getString(0));
+                names.add(cursor.getString(1));
+
+            }
+        }
+    }
+
+    private void startAlarm(Calendar c, int id) {
+
+
+        Intent intent = new Intent(getContext(), AlertReceiver.class);
+//        PendingIntent pendingIntent = PendingIntent.getBroadcast(getActivity(), id, intent, 0);
+//        AlarmManager alarmManager = (AlarmManager) getActivity().getSystemService(ALARM_SERVICE);
+
+        AlarmManager alarmManager = (AlarmManager) getActivity().getSystemService(Context.ALARM_SERVICE);
+        PendingIntent pendingIntent = PendingIntent.getService(getActivity(), id, intent, PendingIntent.FLAG_NO_CREATE);
+
+
+//        if (c.before(Calendar.getInstance())) {
+//            c.add(Calendar.DATE, 1);
+//        }
+
+//        alarmManager.set(AlarmManager.RTC_WAKEUP, c.getTimeInMillis(), pendingIntent);
+
+        Log.e("CREATED ALARM", c.getTime().toString());
+
+        alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, c.getTimeInMillis(),
+                AlarmManager.INTERVAL_DAY,pendingIntent);
+
+
+//        alarmManager.setExact(AlarmManager.RTC_WAKEUP, c.getTimeInMillis(), pendingIntent);
+    }
+
+    private void cancelAlarm() {
+        AlarmManager alarmManager = (AlarmManager) getActivity().getSystemService(ALARM_SERVICE);
+        Intent intent = new Intent(getContext(), AlertReceiver.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(getContext(), 1, intent, 0);
+
+        alarmManager.cancel(pendingIntent);
+//        mTextView.setText("Alarm canceled");
+    }
+
+
     private void resetAlarms() {
+        cancelAlarm();
         alarmView1.setText("Brak");
         alarmView2.setText("Brak");
         alarmView3.setText("Brak");
@@ -178,32 +330,51 @@ public class AlarmFragment extends Fragment implements AdapterView.OnItemSelecte
     }
 
     private void saveAlarms() {
+        cancelAlarm();
         if (alarm.size() == 0) {
             Toast.makeText(getActivity().getApplicationContext(), "baza danych jest pusta", Toast.LENGTH_SHORT).show();
         } else if (alarm.size() == 1) {
-            dogsDB.updateAlarm(alarmView1.getText().toString(),Integer.parseInt(ID.get(globalPosition)),1);
+            dogsDB.updateAlarm(alarmView1.getText().toString(), Integer.parseInt(ID.get(globalPosition)), 1);
             Toast.makeText(getActivity().getApplicationContext(), "Zapisano", Toast.LENGTH_SHORT).show();
 
         } else if (alarm.size() == 2) {
-            dogsDB.updateAlarm(alarmView1.getText().toString(),Integer.parseInt(ID.get(globalPosition)),1);
-            dogsDB.updateAlarm(alarmView2.getText().toString(),Integer.parseInt(ID.get(globalPosition)),2);
+            dogsDB.updateAlarm(alarmView1.getText().toString(), Integer.parseInt(ID.get(globalPosition)), 1);
+            dogsDB.updateAlarm(alarmView2.getText().toString(), Integer.parseInt(ID.get(globalPosition)), 2);
             Toast.makeText(getActivity().getApplicationContext(), "Zapisano", Toast.LENGTH_SHORT).show();
         } else if (alarm.size() == 3) {
-            dogsDB.updateAlarm(alarmView1.getText().toString(),Integer.parseInt(ID.get(globalPosition)),1);
-            dogsDB.updateAlarm(alarmView2.getText().toString(),Integer.parseInt(ID.get(globalPosition)),2);
-            dogsDB.updateAlarm(alarmView3.getText().toString(),Integer.parseInt(ID.get(globalPosition)),3);
+            dogsDB.updateAlarm(alarmView1.getText().toString(), Integer.parseInt(ID.get(globalPosition)), 1);
+            dogsDB.updateAlarm(alarmView2.getText().toString(), Integer.parseInt(ID.get(globalPosition)), 2);
+            dogsDB.updateAlarm(alarmView3.getText().toString(), Integer.parseInt(ID.get(globalPosition)), 3);
             Toast.makeText(getActivity().getApplicationContext(), "Zapisano", Toast.LENGTH_SHORT).show();
 
         } else if (alarm.size() == 4) {
-            dogsDB.updateAlarm(alarmView1.getText().toString(),Integer.parseInt(ID.get(globalPosition)),1);
-            dogsDB.updateAlarm(alarmView2.getText().toString(),Integer.parseInt(ID.get(globalPosition)),2);
-            dogsDB.updateAlarm(alarmView3.getText().toString(),Integer.parseInt(ID.get(globalPosition)),3);
-            dogsDB.updateAlarm(alarmView4.getText().toString(),Integer.parseInt(ID.get(globalPosition)),4);
+            dogsDB.updateAlarm(alarmView1.getText().toString(), Integer.parseInt(ID.get(globalPosition)), 1);
+            dogsDB.updateAlarm(alarmView2.getText().toString(), Integer.parseInt(ID.get(globalPosition)), 2);
+            dogsDB.updateAlarm(alarmView3.getText().toString(), Integer.parseInt(ID.get(globalPosition)), 3);
+            dogsDB.updateAlarm(alarmView4.getText().toString(), Integer.parseInt(ID.get(globalPosition)), 4);
             Toast.makeText(getActivity().getApplicationContext(), "Zapisano", Toast.LENGTH_SHORT).show();
         }
     }
 
     private void getAlarm1() {
+        String text = alarmView1.getText().toString();
+        int hour, minute;
+        if (text.equals("Brak")) {
+            alarm1hour = 0;
+            alarm1minute = 0;
+        } else {
+            SimpleDateFormat formatter = new SimpleDateFormat("HH:mm");
+            Date date = null;
+            try {
+                date = formatter.parse(text);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            hour = date.getHours();
+            minute = date.getMinutes();
+            alarm1hour = hour;
+            alarm1minute = minute;
+        }
         TimePickerDialog dialog = new TimePickerDialog(getContext(),
                 android.R.style.Theme_Holo_Dialog_MinWidth,
                 setListenerAlarm1, alarm1hour, alarm1minute, true);
@@ -212,6 +383,24 @@ public class AlarmFragment extends Fragment implements AdapterView.OnItemSelecte
     }
 
     private void getAlarm2() {
+        String text = alarmView2.getText().toString();
+        int hour, minute;
+        if (text.equals("Brak")) {
+            alarm2hour = 0;
+            alarm2minute = 0;
+        } else {
+            SimpleDateFormat formatter = new SimpleDateFormat("HH:mm");
+            Date date = null;
+            try {
+                date = formatter.parse(text);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            hour = date.getHours();
+            minute = date.getMinutes();
+            alarm2hour = hour;
+            alarm2minute = minute;
+        }
         TimePickerDialog dialog = new TimePickerDialog(getContext(),
                 android.R.style.Theme_Holo_Dialog_MinWidth,
                 setListenerAlarm2, alarm2hour, alarm2minute, true);
@@ -220,6 +409,24 @@ public class AlarmFragment extends Fragment implements AdapterView.OnItemSelecte
     }
 
     private void getAlarm3() {
+        String text = alarmView3.getText().toString();
+        int hour, minute;
+        if (text.equals("Brak")) {
+            alarm3hour = 0;
+            alarm3minute = 0;
+        } else {
+            SimpleDateFormat formatter = new SimpleDateFormat("HH:mm");
+            Date date = null;
+            try {
+                date = formatter.parse(text);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            hour = date.getHours();
+            minute = date.getMinutes();
+            alarm3hour = hour;
+            alarm3minute = minute;
+        }
         TimePickerDialog dialog = new TimePickerDialog(getContext(),
                 android.R.style.Theme_Holo_Dialog_MinWidth,
                 setListenerAlarm3, alarm3hour, alarm3minute, true);
@@ -228,6 +435,24 @@ public class AlarmFragment extends Fragment implements AdapterView.OnItemSelecte
     }
 
     private void getAlarm4() {
+        String text = alarmView4.getText().toString();
+        int hour, minute;
+        if (text.equals("Brak")) {
+            alarm4hour = 0;
+            alarm4minute = 0;
+        } else {
+            SimpleDateFormat formatter = new SimpleDateFormat("HH:mm");
+            Date date = null;
+            try {
+                date = formatter.parse(text);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            hour = date.getHours();
+            minute = date.getMinutes();
+            alarm4hour = hour;
+            alarm4minute = minute;
+        }
         TimePickerDialog dialog = new TimePickerDialog(getContext(),
                 android.R.style.Theme_Holo_Dialog_MinWidth,
                 setListenerAlarm4, alarm4hour, alarm4minute, true);

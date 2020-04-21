@@ -16,6 +16,7 @@ import androidx.annotation.Nullable;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String DATABASE_NAME = "dogs.db";
+
     public static final String TABLE_NAME = "dogs_table";
     public static final String TABLE_DATES = "dates_table";
     public static final String TABLE_ALARM = "alarm_table";
@@ -228,6 +229,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public Cursor showAlarm(int id){
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor data = db.rawQuery("SELECT * FROM " + TABLE_ALARM+" WHERE DOG_ID="+id, null);
+        return data;
+    }
+    public Cursor showAlarm(){
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor data = db.rawQuery("SELECT * FROM " + TABLE_ALARM, null);
         return data;
     }
     public Cursor alarmCount(int dogId){
