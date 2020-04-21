@@ -49,6 +49,11 @@ public class AlarmFragment extends Fragment implements AdapterView.OnItemSelecte
     private int alarmCount, globalPosition = 0, alarm1hour, alarm2hour, alarm3hour, alarm4hour, alarm1minute, alarm2minute, alarm3minute, alarm4minute;
     private TimePickerDialog.OnTimeSetListener setListenerAlarm1, setListenerAlarm2, setListenerAlarm3, setListenerAlarm4;
     private NotificationManagerCompat notificationManagerCompat;
+    //    private ArrayList<AlarmManager> alarmManager;
+//    private ArrayList<Intent> intent;
+    private AlarmManager[] alarmManager;
+    private int ileAlarmow;
+    ArrayList<PendingIntent> intentArrayList;
 
     @Nullable
     @Override
@@ -61,6 +66,7 @@ public class AlarmFragment extends Fragment implements AdapterView.OnItemSelecte
         super.onViewCreated(view, savedInstanceState);
         spinner = getActivity().findViewById(R.id.spinnerAlarm);
         alarmView1 = getActivity().findViewById(R.id.alarmView1);
+        intentArrayList = new ArrayList<>();
         alarmView2 = getActivity().findViewById(R.id.alarmView2);
         resetAlarm = getActivity().findViewById(R.id.resetAlarm);
         notificationManagerCompat = NotificationManagerCompat.from(getContext());
@@ -70,6 +76,8 @@ public class AlarmFragment extends Fragment implements AdapterView.OnItemSelecte
         setAlarm1 = getActivity().findViewById(R.id.setAlarm1);
         setAlarm2 = getActivity().findViewById(R.id.setAlarm2);
         setAlarm3 = getActivity().findViewById(R.id.setAlarm3);
+
+
         setAlarm4 = getActivity().findViewById(R.id.setAlarm4);
         alarmNumber = new ArrayList<>();
         ID = new ArrayList<>();
@@ -194,11 +202,12 @@ public class AlarmFragment extends Fragment implements AdapterView.OnItemSelecte
         ID.clear();
         names.clear();
         alarm.clear();
+        intentArrayList.clear();
         Log.e("USTAWIANIE ALARMU", "ODPALONA FUNKCJA");
         //funkcja która ładuje wszystkie rekordy z tabeli alarmów i aktywuje każdy istniejący w niej alarm, jeżeli jest "Brak" to
         //nie aktywuje tego alarmu;
         Cursor data = dogsDB.showAlarm();
-        int ileAlarmow = 0;
+        ileAlarmow = 0;
         if (data.getCount() == 0) {
             Toast.makeText(getActivity().getApplicationContext(), "baza danych jest pusta", Toast.LENGTH_SHORT).show();
         } else {
@@ -208,69 +217,56 @@ public class AlarmFragment extends Fragment implements AdapterView.OnItemSelecte
             }
         }
 
+        for (int k = 0; k < ileAlarmow; k++) {
+
+
+            String godzina = alarm.get(k);
+            if (godzina.equals("Brak")) {
+                ileAlarmow--;
+            }
+        }
+
+        alarmManager = new AlarmManager[ileAlarmow];
+        Intent[] intent = new Intent[ileAlarmow];
+
         Log.e("USTAWIANIE ALARMU", "LICZBA ALARMOW: " + ileAlarmow);
         for (int i = 0; i < ileAlarmow; i++) {
 
-            Log.e("ITERACJA NA POCZĄTKU", "NUMER: " + i);
-
-            String godzina = alarm.get(i);
+            intent[i] = new Intent(getContext().getApplicationContext(), AlertReceiver.class);
 
             String h = "", m = "";
-
-            String[] parts = godzina.split(":");
+            String[] parts = alarm.get(i).split(":");
             h = parts[0];
             m = parts[1];
 
-//            for(int j = 0; j<godzina.length();j++){
-//                if(godzina.charAt(j)!=':'){
-//                    h+= godzina.charAt(j);
-//                }else{
-//
-//                }
-//            }
             Calendar c = Calendar.getInstance();
             c.getTimeInMillis();
             c.set(Calendar.HOUR_OF_DAY, Integer.parseInt(h));
             c.set(Calendar.MINUTE, Integer.parseInt(m));
             c.set(Calendar.SECOND, 0);
-            Log.e("PRZESZLO DALEJ", "W TELEFONIE: " + new Date());
+//            Log.e("PRZESZLO DALEJ", "W TELEFONIE: " + new Date());
             Log.e("PRZESZLO DALEJ", "DATATATATAT: " + c.getTime());
-            startAlarm(c,i);
-//            SimpleDateFormat formatter = new SimpleDateFormat("HH:mm");
+//                startAlarm(c,i);
+            PendingIntent pendingIntent = PendingIntent.getBroadcast(getActivity(), i, intent[i], 0);
 
-//            Date date = null;
-//            try {
-//                date = formatter.parse(godzina);
-//            } catch (ParseException e) {
-//                e.printStackTrace();
-//                Log.e("USTAWIANIE ALARMU", "exception w try catchu");
-//
-//            }
-//            Log.e("USTAWIANIE ALARMU", "godzina: " + godzina);
-//            Log.e("USTAWIANIE ALARMU", "date: " + new Date());
-////                c.setTime(new Date());
-//            c.getTimeInMillis();
-//            try {
-//                date.equals(null);
-//
-////                c.set(Calendar.HOUR, date.getHours()-12);
-////                c.set(Calendar.MINUTE, date.getMinutes());
-//                c.set(Calendar.SECOND, 0);
-////                c.setTime(date);
-//                Log.e("PRZESZLO DALEJ", "DATATATATAT: " + c.getTime());
-//                Log.e("DATE", "GODZINA: " + date.getHours());
-//                Log.e("DATE", "MINUTY: " + date.getMinutes());
-//
-//                startAlarm(c, i);
-//            } catch (Exception e) {
-//                e.printStackTrace();
-//                Log.e("NIE PRZESZLO DALEJ", "ENENENENEENE " + c.getTime());
-//
-//            }
+
+            if (c.before(Calendar.getInstance())) {
+                c.add(Calendar.DATE, 1);
+                Log.e("UPDATED INSTANCE", c.getTime().toString());
+            }
+
+            alarmManager[i] = (AlarmManager)getContext().getApplicationContext().getSystemService(ALARM_SERVICE);
+
+            //wywołanie na czas
+            alarmManager[i].setInexactRepeating(AlarmManager.RTC_WAKEUP, c.getTimeInMillis(),
+                    AlarmManager.INTERVAL_DAY, pendingIntent);
+            Log.e("CREATED ALARM", c.getTime().toString());
+
+            intentArrayList.add(pendingIntent);
 
 
         }
-
+        Log.e("USTAWIANIE ALARMU", "LICZBA ALARMOW PO: " + ileAlarmow);
         Cursor cursor = dogsDB.showData();
         if (cursor.getCount() == 0) {
             Toast.makeText(getActivity().getApplicationContext(), "baza danych jest pusta", Toast.LENGTH_SHORT).show();
@@ -286,41 +282,26 @@ public class AlarmFragment extends Fragment implements AdapterView.OnItemSelecte
     private void startAlarm(Calendar c, int id) {
 
 
-        Intent intent = new Intent(getContext(), AlertReceiver.class);
-//        PendingIntent pendingIntent = PendingIntent.getBroadcast(getActivity(), id, intent, 0);
-//        AlarmManager alarmManager = (AlarmManager) getActivity().getSystemService(ALARM_SERVICE);
+        //wywołanie od razu
+//        alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, Calendar.getInstance().getTimeInMillis(),
+//                AlarmManager.INTERVAL_DAY,pendingIntent);
 
-        AlarmManager alarmManager = (AlarmManager) getActivity().getSystemService(Context.ALARM_SERVICE);
-        PendingIntent pendingIntent = PendingIntent.getService(getActivity(), id, intent, PendingIntent.FLAG_NO_CREATE);
-
-
-//        if (c.before(Calendar.getInstance())) {
-//            c.add(Calendar.DATE, 1);
-//        }
-
-//        alarmManager.set(AlarmManager.RTC_WAKEUP, c.getTimeInMillis(), pendingIntent);
-
-        Log.e("CREATED ALARM", c.getTime().toString());
-
-        alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, c.getTimeInMillis(),
-                AlarmManager.INTERVAL_DAY,pendingIntent);
-
-
-//        alarmManager.setExact(AlarmManager.RTC_WAKEUP, c.getTimeInMillis(), pendingIntent);
     }
 
     private void cancelAlarm() {
-        AlarmManager alarmManager = (AlarmManager) getActivity().getSystemService(ALARM_SERVICE);
-        Intent intent = new Intent(getContext(), AlertReceiver.class);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(getContext(), 1, intent, 0);
 
-        alarmManager.cancel(pendingIntent);
-//        mTextView.setText("Alarm canceled");
+
+        for (int i = 0; i < intentArrayList.size(); i++) {
+            alarmManager[i].cancel(intentArrayList.get(i));
+        }
+
+
     }
 
 
     private void resetAlarms() {
         cancelAlarm();
+
         alarmView1.setText("Brak");
         alarmView2.setText("Brak");
         alarmView3.setText("Brak");
@@ -330,7 +311,9 @@ public class AlarmFragment extends Fragment implements AdapterView.OnItemSelecte
     }
 
     private void saveAlarms() {
+
         cancelAlarm();
+
         if (alarm.size() == 0) {
             Toast.makeText(getActivity().getApplicationContext(), "baza danych jest pusta", Toast.LENGTH_SHORT).show();
         } else if (alarm.size() == 1) {
@@ -551,13 +534,9 @@ public class AlarmFragment extends Fragment implements AdapterView.OnItemSelecte
                 alarmView2.setText(alarm.get(1));
                 alarmView3.setText(alarm.get(2));
                 alarmView4.setText(alarm.get(3));
-
             }
-
-
         }
         alarmVisibility(getView());
-
     }
 
     private void loadData(View view) {
@@ -568,27 +547,19 @@ public class AlarmFragment extends Fragment implements AdapterView.OnItemSelecte
 
         Cursor data = dogsDB.showData();
         if (data.getCount() == 0) {
-
             Toast.makeText(getActivity().getApplicationContext(), "baza danych jest pusta", Toast.LENGTH_SHORT).show();
-
         } else {
-
             while (data.moveToNext()) {
 //                Log.e("id", data.getString(0));
                 ID.add(data.getString(0));
                 names.add(data.getString(1));
-
             }
             Log.e("id teraz", ID.get(globalPosition));
-
             Cursor count = dogsDB.showCount(Integer.parseInt(ID.get(globalPosition)));
             while (count.moveToNext()) {
-
                 alarmCount = count.getInt(0);
-
             }
         }
-
 
         Log.e("alarmCount", Integer.toString(alarmCount));
 

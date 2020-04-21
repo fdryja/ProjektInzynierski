@@ -9,6 +9,7 @@ import android.os.Build;
 
 import androidx.core.app.NotificationCompat;
 
+
 public class NotificationHelper extends ContextWrapper {
     public static final String channelID = "channelID";
     public static final String channelName = "Channel Name";
@@ -39,8 +40,8 @@ public class NotificationHelper extends ContextWrapper {
 
     public NotificationCompat.Builder getChannelNotification() {
         return new NotificationCompat.Builder(getApplicationContext(), channelID)
-                .setContentTitle("Alarm!")
-                .setContentText("Alarm działa")
+                .setContentTitle("Pora na jedzenie!")
+                .setContentText("Daj swojemu psu jeść!")
                 .setSmallIcon(R.drawable.ic_android);
     }
 }
