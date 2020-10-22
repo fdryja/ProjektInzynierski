@@ -80,7 +80,6 @@ public class AlarmFragment extends Fragment implements AdapterView.OnItemSelecte
         setAlarm2 = getActivity().findViewById(R.id.setAlarm2);
         setAlarm3 = getActivity().findViewById(R.id.setAlarm3);
 
-
         setAlarm4 = getActivity().findViewById(R.id.setAlarm4);
         alarmNumber = new ArrayList<>();
         ID = new ArrayList<>();
@@ -248,7 +247,6 @@ public class AlarmFragment extends Fragment implements AdapterView.OnItemSelecte
             if (alarm.get(i).equals("Brak")) {
                 alarmManager.add((AlarmManager) getContext().getApplicationContext().getSystemService(ALARM_SERVICE));
                 intentArrayList.add(PendingIntent.getBroadcast(getActivity(), i, intent[i], 0));
-
             } else {
                 String[] parts = alarm.get(i).split(":");
                 h = parts[0];
@@ -275,7 +273,7 @@ public class AlarmFragment extends Fragment implements AdapterView.OnItemSelecte
 
                 //wywołanie na czas
                 //tutaj wywala     java.lang.IndexOutOfBoundsException: Index: 1, Size: 1
-                alarmManager.get(i).setInexactRepeating(AlarmManager.RTC_WAKEUP, c.getTimeInMillis(),
+                alarmManager.get(i).setInexactRepeating(AlarmManager.RTC, c.getTimeInMillis(),
                         AlarmManager.INTERVAL_DAY, pendingIntent);
                 ileAlarmowPo++;
                 Log.e("CREATED ALARM", c.getTime().toString());
