@@ -1,28 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/holo_orange_light">
+    android:background="@android:color/darker_gray">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
+        <Switch
+            android:id="@+id/switchWeterynarz"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="64dp"
+            android:text="Powiadomienia Weterynarz"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.497"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/switchKarmienie" />
 
         <TextView
             android:id="@+id/textView3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
-            android:text="Ustal ilość karmy"
-            android:textSize="36sp"
             android:gravity="center"
+            android:text="Ustawienia"
+            android:textSize="36sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <Spinner
-            android:id="@+id/spinner"
+            android:id="@+id/spinnerSettings"
             style="@style/Widget.AppCompat.Light.Spinner.DropDown.ActionBar"
             android:layout_width="200dp"
             android:layout_height="24dp"
@@ -41,77 +53,51 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView3" />
 
-        <EditText
-            android:id="@+id/eating"
+        <Switch
+            android:id="@+id/switchKarmienie"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
-            android:ems="10"
-            android:inputType="number"
-            android:selectAllOnFocus="true"
-            android:textAlignment="center"
-            android:visibility="visible"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/spinner" />
-
-        <TextView
-            android:id="@+id/karmyNadzien"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Ilość karmy na dzień (w gramach)"
-            android:visibility="visible"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/eating" />
-
-        <SeekBar
-            android:id="@+id/eatingCount"
-            android:layout_width="200sp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="64dp"
-            android:max="4"
-            android:visibility="visible"
-
-            android:min="1"
-            android:progress="2"
+            android:layout_marginTop="56dp"
+            android:text="Powiadomienia Karmienie"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.497"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/karmyNadzien" />
+            app:layout_constraintTop_toBottomOf="@+id/spinnerSettings" />
 
-        <TextView
-            android:id="@+id/textViewCount"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="2 razy dziennie"
+        <EditText
+            android:id="@+id/editTextPackage"
+            android:layout_width="171dp"
+            android:layout_height="51dp"
+            android:layout_marginTop="88dp"
+            android:ems="10"
+            android:inputType="numberDecimal"
+            android:selectAllOnFocus="true"
+            android:textAlignment="center"
             app:layout_constraintEnd_toEndOf="parent"
-            android:visibility="visible"
+            app:layout_constraintHorizontal_bias="0.494"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/eatingCount" />
-
-        <TextView
-            android:id="@+id/wielkoscPorcji"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="60dp"
-            android:textSize="24sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.501"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/saveButton" />
+            app:layout_constraintTop_toBottomOf="@+id/switchWeterynarz" />
 
         <Button
-            android:id="@+id/saveButton"
+            android:id="@+id/saveSettings"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="132dp"
-            android:visibility="visible"
+            android:layout_marginTop="36dp"
             android:text="Zapisz"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.498"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textViewCount" />
+            app:layout_constraintTop_toBottomOf="@+id/textView5" />
+
+        <TextView
+            android:id="@+id/textView5"
+            android:layout_width="280dp"
+            android:layout_height="22dp"
+            android:layout_marginTop="8dp"
+            android:text="Wielkość opakowania karmy w kilogramach"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/editTextPackage" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </RelativeLayout>

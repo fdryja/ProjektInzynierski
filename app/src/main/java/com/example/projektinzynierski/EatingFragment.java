@@ -104,6 +104,9 @@ public class EatingFragment extends Fragment implements AdapterView.OnItemSelect
         spinner.setSelection(globalPosition);
         int result = eating/eatingCount;
         wielkoscPorcji.setText("Wielkość porcji: " + result + "g");
+        Toast.makeText(getActivity().getApplicationContext(), "Zapisano", Toast.LENGTH_SHORT).show();
+
+
 
 
     }

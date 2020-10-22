@@ -355,6 +355,7 @@ public class CalendarFragment extends Fragment implements AdapterView.OnItemSele
                     }
                 }
 
+                Toast.makeText(getActivity().getApplicationContext(), "Zapisano", Toast.LENGTH_SHORT).show();
 
 
             }

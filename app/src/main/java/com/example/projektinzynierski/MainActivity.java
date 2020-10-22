@@ -67,7 +67,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         new AlarmFragment()).commit();
                 break;
             case R.id.nav_help:
-                Toast.makeText(this, "Help", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Pomoc", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.nav_settings:
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                        new SettingsFragment()).commit();
                 break;
             case R.id.nav_dogs:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,

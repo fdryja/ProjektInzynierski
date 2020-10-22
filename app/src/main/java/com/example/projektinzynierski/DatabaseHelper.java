@@ -17,7 +17,7 @@ import androidx.annotation.Nullable;
 public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String DATABASE_NAME = "dogs.db";
 
-    public static final String TABLE_NAME = "dogs_table";
+    public static final String TABLE_DOGS = "dogs_table";
     public static final String TABLE_DATES = "dates_table";
     public static final String TABLE_ALARM = "alarm_table";
 
@@ -27,6 +27,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String COL4 = "ACTIVITY_LEVEL";
     public static final String COL5 = "EATING_COUNT";
     public static final String COL6 = "EATING";
+    public static final String COL7 = "PACKAGE_FULL";
+    public static final String COL8 = "PACKAGE";
+    public static final String COL9 = "NOTKAR";
+    public static final String COL10 = "NOTWET";
+
 
     public static final String COL1D = "ID";
     public static final String COL2D = "SZCZEPIENIE";
@@ -46,21 +51,29 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        String createTable = "CREATE TABLE " + TABLE_NAME + " (ID INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                " NAME TEXT UNIQUE, WEIGHT INTEGER, ACTIVITY_LEVEL INTEGER, EATING_COUNT INTEGER DEFAULT 0, EATING INTEGER DEFAULT 0)";
+        String createTable = "CREATE TABLE " + TABLE_DOGS + " (ID INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                " NAME TEXT UNIQUE," +
+                " WEIGHT INTEGER, " +
+                "ACTIVITY_LEVEL INTEGER, " +
+                "EATING_COUNT INTEGER DEFAULT 0, " +
+                "EATING INTEGER DEFAULT 0, " +
+                "PACKAGE_FULL DECIMAL(8,2) DEFAULT 0, "+
+                "PACKAGE DECIMAL(8,2) DEFAULT 0," +
+                "NOTKAR INTEGER DEFAULT 1," +
+                "NOTWET INTEGER DEFAULT 1)";
         db.execSQL(createTable);
 
         createTable = "CREATE TABLE "+TABLE_DATES+" (ID INTEGER PRIMARY KEY AUTOINCREMENT, SZCZEPIENIE TEXT DEFAULT 0, " +
-                "ODROBACZANIE TEXT DEFAULT 0, DOG_ID INTEGER, FOREIGN KEY(DOG_ID) REFERENCES "+TABLE_NAME+"(ID))";
+                "ODROBACZANIE TEXT DEFAULT 0, DOG_ID INTEGER, FOREIGN KEY(DOG_ID) REFERENCES "+TABLE_DOGS+"(ID))";
         db.execSQL(createTable);
 
-        createTable = "CREATE TABLE "+TABLE_ALARM+" (ID INTEGER PRIMARY KEY AUTOINCREMENT, ALARM_NUMBER INTEGER, ALARM TEXT DEFAULT 'Brak', DOG_ID INTEGER, FOREIGN KEY(DOG_ID) REFERENCES "+TABLE_NAME+"(ID))";
+        createTable = "CREATE TABLE "+TABLE_ALARM+" (ID INTEGER PRIMARY KEY AUTOINCREMENT, ALARM_NUMBER INTEGER, ALARM TEXT DEFAULT 'Brak', DOG_ID INTEGER, FOREIGN KEY(DOG_ID) REFERENCES "+TABLE_DOGS+"(ID))";
         db.execSQL(createTable);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_DOGS);
         db.execSQL("DROP TABLE IF EXISTS "+TABLE_DATES);
     }
 
@@ -71,7 +84,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         contentValues.put(COL3, weight);
         contentValues.put(COL4, activityLevel);
 
-        long result = db.insert(TABLE_NAME, null, contentValues);
+        long result = db.insert(TABLE_DOGS, null, contentValues);
 
         if (result == -1) {
             return false;
@@ -197,7 +210,20 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public void updateEating(int id, int eatingCount, int eating){
         SQLiteDatabase db = this.getWritableDatabase();
-        String query = "UPDATE "+ TABLE_NAME + " SET " + COL5 + "=" + eatingCount + ", " + COL6+ "="+ eating
+        String query = "UPDATE "+ TABLE_DOGS + " SET " + COL5 + "=" + eatingCount + ", " + COL6+ "="+ eating
+                +" WHERE "+COL1+"="+id;
+        try {
+            db.execSQL(query);
+            Log.e("tag",query);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            Log.e("tag",query);
+        }
+    }
+
+    public void updatePackage(int id, float packageWeight){
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = "UPDATE "+ TABLE_DOGS + " SET " + COL7 + "=" + packageWeight + ", " + COL8+ "="+ packageWeight
                 +" WHERE "+COL1+"="+id;
         try {
             db.execSQL(query);
@@ -211,7 +237,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public void updateDogData(String newName, int id, int newWeight, int newActivityLevel) {
         SQLiteDatabase db = this.getWritableDatabase();
-        String query = "UPDATE " + TABLE_NAME + " SET " + COL2 + "='" + newName + "', " + COL3 + "=" + newWeight + ", "
+        String query = "UPDATE " + TABLE_DOGS + " SET " + COL2 + "='" + newName + "', " + COL3 + "=" + newWeight + ", "
                 + COL4 + "=" + newActivityLevel + " WHERE " + COL1 + "=" + id;
         try {
             db.execSQL(query);
@@ -225,26 +251,26 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public void deleteData(int id) {
         SQLiteDatabase db = this.getWritableDatabase();
-        String query = "DELETE FROM " + TABLE_NAME + " WHERE "
+        String query = "DELETE FROM " + TABLE_DOGS + " WHERE "
                 + COL1 + " = '" + id + "'";
         db.execSQL(query);
     }
 
     public Cursor showData() {
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor data = db.rawQuery("SELECT * FROM " + TABLE_NAME, null);
+        Cursor data = db.rawQuery("SELECT * FROM " + TABLE_DOGS, null);
         return data;
     }
 
     public Cursor showName(int dogId) {
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor data = db.rawQuery("SELECT NAME FROM " + TABLE_NAME+ " WHERE ID="+dogId, null);
+        Cursor data = db.rawQuery("SELECT NAME FROM " + TABLE_DOGS+ " WHERE ID="+dogId, null);
         return data;
     }
 
     public Cursor showCount(int dogId) {
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor data = db.rawQuery("SELECT EATING_COUNT FROM " + TABLE_NAME+ " WHERE ID="+dogId, null);
+        Cursor data = db.rawQuery("SELECT EATING_COUNT FROM " + TABLE_DOGS+ " WHERE ID="+dogId, null);
         return data;
     }
 
