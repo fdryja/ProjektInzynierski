@@ -99,5 +99,30 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/editTextPackage" />
 
+        <TextView
+            android:id="@+id/settingsWarning1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="28dp"
+            android:shadowColor="@color/design_default_color_on_secondary"
+            android:text="Karma skończy się w dniu"
+            android:textColor="@color/design_default_color_error"
+            android:visibility="invisible"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/saveSettings" />
+
+        <TextView
+            android:id="@+id/settingsWarning2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:shadowColor="@color/design_default_color_on_secondary"
+            android:textColor="@color/design_default_color_error"
+            android:visibility="invisible"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/settingsWarning1" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </RelativeLayout>

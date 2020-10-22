@@ -235,6 +235,32 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
 
+    public void updateNotKarmienie(int id, int notKarmienie){
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = "UPDATE "+ TABLE_DOGS + " SET " + COL9 + "=" + notKarmienie
+                +" WHERE "+COL1+"="+id;
+        try {
+            db.execSQL(query);
+            Log.e("tag",query);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            Log.e("tag",query);
+        }
+    }
+    public void updateNotWet(int id, int notWet){
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = "UPDATE "+ TABLE_DOGS + " SET " + COL10 + "=" + notWet
+                +" WHERE "+COL1+"="+id;
+        try {
+            db.execSQL(query);
+            Log.e("tag",query);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            Log.e("tag",query);
+        }
+    }
+
+
     public void updateDogData(String newName, int id, int newWeight, int newActivityLevel) {
         SQLiteDatabase db = this.getWritableDatabase();
         String query = "UPDATE " + TABLE_DOGS + " SET " + COL2 + "='" + newName + "', " + COL3 + "=" + newWeight + ", "
