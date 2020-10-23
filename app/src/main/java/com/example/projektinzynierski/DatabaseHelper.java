@@ -320,4 +320,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         Cursor data = db.rawQuery("SELECT a.ID, a.ALARM_NUMBER, a.ALARM, d.NAME, d.EATING_COUNT, d.EATING FROM " + TABLE_ALARM+" a INNER JOIN "+TABLE_DOGS +" d ON d.ID=a.DOG_ID", null);
         return data;
     }
+    public Cursor joinCalendar(){
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor data = db.rawQuery("SELECT a.ID ,a.SZCZEPIENIE, a.ODROBACZANIE, d.NAME FROM " + TABLE_DATES+" a INNER JOIN "+TABLE_DOGS +" d ON d.ID=a.DOG_ID", null);
+        return data;
+    }
 }

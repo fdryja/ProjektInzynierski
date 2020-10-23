@@ -77,9 +77,6 @@ public class NotificationHelper extends ContextWrapper {
     }
 
     public NotificationCompat.Builder getChannelNotification(Intent intent) {
-//        AlarmFragment af = new AlarmFragment();
-//        dgs = af.passName();
-//        int globalPosition = af.getGlobalPosition();
         int eatingINT = Integer.parseInt(intent.getExtras().getString("eating"));
         int eating_countINT = Integer.parseInt(intent.getExtras().getString("eating_count"));
         return new NotificationCompat.Builder(getApplicationContext(), CHANNEL_1_ID)
@@ -87,15 +84,18 @@ public class NotificationHelper extends ContextWrapper {
                 .setContentText("Musisz podać "+(eatingINT/eating_countINT)+" gramów karmy.")
                 .setSmallIcon(R.drawable.ic_android);
     }
-    public NotificationCompat.Builder getChannelNotificationWizyta(Intent intent) {
-//        AlarmFragment af = new AlarmFragment();
-//        dgs = af.passName();
-//        int globalPosition = af.getGlobalPosition();
-        int eatingINT = Integer.parseInt(intent.getExtras().getString("eating"));
-        int eating_countINT = Integer.parseInt(intent.getExtras().getString("eating_count"));
+
+    public NotificationCompat.Builder getChannelNotificationSzczepienie(Intent intent) {
         return new NotificationCompat.Builder(getApplicationContext(), CHANNEL_2_ID)
-                .setContentTitle("Nakarm psa o imieniu "+intent.getExtras().getString("name"))
-                .setContentText("Musisz podać "+(eatingINT/eating_countINT)+" gramów karmy.")
+                .setContentTitle("Dzisiaj upływa termin szczepienia dla psa "+ intent.getExtras().get("name") +"!")
+                .setContentText("Proszę odwiedzić weterynarza")
+                .setSmallIcon(R.drawable.ic_android);
+    }
+
+    public NotificationCompat.Builder getChannelNotificationOdrobaczanie(Intent intent) {
+        return new NotificationCompat.Builder(getApplicationContext(), CHANNEL_2_ID)
+                .setContentTitle("Dzisiaj upływa termin odrobaczania dla psa "+ intent.getExtras().get("name") +"!")
+                .setContentText("Proszę odwiedzić weterynarza")
                 .setSmallIcon(R.drawable.ic_android);
     }
 }

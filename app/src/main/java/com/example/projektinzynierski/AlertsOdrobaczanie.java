@@ -7,13 +7,17 @@ import android.content.Intent;
 
 import androidx.core.app.NotificationCompat;
 
+import java.util.Date;
+import java.util.Random;
 
-public class AlertsWizyta extends BroadcastReceiver {
+
+public class AlertsOdrobaczanie extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
+        int m = (int) ((new Date().getTime() / 1000L) % Integer.MAX_VALUE);
         NotificationHelper notificationHelper = new NotificationHelper(context);
-        NotificationCompat.Builder nb = notificationHelper.getChannelNotificationWizyta(intent);
-        notificationHelper.getManager().notify(0, nb.build());
+        NotificationCompat.Builder nb = notificationHelper.getChannelNotificationOdrobaczanie(intent);
+        notificationHelper.getManager().notify(m, nb.build());
     }
 }
