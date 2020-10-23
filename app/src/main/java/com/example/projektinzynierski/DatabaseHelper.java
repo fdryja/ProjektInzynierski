@@ -315,4 +315,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         Cursor data = db.rawQuery("SELECT COUNT(*) FROM " + TABLE_ALARM+" WHERE DOG_ID="+dogId, null);
         return data;
     }
+    public Cursor joinEating(){
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor data = db.rawQuery("SELECT a.ID, a.ALARM_NUMBER, a.ALARM, d.NAME, d.EATING_COUNT, d.EATING FROM " + TABLE_ALARM+" a INNER JOIN "+TABLE_DOGS +" d ON d.ID=a.DOG_ID", null);
+        return data;
+    }
 }

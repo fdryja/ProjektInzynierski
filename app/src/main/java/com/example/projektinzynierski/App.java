@@ -19,17 +19,25 @@ public class App extends Application {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationChannel channel1 = new NotificationChannel(
                     CHANNEL_1_ID,
-                    "Channel 1",
+                    "Powiadomienia o karmieniu",
                     NotificationManager.IMPORTANCE_HIGH
             );
             channel1.setDescription("This is Channel 1");
+            channel1.setLockscreenVisibility(1);
+            channel1.enableVibration(true);
+            channel1.enableLights(true);
+
+
 
             NotificationChannel channel2 = new NotificationChannel(
                     CHANNEL_2_ID,
-                    "Channel 2",
-                    NotificationManager.IMPORTANCE_LOW
+                    "Powiadomienia o weterynarzu",
+                    NotificationManager.IMPORTANCE_HIGH
             );
             channel2.setDescription("This is Channel 2");
+            channel2.setLockscreenVisibility(1);
+            channel2.enableVibration(true);
+            channel2.enableLights(true);
 
             NotificationManager manager = getSystemService(NotificationManager.class);
             manager.createNotificationChannel(channel1);

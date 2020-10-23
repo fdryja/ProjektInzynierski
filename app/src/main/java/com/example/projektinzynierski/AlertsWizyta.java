@@ -8,12 +8,12 @@ import android.content.Intent;
 import androidx.core.app.NotificationCompat;
 
 
-public class AlertReceiver extends BroadcastReceiver {
+public class AlertsWizyta extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
         NotificationHelper notificationHelper = new NotificationHelper(context);
-        NotificationCompat.Builder nb = notificationHelper.getChannelNotification(intent);
+        NotificationCompat.Builder nb = notificationHelper.getChannelNotificationWizyta(intent);
         notificationHelper.getManager().notify(0, nb.build());
     }
 }
