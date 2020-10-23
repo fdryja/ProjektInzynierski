@@ -40,6 +40,7 @@ import static android.content.Context.ALARM_SERVICE;
 //import static com.example.projektinzynierski.App.CHANNEL_2_ID;
 
 public class AlarmFragment extends Fragment implements AdapterView.OnItemSelectedListener {
+    private static final long ONE_DAY_INTERVAL = 24 * 60 * 60 * 1000L;
     private Spinner spinner;
     private TextView alarmView1, alarmView2, alarmView3, alarmView4;
     private Button setAlarm1, setAlarm2, setAlarm3, setAlarm4, saveAlarm, resetAlarm;
@@ -292,8 +293,7 @@ public class AlarmFragment extends Fragment implements AdapterView.OnItemSelecte
                 PendingIntent pendingIntent = PendingIntent.getBroadcast(getActivity(), i, intent[i], PendingIntent.FLAG_UPDATE_CURRENT);
                 //wywołanie na czas
                 //tutaj wywala     java.lang.IndexOutOfBoundsException: Index: 1, Size: 1
-                alarmManager.get(i).setRepeating(AlarmManager.RTC_WAKEUP, c.getTimeInMillis(),
-                        AlarmManager.INTERVAL_DAY, pendingIntent);
+                alarmManager.get(i).setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, c.getTimeInMillis(), pendingIntent);
                 ileAlarmowPo++;
                 Log.e("CREATED ALARM", c.getTime().toString());
 
@@ -321,6 +321,8 @@ public class AlarmFragment extends Fragment implements AdapterView.OnItemSelecte
             }
         }
 //        passName();
+
+        AlarmReactivation.schedule(getContext(),60000 );
     }
 
 

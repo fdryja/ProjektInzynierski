@@ -326,7 +326,7 @@ public class CalendarFragment extends Fragment implements AdapterView.OnItemSele
                             Log.e("UPDATED INSTANCE SZ", c.getTime().toString());
                         }
                         alarmManager.add((AlarmManager) getContext().getApplicationContext().getSystemService(ALARM_SERVICE));
-                        alarmManager.get(i).set(AlarmManager.RTC_WAKEUP, c.getTimeInMillis(),
+                        alarmManager.get(i).setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, c.getTimeInMillis(),
                                 pendingIntent);
                         Log.e("CREATED ALARM SZ", c.getTime().toString());
                         intentArrayList.add(pendingIntent);
@@ -367,7 +367,7 @@ public class CalendarFragment extends Fragment implements AdapterView.OnItemSele
                             Log.e("UPDATED INSTANCE OD", c.getTime().toString());
                         }
                         alarmManager.add((AlarmManager) getContext().getApplicationContext().getSystemService(ALARM_SERVICE));
-                        alarmManager.get(i).set(AlarmManager.RTC_WAKEUP, c.getTimeInMillis(),
+                        alarmManager.get(i).setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, c.getTimeInMillis(),
                                 pendingIntent);
                         Log.e("CREATED ALARM OD", c.getTime().toString());
                         intentArrayList.add(pendingIntent);
@@ -453,7 +453,7 @@ public class CalendarFragment extends Fragment implements AdapterView.OnItemSele
                         Log.e("UPDATED INSTANCE SZ", c.getTime().toString());
                     }
                     alarmManager.add((AlarmManager) getContext().getApplicationContext().getSystemService(ALARM_SERVICE));
-                    alarmManager.get(i).set(AlarmManager.RTC_WAKEUP, c.getTimeInMillis(),
+                    alarmManager.get(i).setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, c.getTimeInMillis(),
                             pendingIntent);
                     Log.e("CREATED ALARM SZ", c.getTime().toString());
                     intentArrayList.add(pendingIntent);
@@ -529,7 +529,7 @@ public class CalendarFragment extends Fragment implements AdapterView.OnItemSele
                         Log.e("UPDATED INSTANCE OD", c.getTime().toString());
                     }
                     alarmManager.add((AlarmManager) getContext().getApplicationContext().getSystemService(ALARM_SERVICE));
-                    alarmManager.get(i).set(AlarmManager.RTC_WAKEUP, c.getTimeInMillis(),
+                    alarmManager.get(i).setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, c.getTimeInMillis(),
                             pendingIntent);
                     Log.e("CREATED ALARM OD", c.getTime().toString());
                     intentArrayList.add(pendingIntent);
