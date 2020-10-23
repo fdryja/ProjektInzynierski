@@ -289,11 +289,12 @@ public class CalendarFragment extends Fragment implements AdapterView.OnItemSele
 
                 Log.e("USTAWIANIE ALARMU", "LICZBA ALARMOW: " + ileAlarmow);
                 for (int i = 0; i < ileAlarmow; i++) {
-                    intent[i] = new Intent(getContext().getApplicationContext(), AlertReceiver.class);
+                    intent[i] = new Intent(getContext().getApplicationContext(), AlertsWizyta.class);
+                    intent[i].addFlags(Intent.FLAG_RECEIVER_FOREGROUND);
 
                     if(szczepienia.get(i).equals("0")){
                         alarmManager.add((AlarmManager) getContext().getApplicationContext().getSystemService(ALARM_SERVICE));
-                        intentArrayList.add(PendingIntent.getBroadcast(getActivity(), i, intent[i], 0));
+                        intentArrayList.add(PendingIntent.getBroadcast(getActivity(), i, intent[i], PendingIntent.FLAG_UPDATE_CURRENT));
 
                     }else{
                         String[] parts = szczepienia.get(i).split("/");
@@ -326,7 +327,7 @@ public class CalendarFragment extends Fragment implements AdapterView.OnItemSele
 
                     if(odrobaczenia.get(i).equals("0")){
                         alarmManager.add((AlarmManager) getContext().getApplicationContext().getSystemService(ALARM_SERVICE));
-                        intentArrayList.add(PendingIntent.getBroadcast(getActivity(), i, intentO[i], 0));
+                        intentArrayList.add(PendingIntent.getBroadcast(getActivity(), i, intentO[i], PendingIntent.FLAG_UPDATE_CURRENT));
 
                     }else{
                         String[] parts = odrobaczenia.get(i).split("/");
@@ -394,11 +395,12 @@ public class CalendarFragment extends Fragment implements AdapterView.OnItemSele
             }
             Log.e("USTAWIANIE ALARMU", "LICZBA ALARMOW: " + ileAlarmow);
             for (int i = 0; i < ileAlarmow; i++) {
-                intent[i] = new Intent(getContext().getApplicationContext(), AlertReceiver.class);
+                intent[i] = new Intent(getContext().getApplicationContext(), AlertsWizyta.class);
+                intent[i].addFlags(Intent.FLAG_RECEIVER_FOREGROUND);
 
                 if(szczepienia.get(i).equals("0")){
                     alarmManager.add((AlarmManager) getContext().getApplicationContext().getSystemService(ALARM_SERVICE));
-                    intentArrayList.add(PendingIntent.getBroadcast(getActivity(), i, intent[i], 0));
+                    intentArrayList.add(PendingIntent.getBroadcast(getActivity(), i, intent[i], PendingIntent.FLAG_UPDATE_CURRENT));
 
                 }else{
                     String[] parts = szczepienia.get(i).split("/");
@@ -461,10 +463,11 @@ public class CalendarFragment extends Fragment implements AdapterView.OnItemSele
             }
             Log.e("USTAWIANIE ALARMU", "LICZBA ALARMOW: " + ileAlarmow);
             for (int i = 0; i < ileAlarmow; i++) {
-                intentO[i] = new Intent(getContext().getApplicationContext(), AlertReceiver.class);
+                intentO[i] = new Intent(getContext().getApplicationContext(), AlertsWizyta.class);
+                intentO[i].addFlags(Intent.FLAG_RECEIVER_FOREGROUND);
                 if(odrobaczenia.get(i).equals("0")){
                     alarmManager.add((AlarmManager) getContext().getApplicationContext().getSystemService(ALARM_SERVICE));
-                    intentArrayList.add(PendingIntent.getBroadcast(getActivity(), i, intentO[i], 0));
+                    intentArrayList.add(PendingIntent.getBroadcast(getActivity(), i, intentO[i], PendingIntent.FLAG_UPDATE_CURRENT));
 
                 }else{
                     String[] parts = odrobaczenia.get(i).split("/");
