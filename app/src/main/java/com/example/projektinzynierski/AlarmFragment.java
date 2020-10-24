@@ -228,7 +228,10 @@ public class AlarmFragment extends Fragment implements AdapterView.OnItemSelecte
         ID.clear();
         names.clear();
         alarm.clear();
+        dogName.clear();
         alarmManager.clear();
+        eating.clear();
+        eating_count.clear();
         intentArrayList.clear();
         Log.e("USTAWIANIE ALARMU", "ODPALONA FUNKCJA");
         //funkcja która ładuje wszystkie rekordy z tabeli alarmów i aktywuje każdy istniejący w niej alarm, jeżeli jest "Brak" to
@@ -244,9 +247,9 @@ public class AlarmFragment extends Fragment implements AdapterView.OnItemSelecte
                 dogName.add(data.getString(3));
                 eating_count.add(data.getString(4));
                 eating.add(data.getString(5));
-                Log.e("alarm",data.getString(2));
-                Log.e("alarmname",data.getString(1));
-                Log.e("dog",data.getString(3));
+//                Log.e("alarm",data.getString(2));
+//                Log.e("alarmname",data.getString(1));
+//                Log.e("dog",data.getString(3));
                 ileAlarmow++;
             }
         }
@@ -256,6 +259,12 @@ public class AlarmFragment extends Fragment implements AdapterView.OnItemSelecte
             if (alarm.get(k).equals("Brak")) {
                 ileAlarmow--;
                 alarm.remove(k);
+                alarmName.remove(k);
+                dogName.remove(k);
+                eating_count.remove(k);
+                eating.remove(k);
+
+
             }
 
 
@@ -275,6 +284,11 @@ public class AlarmFragment extends Fragment implements AdapterView.OnItemSelecte
             intent[i].putExtra("name",dogName.get(i));
             intent[i].putExtra("eating_count",eating_count.get(i));
             intent[i].putExtra("eating",eating.get(i));
+
+            Log.e("name",dogName.get(i));
+            Log.e("eating_count",eating_count.get(i));
+            Log.e("eating",eating.get(i));
+
             String h = "", m = "";
             if (alarm.get(i).equals("Brak")) {
                 alarmManager.add((AlarmManager) getContext().getApplicationContext().getSystemService(ALARM_SERVICE));
@@ -354,7 +368,10 @@ public class AlarmFragment extends Fragment implements AdapterView.OnItemSelecte
         names.clear();
         alarm.clear();
         alarmManager.clear();
+        dogName.clear();
         intentArrayList.clear();
+        eating.clear();
+        eating_count.clear();
         Log.e("USTAWIANIE ALARMU", "ODPALONA FUNKCJA");
         //funkcja która ładuje wszystkie rekordy z tabeli alarmów i aktywuje każdy istniejący w niej alarm, jeżeli jest "Brak" to
         //nie aktywuje tego alarmu;
@@ -369,9 +386,9 @@ public class AlarmFragment extends Fragment implements AdapterView.OnItemSelecte
                 dogName.add(data.getString(3));
                 eating_count.add(data.getString(4));
                 eating.add(data.getString(5));
-                Log.e("alarm",data.getString(2));
-                Log.e("alarmname",data.getString(1));
-                Log.e("dog",data.getString(3));
+//                Log.e("alarm",data.getString(2));
+//                Log.e("alarmname",data.getString(1));
+//                Log.e("dog",data.getString(3));
                 ileAlarmow++;
             }
         }
@@ -381,6 +398,10 @@ public class AlarmFragment extends Fragment implements AdapterView.OnItemSelecte
             if (alarm.get(k).equals("Brak")) {
                 ileAlarmow--;
                 alarm.remove(k);
+                alarmName.remove(k);
+                dogName.remove(k);
+                eating_count.remove(k);
+                eating.remove(k);
             }
 
 
@@ -392,6 +413,7 @@ public class AlarmFragment extends Fragment implements AdapterView.OnItemSelecte
         int ileAlarmowPo = 0;
 
 
+        //nie powinno lecieć po ile alarmów tylko po ogólnej liczbie alarmów, a tam gdzie jest brak to pominąć i iść dalej
         Log.e("USTAWIANIE ALARMU", "LICZBA ALARMOW: " + ileAlarmow);
         for (int i = 0; i < ileAlarmow; i++) {
 

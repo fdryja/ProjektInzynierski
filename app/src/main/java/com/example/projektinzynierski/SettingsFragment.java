@@ -35,7 +35,7 @@ import java.util.Date;
 public class SettingsFragment extends Fragment implements AdapterView.OnItemSelectedListener {
     DatabaseHelper dogsDB;
     Spinner spinnerSettings;
-    Switch switchKarmienie, swithcWeterynarz;
+//    Switch switchKarmienie, swithcWeterynarz;
     private String selectedDog;
     private ArrayList<String> dogsList, ID, packageDB, package_fullDB, notkarDB, notwetDB, eatingDB;
     private ArrayAdapter<String> dogsAdapter;
@@ -56,8 +56,8 @@ public class SettingsFragment extends Fragment implements AdapterView.OnItemSele
         super.onViewCreated(view, savedInstanceState);
 
         editTextPackage = getActivity().findViewById(R.id.editTextPackage);
-        switchKarmienie = getActivity().findViewById(R.id.switchKarmienie);
-        swithcWeterynarz = getActivity().findViewById(R.id.switchWeterynarz);
+//        switchKarmienie = getActivity().findViewById(R.id.switchKarmienie);
+//        swithcWeterynarz = getActivity().findViewById(R.id.switchWeterynarz);
         dogsDB = new DatabaseHelper(getActivity());
         dogsList = new ArrayList<>();
         ID = new ArrayList<>();
@@ -88,26 +88,26 @@ public class SettingsFragment extends Fragment implements AdapterView.OnItemSele
             }
         });
 
-        switchKarmienie.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (ID.isEmpty()) {
-                    Toast.makeText(getActivity(), "Baza danych jest pusta", Toast.LENGTH_SHORT).show();
-                } else {
-                    updateNotKarmienie(Integer.parseInt(ID.get(globalPosition)),(switchKarmienie.isChecked()) ? 1:0);
-                }
-            }
-        });
-        swithcWeterynarz.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (ID.isEmpty()) {
-                    Toast.makeText(getActivity(), "Baza danych jest pusta", Toast.LENGTH_SHORT).show();
-                } else {
-                    updateNotWet(Integer.parseInt(ID.get(globalPosition)),(swithcWeterynarz.isChecked()) ? 1:0);
-                }
-            }
-        });
+//        switchKarmienie.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                if (ID.isEmpty()) {
+//                    Toast.makeText(getActivity(), "Baza danych jest pusta", Toast.LENGTH_SHORT).show();
+//                } else {
+//                    updateNotKarmienie(Integer.parseInt(ID.get(globalPosition)),(switchKarmienie.isChecked()) ? 1:0);
+//                }
+//            }
+//        });
+//        swithcWeterynarz.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                if (ID.isEmpty()) {
+//                    Toast.makeText(getActivity(), "Baza danych jest pusta", Toast.LENGTH_SHORT).show();
+//                } else {
+//                    updateNotWet(Integer.parseInt(ID.get(globalPosition)),(swithcWeterynarz.isChecked()) ? 1:0);
+//                }
+//            }
+//        });
 
     }
 
@@ -202,14 +202,14 @@ public class SettingsFragment extends Fragment implements AdapterView.OnItemSele
             notkar = Integer.parseInt(notkarDB.get(globalPosition));
             notwet = Integer.parseInt(notwetDB.get(globalPosition));
             if(notkar==0){
-                switchKarmienie.setChecked(false);
+//                switchKarmienie.setChecked(false);
             }else{
-                switchKarmienie.setChecked(true);
+//                switchKarmienie.setChecked(true);
             }
             if(notwet==0){
-                swithcWeterynarz.setChecked(false);
+//                swithcWeterynarz.setChecked(false);
             }else{
-                swithcWeterynarz.setChecked(true);
+//                swithcWeterynarz.setChecked(true);
             }
 
             float packageWeight = Float.parseFloat(packageDB.get(globalPosition));

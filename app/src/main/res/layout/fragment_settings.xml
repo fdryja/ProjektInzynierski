@@ -10,124 +10,112 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-        <Switch
-            android:id="@+id/switchWeterynarz"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="64dp"
-            android:text="Powiadomienia Weterynarz"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.497"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/switchKarmienie" />
+            <TextView
+                android:id="@+id/textView3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:gravity="center"
+                android:text="Ustawienia"
+                android:textSize="36sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-            android:id="@+id/textView3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:gravity="center"
-            android:text="Ustawienia"
-            android:textSize="36sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            <Spinner
+                android:id="@+id/spinnerSettings"
+                style="@style/Widget.AppCompat.Light.Spinner.DropDown.ActionBar"
+                android:layout_width="200dp"
+                android:layout_height="24dp"
+                android:layout_marginTop="16dp"
+                android:background="@color/design_default_color_background"
+                android:foregroundGravity="clip_horizontal"
+                android:gravity="center_horizontal"
+                android:keepScreenOn="false"
+                android:layoutMode="opticalBounds"
+                android:pointerIcon="top_left_diagonal_double_arrow"
+                android:spinnerMode="dropdown"
+                android:textAlignment="center"
+                android:theme="@style/ThemeOverlay.AppCompat.Light"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.497"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView3" />
 
-        <Spinner
-            android:id="@+id/spinnerSettings"
-            style="@style/Widget.AppCompat.Light.Spinner.DropDown.ActionBar"
-            android:layout_width="200dp"
-            android:layout_height="24dp"
-            android:layout_marginTop="16dp"
-            android:background="@color/design_default_color_background"
-            android:foregroundGravity="clip_horizontal"
-            android:gravity="center_horizontal"
-            android:keepScreenOn="false"
-            android:layoutMode="opticalBounds"
-            android:pointerIcon="top_left_diagonal_double_arrow"
-            android:spinnerMode="dropdown"
-            android:textAlignment="center"
-            android:theme="@style/ThemeOverlay.AppCompat.Light"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.497"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView3" />
+            <EditText
+                android:id="@+id/editTextPackage"
+                android:layout_width="171dp"
+                android:layout_height="51dp"
+                android:ems="10"
+                android:inputType="numberDecimal"
+                android:selectAllOnFocus="true"
+                android:textAlignment="center"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.494"
+                app:layout_constraintStart_toStartOf="parent"
+                tools:layout_editor_absoluteY="358dp" />
 
-        <Switch
-            android:id="@+id/switchKarmienie"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="40dp"
-            android:text="Powiadomienia Karmienie"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.497"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/spinnerSettings" />
+            <Button
+                android:id="@+id/saveSettings"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="36dp"
+                android:text="Zapisz"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.498"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView5" />
 
-        <EditText
-            android:id="@+id/editTextPackage"
-            android:layout_width="171dp"
-            android:layout_height="51dp"
-            android:layout_marginTop="88dp"
-            android:ems="10"
-            android:inputType="numberDecimal"
-            android:selectAllOnFocus="true"
-            android:textAlignment="center"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.494"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/switchWeterynarz" />
+            <TextView
+                android:id="@+id/textView5"
+                android:layout_width="280dp"
+                android:layout_height="22dp"
+                android:layout_marginTop="8dp"
+                android:text="Wielkość opakowania karmy w kilogramach"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/editTextPackage" />
 
-        <Button
-            android:id="@+id/saveSettings"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="36dp"
-            android:text="Zapisz"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.498"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView5" />
+            <TextView
+                android:id="@+id/settingsWarning1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="28dp"
+                android:shadowColor="@color/design_default_color_on_secondary"
+                android:text="Karma skończy się w dniu"
+                android:textColor="@color/design_default_color_error"
+                android:visibility="invisible"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/saveSettings" />
 
-        <TextView
-            android:id="@+id/textView5"
-            android:layout_width="280dp"
-            android:layout_height="22dp"
-            android:layout_marginTop="8dp"
-            android:text="Wielkość opakowania karmy w kilogramach"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/editTextPackage" />
+            <TextView
+                android:id="@+id/settingsWarning2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:shadowColor="@color/design_default_color_on_secondary"
+                android:textColor="@color/design_default_color_error"
+                android:visibility="invisible"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/settingsWarning1" />
 
-        <TextView
-            android:id="@+id/settingsWarning1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="28dp"
-            android:shadowColor="@color/design_default_color_on_secondary"
-            android:text="Karma skończy się w dniu"
-            android:textColor="@color/design_default_color_error"
-            android:visibility="invisible"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/saveSettings" />
+            <SeekBar
+                android:id="@+id/seekBar2"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="76dp"
+                android:padding="20dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/spinnerSettings" />
 
-        <TextView
-            android:id="@+id/settingsWarning2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:shadowColor="@color/design_default_color_on_secondary"
-            android:textColor="@color/design_default_color_error"
-            android:visibility="invisible"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/settingsWarning1" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 </RelativeLayout>
