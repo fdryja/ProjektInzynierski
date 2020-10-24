@@ -68,6 +68,15 @@ public class UpdateDialog extends AppCompatDialogFragment {
         editName.setText(nameImported);
         editWeight.setText(weightImported);
         seekBarDialog.setProgress(activityLevelImported);
+
+        if (activityLevelImported == 0) {
+            poziomAktywnosciDialog.setText("Niski");
+        } else if (activityLevelImported == 1) {
+            poziomAktywnosciDialog.setText("Normalny");
+        } else {
+            poziomAktywnosciDialog.setText("Wysoki");
+        }
+
         seekBarDialog.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
