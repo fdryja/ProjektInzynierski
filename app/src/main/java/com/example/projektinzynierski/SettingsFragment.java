@@ -27,6 +27,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import java.text.DateFormat;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -35,15 +36,16 @@ import java.util.Date;
 public class SettingsFragment extends Fragment implements AdapterView.OnItemSelectedListener {
     DatabaseHelper dogsDB;
     Spinner spinnerSettings;
-//    Switch switchKarmienie, swithcWeterynarz;
+    //    Switch switchKarmienie, swithcWeterynarz;
+    SeekBar seekBarCritical;
     private String selectedDog;
     private ArrayList<String> dogsList, ID, packageDB, package_fullDB, notkarDB, notwetDB, eatingDB;
     private ArrayAdapter<String> dogsAdapter;
     Button saveSettings;
     EditText editTextPackage;
-    TextView settingsWarning1, settingsWarning2;
+    TextView settingsWarning1, settingsWarning2, textViewPercentage, textViewPrediction, textViewCriticalDay;
     int globalPosition = 0;
-
+    private static DecimalFormat decimalFormat = new DecimalFormat("#.##");
 
 
     @Nullable
@@ -51,13 +53,20 @@ public class SettingsFragment extends Fragment implements AdapterView.OnItemSele
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_settings, container, false);
     }
+
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        editTextPackage = getActivity().findViewById(R.id.editTextPackage);
 //        switchKarmienie = getActivity().findViewById(R.id.switchKarmienie);
 //        swithcWeterynarz = getActivity().findViewById(R.id.switchWeterynarz);
+
+        seekBarCritical = getActivity().findViewById(R.id.seekBarCritical);
+        textViewPercentage = getActivity().findViewById(R.id.textViewPercentage);
+        textViewPrediction = getActivity().findViewById(R.id.textViewPrediction);
+        textViewCriticalDay = getActivity().findViewById(R.id.textViewCriticalDay);
+        editTextPackage = getActivity().findViewById(R.id.editTextPackage);
+
         dogsDB = new DatabaseHelper(getActivity());
         dogsList = new ArrayList<>();
         ID = new ArrayList<>();
@@ -74,6 +83,7 @@ public class SettingsFragment extends Fragment implements AdapterView.OnItemSele
         loadData(getView());
         spinnerSettings.setOnItemSelectedListener(this);
 
+        textViewPercentage.setText("30%"+" ("+ decimalFormat.format(Integer.parseInt(packageDB.get(globalPosition))*0.3) +" kg)");
         saveSettings.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -81,9 +91,36 @@ public class SettingsFragment extends Fragment implements AdapterView.OnItemSele
                     Toast.makeText(getActivity(), "Baza danych jest pusta", Toast.LENGTH_SHORT).show();
                 } else {
                     updatePackage(Integer.parseInt(ID.get(globalPosition)),
-                            Float.parseFloat(editTextPackage.getText().toString()));
-
+                            Float.parseFloat(editTextPackage.getText().toString()),seekBarCritical.getProgress());
                 }
+
+            }
+        });
+        seekBarCritical.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                int package_weight = Integer.parseInt(package_fullDB.get(globalPosition));
+
+                if(progress==1){
+                    textViewPercentage.setText("10%"+" ("+ decimalFormat.format(package_weight*0.1) +" kg)");
+                }else if(progress==2){
+                    textViewPercentage.setText("20%"+" ("+ decimalFormat.format(package_weight*0.2) +" kg)");
+                }else if(progress==3){
+                    textViewPercentage.setText("30%"+" ("+ decimalFormat.format(package_weight*0.3) +" kg)");
+                }else if(progress==4){
+                    textViewPercentage.setText("40%"+" ("+ decimalFormat.format(package_weight*0.4) +" kg)");
+                }else{
+                    textViewPercentage.setText("50%"+" ("+ decimalFormat.format(package_weight*0.5) +" kg)");
+                }
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
 
             }
         });
@@ -111,40 +148,12 @@ public class SettingsFragment extends Fragment implements AdapterView.OnItemSele
 
     }
 
-    private void updateNotKarmienie(int id, int switchKarmienie){
-        dogsDB.updateNotKarmienie(id, switchKarmienie);
-        ID.clear();
-        dogsList.clear();
-        packageDB.clear();
-        package_fullDB.clear();
-        notwetDB.clear();
-        notkarDB.clear();
-        eatingDB.clear();
-        spinnerSettings.setAdapter(null);
-        loadData(getView());
-        loadSettings();
-        spinnerSettings.setSelection(globalPosition);
-//        Toast.makeText(getActivity().getApplicationContext(), "Zapisano", Toast.LENGTH_SHORT).show();
-    }
-    private void updateNotWet(int id, int switchWeterynarz){
-        dogsDB.updateNotWet(id, switchWeterynarz);
-        ID.clear();
-        dogsList.clear();
-        packageDB.clear();
-        eatingDB.clear();
-        package_fullDB.clear();
-        notwetDB.clear();
-        notkarDB.clear();
-        spinnerSettings.setAdapter(null);
-        loadData(getView());
-        loadSettings();
-        spinnerSettings.setSelection(globalPosition);
-//        Toast.makeText(getActivity().getApplicationContext(), "Zapisano", Toast.LENGTH_SHORT).show();
-    }
 
-    private void updatePackage(int id, float packageWeight){
-        if(packageWeight>=0){
+
+    private void updatePackage(int id, float packageWeight, int sbprogress) {
+        if (packageWeight >= 0) {
             dogsDB.updatePackage(id, packageWeight);
+            dogsDB.updatePackageCritical(id, sbprogress);
 
             ID.clear();
             dogsList.clear();
@@ -158,7 +167,7 @@ public class SettingsFragment extends Fragment implements AdapterView.OnItemSele
             loadSettings();
             spinnerSettings.setSelection(globalPosition);
             Toast.makeText(getActivity().getApplicationContext(), "Zapisano", Toast.LENGTH_SHORT).show();
-        }else{
+        } else {
             Toast.makeText(getActivity().getApplicationContext(), "Ilość karmy nie może być mniejsza niż 0", Toast.LENGTH_SHORT).show();
         }
 
@@ -198,17 +207,22 @@ public class SettingsFragment extends Fragment implements AdapterView.OnItemSele
 
         } else {
             editTextPackage.setText((package_fullDB.get(globalPosition)));
+            if(packageDB.get(globalPosition).equals("0")){
+                seekBarCritical.setProgress(3);
+            }else{
+                seekBarCritical.setProgress( Integer.parseInt(packageDB.get(globalPosition)) );
+            }
             int notkar = 0, notwet = 0;
             notkar = Integer.parseInt(notkarDB.get(globalPosition));
             notwet = Integer.parseInt(notwetDB.get(globalPosition));
-            if(notkar==0){
+            if (notkar == 0) {
 //                switchKarmienie.setChecked(false);
-            }else{
+            } else {
 //                switchKarmienie.setChecked(true);
             }
-            if(notwet==0){
+            if (notwet == 0) {
 //                swithcWeterynarz.setChecked(false);
-            }else{
+            } else {
 //                swithcWeterynarz.setChecked(true);
             }
 
@@ -217,12 +231,12 @@ public class SettingsFragment extends Fragment implements AdapterView.OnItemSele
             float daysRemainingF = 0;
 
 
-            if(packageWeight>0 && eating > 0){
+            if (packageWeight > 0 && eating > 0) {
                 settingsWarning1.setVisibility(View.VISIBLE);
                 settingsWarning2.setVisibility(View.VISIBLE);
-                packageWeight = packageWeight*1000;
-                daysRemainingF = packageWeight/eating;
-                daysRemaining = (int)daysRemainingF;
+                packageWeight = packageWeight * 1000;
+                daysRemainingF = packageWeight / eating;
+                daysRemaining = (int) daysRemainingF;
 //                settingsWarning2.setText(Integer.toString(daysRemaining)); //to pokazuje ile dni jest do końca karmy
 
                 DateFormat dateformat = new SimpleDateFormat("dd/MM/yyyy");
@@ -234,7 +248,7 @@ public class SettingsFragment extends Fragment implements AdapterView.OnItemSele
                 Date remainingDate = c.getTime();
                 settingsWarning2.setText(dateformat.format(remainingDate));
 
-            }else{
+            } else {
                 settingsWarning1.setVisibility(View.INVISIBLE);
                 settingsWarning2.setVisibility(View.INVISIBLE);
             }
@@ -253,5 +267,36 @@ public class SettingsFragment extends Fragment implements AdapterView.OnItemSele
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
 
+    }
+    private void updateNotKarmienie(int id, int switchKarmienie) {
+        dogsDB.updateNotKarmienie(id, switchKarmienie);
+        ID.clear();
+        dogsList.clear();
+        packageDB.clear();
+        package_fullDB.clear();
+        notwetDB.clear();
+        notkarDB.clear();
+        eatingDB.clear();
+        spinnerSettings.setAdapter(null);
+        loadData(getView());
+        loadSettings();
+        spinnerSettings.setSelection(globalPosition);
+//        Toast.makeText(getActivity().getApplicationContext(), "Zapisano", Toast.LENGTH_SHORT).show();
+    }
+
+    private void updateNotWet(int id, int switchWeterynarz) {
+        dogsDB.updateNotWet(id, switchWeterynarz);
+        ID.clear();
+        dogsList.clear();
+        packageDB.clear();
+        eatingDB.clear();
+        package_fullDB.clear();
+        notwetDB.clear();
+        notkarDB.clear();
+        spinnerSettings.setAdapter(null);
+        loadData(getView());
+        loadSettings();
+        spinnerSettings.setSelection(globalPosition);
+//        Toast.makeText(getActivity().getApplicationContext(), "Zapisano", Toast.LENGTH_SHORT).show();
     }
 }

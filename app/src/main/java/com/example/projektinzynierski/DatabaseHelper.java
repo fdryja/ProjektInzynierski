@@ -1,4 +1,4 @@
-package com.example.projektinzynierski;
+ package com.example.projektinzynierski;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -223,8 +223,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public void updatePackage(int id, float packageWeight){
         SQLiteDatabase db = this.getWritableDatabase();
-        String query = "UPDATE "+ TABLE_DOGS + " SET " + COL7 + "=" + packageWeight + ", " + COL8+ "="+ packageWeight
-                +" WHERE "+COL1+"="+id;
+        String query = "UPDATE "+ TABLE_DOGS + " SET " + COL7 + "=" + packageWeight + " WHERE "+COL1+"="+id;
         try {
             db.execSQL(query);
             Log.e("tag",query);
@@ -233,6 +232,19 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             Log.e("tag",query);
         }
     }
+
+    public void updatePackageCritical(int id, float packageWeight){
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = "UPDATE "+ TABLE_DOGS + " SET " + COL8 + "=" + packageWeight + " WHERE "+COL1+"="+id;
+        try {
+            db.execSQL(query);
+            Log.e("tag",query);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            Log.e("tag",query);
+        }
+    }
+
 
 
     public void updateNotKarmienie(int id, int notKarmienie){
