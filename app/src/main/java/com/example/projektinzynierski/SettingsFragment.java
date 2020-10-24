@@ -204,8 +204,8 @@ public class SettingsFragment extends Fragment implements AdapterView.OnItemSele
         intent.putExtra("full",package_fullDB.get(globalPosition));
         PendingIntent pendingIntent = PendingIntent.getBroadcast(getActivity(), 0, intent, 0);
         alarmManager.add((AlarmManager)getContext().getApplicationContext().getSystemService(Context.ALARM_SERVICE));
-        Date date = new Date();
-        criticalDate.setTime(date.getTime());
+//        Date date = new Date();
+//        criticalDate.setTime(date.getTime());
         alarmManager.get(0).setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP,criticalDate.getTime(),pendingIntent);
         intentArrayList.add(pendingIntent);
 
