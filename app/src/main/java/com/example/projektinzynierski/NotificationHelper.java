@@ -4,6 +4,7 @@ import android.annotation.TargetApi;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.Intent;
@@ -15,10 +16,6 @@ import java.util.ArrayList;
 
 
 public class NotificationHelper extends ContextWrapper {
-    private ArrayList<String> dgs;
-    public static final String channelID = "channelID";
-    public static final String channelName = "Channel Name";
-
     public static final String CHANNEL_1_ID = "channel1";
     public static final String CHANNEL_2_ID = "channel2";
 
@@ -29,16 +26,6 @@ public class NotificationHelper extends ContextWrapper {
         createNotificationChannels();
 
     }
-
-    //    @TargetApi(Build.VERSION_CODES.O)
-//    private void createChannel() {
-//        NotificationChannel channel = new NotificationChannel(channelID, channelName, NotificationManager.IMPORTANCE_HIGH);
-//        channel.setLockscreenVisibility(Notification.VISIBILITY_PUBLIC);
-//
-//
-//
-////        getManager().createNotificationChannel(channel);
-//    }
     public void createNotificationChannels() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationChannel channel1 = new NotificationChannel(
@@ -69,33 +56,55 @@ public class NotificationHelper extends ContextWrapper {
     }
 
     public NotificationManager getManager() {
-//        if (manager == null) {
-//            mManager = (NotificationManager) getSystemService(NotificationManager.class);
-//        }
-
         return manager;
     }
 
     public NotificationCompat.Builder getChannelNotification(Intent intent) {
         int eatingINT = Integer.parseInt(intent.getExtras().getString("eating"));
         int eating_countINT = Integer.parseInt(intent.getExtras().getString("eating_count"));
+        String text ="Musisz podać "+(eatingINT/eating_countINT)+" gramów karmy.";
         return new NotificationCompat.Builder(getApplicationContext(), CHANNEL_1_ID)
                 .setContentTitle("Nakarm psa o imieniu "+intent.getExtras().getString("name"))
-                .setContentText("Musisz podać "+(eatingINT/eating_countINT)+" gramów karmy.")
+                .setStyle(new NotificationCompat.BigTextStyle().bigText(text))
                 .setSmallIcon(R.drawable.ic_android);
     }
 
     public NotificationCompat.Builder getChannelNotificationSzczepienie(Intent intent) {
+        String text = "Proszę odwiedzić weterynarza";
         return new NotificationCompat.Builder(getApplicationContext(), CHANNEL_2_ID)
                 .setContentTitle("Dzisiaj upływa termin szczepienia dla psa "+ intent.getExtras().get("name") +"!")
-                .setContentText("Proszę odwiedzić weterynarza")
+                .setStyle(new NotificationCompat.BigTextStyle().bigText(text))
                 .setSmallIcon(R.drawable.ic_android);
     }
 
     public NotificationCompat.Builder getChannelNotificationOdrobaczanie(Intent intent) {
+        String text = "Proszę odwiedzić weterynarza";
         return new NotificationCompat.Builder(getApplicationContext(), CHANNEL_2_ID)
                 .setContentTitle("Dzisiaj upływa termin odrobaczania dla psa "+ intent.getExtras().get("name") +"!")
-                .setContentText("Proszę odwiedzić weterynarza")
+                .setStyle(new NotificationCompat.BigTextStyle().bigText(text))
+                .setSmallIcon(R.drawable.ic_android);
+    }
+
+    public NotificationCompat.Builder getChannelNotificationCritical(Intent intent) {
+        int percentage = Integer.parseInt(intent.getExtras().get("percentage").toString());
+        float weight = Float.parseFloat(intent.getExtras().get("full").toString());
+        String procent = "";
+        if(percentage == 1){
+            procent ="10%";
+        }else if(percentage == 2){
+            procent ="20%";
+        }
+        else if(percentage == 3){
+            procent ="30%";
+        }else if(percentage == 4){
+            procent ="40%";
+        }else if(percentage == 5){
+            procent ="50%";
+        }
+        String text = "Czas zamówić nowe opakowanie. Masa ostatniego opakowania wynosiła "+weight+ " kg.";
+        return new NotificationCompat.Builder(getApplicationContext(), CHANNEL_1_ID)
+                .setContentTitle("Zosatło tylko "+ procent+ " karmy dla psa "+ intent.getExtras().get("name") +"!")
+                .setStyle(new NotificationCompat.BigTextStyle().bigText(text))
                 .setSmallIcon(R.drawable.ic_android);
     }
 }

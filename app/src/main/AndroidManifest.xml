@@ -24,6 +24,7 @@
         <receiver android:name=".AlertsSzczepienie"/>
         <receiver android:name=".AlertReceiver"/>
         <receiver android:name=".AlertsOdrobaczanie"/>
+        <receiver android:name=".AlertsCritical"/>
 
     </application>
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>

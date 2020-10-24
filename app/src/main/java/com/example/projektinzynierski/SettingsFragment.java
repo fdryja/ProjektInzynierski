@@ -1,5 +1,9 @@
 package com.example.projektinzynierski;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.hardware.SensorEventListener;
@@ -46,7 +50,9 @@ public class SettingsFragment extends Fragment implements AdapterView.OnItemSele
     TextView settingsWarning1, settingsWarning2, textViewPercentage, textViewPrediction, textViewCriticalDay;
     int globalPosition = 0;
     private static DecimalFormat decimalFormat = new DecimalFormat("#.##");
-
+    private ArrayList<AlarmManager> alarmManager;
+    private ArrayList<PendingIntent> intentArrayList;
+    Date criticalDate;
 
     @Nullable
     @Override
@@ -75,9 +81,12 @@ public class SettingsFragment extends Fragment implements AdapterView.OnItemSele
         eatingDB = new ArrayList<>();
         notkarDB = new ArrayList<>();
         notwetDB = new ArrayList<>();
+        alarmManager = new ArrayList<>();
+        intentArrayList = new ArrayList<>();
         saveSettings = getActivity().findViewById(R.id.saveSettings);
         settingsWarning1 = getActivity().findViewById(R.id.settingsWarning1);
         settingsWarning2 = getActivity().findViewById(R.id.settingsWarning2);
+
 
         spinnerSettings = getActivity().findViewById(R.id.spinnerSettings);
         loadData(getView());
@@ -152,9 +161,20 @@ public class SettingsFragment extends Fragment implements AdapterView.OnItemSele
 
 
     private void updatePackage(int id, float packageWeight, int sbprogress) {
+        alarmManager.clear();
+        intentArrayList.clear();
         if (packageWeight >= 0) {
             dogsDB.updatePackage(id, packageWeight);
             dogsDB.updatePackageCritical(id, sbprogress);
+
+
+
+
+            if(textViewPrediction.getVisibility() == View.VISIBLE){
+                makeCritAlert();
+            }
+
+
 
             ID.clear();
             dogsList.clear();
@@ -167,12 +187,31 @@ public class SettingsFragment extends Fragment implements AdapterView.OnItemSele
             loadData(getView());
             loadSettings();
             spinnerSettings.setSelection(globalPosition);
+
             Toast.makeText(getActivity().getApplicationContext(), "Zapisano", Toast.LENGTH_SHORT).show();
         } else {
             Toast.makeText(getActivity().getApplicationContext(), "Ilość karmy nie może być mniejsza niż 0", Toast.LENGTH_SHORT).show();
         }
 
 
+    }
+
+    private void makeCritAlert() {
+        Intent intent = new Intent(getContext().getApplicationContext(),AlertsCritical.class);
+        intent.addFlags(Intent.FLAG_RECEIVER_FOREGROUND);
+        intent.putExtra("name", dogsList.get(globalPosition));
+        intent.putExtra("percentage",packageDB.get(globalPosition));
+        intent.putExtra("full",package_fullDB.get(globalPosition));
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(getActivity(), 0, intent, 0);
+        alarmManager.add((AlarmManager)getContext().getApplicationContext().getSystemService(Context.ALARM_SERVICE));
+        Date date = new Date();
+        criticalDate.setTime(date.getTime());
+        alarmManager.get(0).setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP,criticalDate.getTime(),pendingIntent);
+        intentArrayList.add(pendingIntent);
+
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        String strDate = dateFormat.format(criticalDate);
+        Log.e("CREATED ALARM CRITICAL", strDate );
     }
 
     private void loadData(View v) {
@@ -314,9 +353,13 @@ public class SettingsFragment extends Fragment implements AdapterView.OnItemSele
             Date currentDate = new Date();
             Calendar c = Calendar.getInstance();
             c.setTime(currentDate);
+            c.set(Calendar.HOUR_OF_DAY, 12);
+            c.set(Calendar.MINUTE, 0);
+            c.set(Calendar.SECOND, 0);
             c.add(Calendar.DATE, daysRemainingCritical);
             Date remainingDate = c.getTime();
             textViewCriticalDay.setText(dateformat.format(remainingDate));
+            criticalDate =c.getTime();
 
         } else {
             textViewCriticalDay.setVisibility(View.INVISIBLE);
