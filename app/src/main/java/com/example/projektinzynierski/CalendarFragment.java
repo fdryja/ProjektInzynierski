@@ -255,7 +255,8 @@ public class CalendarFragment extends Fragment implements AdapterView.OnItemSele
             String szczepienie = szczepienieTextView.getText().toString();
             if (szczepienie.equals("Brak")) {
                 szczepienie = "0";
-            } else if (odrobaczanie.equals("Brak")) {
+            }
+            if (odrobaczanie.equals("Brak")) {
                 odrobaczanie = "0";
             }
             dogsDB.addDataOdrobaczanie(odrobaczanie, Integer.parseInt(ID.get(globalPosition)));
@@ -281,13 +282,23 @@ public class CalendarFragment extends Fragment implements AdapterView.OnItemSele
 
                 int sd, sm, sy, od, om, oy;
                 //alerty na szczepienia
-                for (int k = 0; k < szczepienia.size(); k++) {
-
-                    if (szczepienia.get(k).equals("0")) {
-                        ileAlarmow--;
+//                for (int k = 0; k < szczepienia.size(); k++) {
+//                    if (szczepienia.get(k).equals("0")|| szczepienia.get(k).equals("Brak")) {
+//                        ileAlarmow--;
 //                        szczepienia.remove(k);
-                    }
-                }
+//                        ID.remove(k);
+//                    }
+//                }
+//
+//                for (int k = 0; k < odrobaczenia.size(); k++) {
+//
+//                    if (odrobaczenia.get(k).equals("0") || odrobaczenia.get(k).equals("Brak")) {
+//                        ileAlarmow--;
+//                        odrobaczenia.remove(k);
+//                        ID.remove(k);
+//                        name.remove(k);
+//                    }
+//                }
 
 
                 Log.e("USTAWIANIE ALARMU", "LICZBA ALARMOW: " + ileAlarmow);
@@ -318,7 +329,7 @@ public class CalendarFragment extends Fragment implements AdapterView.OnItemSele
 //                        c.set(Calendar.SECOND, 0);
 
                         c.set(Calendar.DAY_OF_MONTH, sd);
-                        c.set(Calendar.MONTH, sm-1);
+                        c.set(Calendar.MONTH, sm - 1);
                         c.set(Calendar.YEAR, sy);
                         PendingIntent pendingIntent = PendingIntent.getBroadcast(getActivity(), i, intent[i], 0);
                         if (c.before(Calendar.getInstance())) {
@@ -343,6 +354,7 @@ public class CalendarFragment extends Fragment implements AdapterView.OnItemSele
 
                     } else {
                         String[] parts = odrobaczenia.get(i).split("/");
+                        Log.e("ERROR", odrobaczenia.get(i));
                         od = Integer.parseInt(parts[0]);
                         om = Integer.parseInt(parts[1]);
                         oy = Integer.parseInt(parts[2]);
@@ -359,11 +371,11 @@ public class CalendarFragment extends Fragment implements AdapterView.OnItemSele
 //                        c.set(Calendar.SECOND, 0);
 
                         c.set(Calendar.DAY_OF_MONTH, od);
-                        c.set(Calendar.MONTH, om-1);
+                        c.set(Calendar.MONTH, om - 1);
                         c.set(Calendar.YEAR, oy);
                         PendingIntent pendingIntent = PendingIntent.getBroadcast(getActivity(), i, intentO[i], 0);
                         if (c.before(Calendar.getInstance())) {
-                            c.add(Calendar.DATE, 1);
+//                            c.add(Calendar.DATE, 1);
                             Log.e("UPDATED INSTANCE OD", c.getTime().toString());
                         }
                         alarmManager.add((AlarmManager) getContext().getApplicationContext().getSystemService(ALARM_SERVICE));
@@ -391,6 +403,8 @@ public class CalendarFragment extends Fragment implements AdapterView.OnItemSele
 
         name.clear();
         szczepienia.clear();
+        alarmManager.clear();
+        intentArrayList.clear();
         Cursor data = dogsDB.joinCalendar();
         if (data.getCount() == 0) {
             //baza jest pusta
@@ -406,23 +420,22 @@ public class CalendarFragment extends Fragment implements AdapterView.OnItemSele
 
             int sd, sm, sy;
             //alerty na szczepienia
-            for (int k = 0; k < szczepienia.size(); k++) {
-
-                if (szczepienia.get(k).equals("0")) {
-                    ileAlarmow--;
-//                        szczepienia.remove(k);
-                }
-            }
+//            for (int k = 0; k < szczepienia.size(); k++) {
+//
+//                if (szczepienia.get(k).equals("0")) {
+//                    ileAlarmow--;
+////                        szczepienia.remove(k);
+//                }
+//            }
             Log.e("USTAWIANIE ALARMU", "LICZBA ALARMOW: " + ileAlarmow);
             for (int i = 0; i < ileAlarmow; i++) {
                 intent[i] = new Intent(getContext().getApplicationContext(), AlertsSzczepienie.class);
                 intent[i].addFlags(Intent.FLAG_RECEIVER_FOREGROUND);
-                intent[i].putExtra("name",name.get(i));
+                intent[i].putExtra("name", name.get(i));
 
                 if (szczepienia.get(i).equals("0")) {
                     alarmManager.add((AlarmManager) getContext().getApplicationContext().getSystemService(ALARM_SERVICE));
                     intentArrayList.add(PendingIntent.getBroadcast(getActivity(), i, intent[i], PendingIntent.FLAG_UPDATE_CURRENT));
-
                 } else {
                     String[] parts = szczepienia.get(i).split("/");
                     sd = Integer.parseInt(parts[0]);
@@ -435,7 +448,7 @@ public class CalendarFragment extends Fragment implements AdapterView.OnItemSele
                     c.set(Calendar.MINUTE, 0);
                     c.set(Calendar.SECOND, 0);
                     c.set(Calendar.DAY_OF_MONTH, sd);
-                    c.set(Calendar.MONTH, sm-1);
+                    c.set(Calendar.MONTH, sm - 1);
                     c.set(Calendar.YEAR, sy);
 
                     //własne ustawienia
@@ -469,6 +482,8 @@ public class CalendarFragment extends Fragment implements AdapterView.OnItemSele
 
         name.clear();
         odrobaczenia.clear();
+        alarmManager.clear();
+        intentArrayList.clear();
         Cursor data = dogsDB.joinCalendar();
         if (data.getCount() == 0) {
             //baza jest pusta
@@ -484,18 +499,18 @@ public class CalendarFragment extends Fragment implements AdapterView.OnItemSele
 
             int od, om, oy;
             //alerty na odrobaczania
-            for (int k = 0; k < odrobaczenia.size(); k++) {
-
-                if (odrobaczenia.get(k).equals("0")) {
-                    ileAlarmow--;
-//                        szczepienia.remove(k);
-                }
-            }
+//            for (int k = 0; k < odrobaczenia.size(); k++) {
+//
+//                if (odrobaczenia.get(k).equals("0")) {
+//                    ileAlarmow--;
+////                        szczepienia.remove(k);
+//                }
+//            }
             Log.e("USTAWIANIE ALARMU", "LICZBA ALARMOW: " + ileAlarmow);
             for (int i = 0; i < ileAlarmow; i++) {
                 intentO[i] = new Intent(getContext().getApplicationContext(), AlertsOdrobaczanie.class);
                 intentO[i].addFlags(Intent.FLAG_RECEIVER_FOREGROUND);
-                intentO[i].putExtra("name",name.get(i));
+                intentO[i].putExtra("name", name.get(i));
                 if (odrobaczenia.get(i).equals("0")) {
                     alarmManager.add((AlarmManager) getContext().getApplicationContext().getSystemService(ALARM_SERVICE));
                     intentArrayList.add(PendingIntent.getBroadcast(getActivity(), i, intentO[i], PendingIntent.FLAG_UPDATE_CURRENT));
@@ -512,7 +527,7 @@ public class CalendarFragment extends Fragment implements AdapterView.OnItemSele
                     c.set(Calendar.MINUTE, 0);
                     c.set(Calendar.SECOND, 0);
                     c.set(Calendar.DAY_OF_MONTH, od);
-                    c.set(Calendar.MONTH, om-1);
+                    c.set(Calendar.MONTH, om - 1);
                     c.set(Calendar.YEAR, oy);
 
                     //własne ustawienia
@@ -599,18 +614,14 @@ public class CalendarFragment extends Fragment implements AdapterView.OnItemSele
             dogsDB.addDataOdrobaczanie(dane, Integer.parseInt(ID.get(globalPosition)));
             names.clear();
             name.clear();
-
-
+            
             spinner.setAdapter(null);
             saveDatesOd();
             loadCalendar(globalPosition);
             ID.clear();
             loadData(getView());
             spinner.setSelection(globalPosition);
-
         }
-
-
     }
 
     private void getDateSzczepienie() {
