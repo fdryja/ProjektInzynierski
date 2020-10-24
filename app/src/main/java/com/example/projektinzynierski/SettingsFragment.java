@@ -176,6 +176,13 @@ public class SettingsFragment extends Fragment implements AdapterView.OnItemSele
     }
 
     private void loadData(View v) {
+        ID.clear();
+        dogsList.clear();
+        package_fullDB.clear();
+        packageDB.clear();
+        notkarDB.clear();
+        notwetDB.clear();
+        eatingDB.clear();
         //wypełnienie tablicy
         Cursor data = dogsDB.showData();
         if (data.getCount() == 0) {
@@ -275,6 +282,7 @@ public class SettingsFragment extends Fragment implements AdapterView.OnItemSele
         if (packageWeightCritical > 0 && eating > 0 && packageWeight > 0) {
             textViewPrediction.setVisibility(View.VISIBLE);
             textViewCriticalDay.setVisibility(View.VISIBLE);
+            packageWeight*=1000;
 
             if (packageWeightCritical == 1) {
                 packageWeight = packageWeight*0.9f;
