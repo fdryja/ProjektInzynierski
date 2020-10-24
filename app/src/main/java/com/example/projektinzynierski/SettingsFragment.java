@@ -83,7 +83,7 @@ public class SettingsFragment extends Fragment implements AdapterView.OnItemSele
         loadData(getView());
         spinnerSettings.setOnItemSelectedListener(this);
 
-        textViewPercentage.setText("30%"+" ("+ decimalFormat.format(Integer.parseInt(packageDB.get(globalPosition))*0.3) +" kg)");
+        textViewPercentage.setText("30%" + " (" + decimalFormat.format(Integer.parseInt(packageDB.get(globalPosition)) * 0.3) + " kg)");
         saveSettings.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -91,7 +91,7 @@ public class SettingsFragment extends Fragment implements AdapterView.OnItemSele
                     Toast.makeText(getActivity(), "Baza danych jest pusta", Toast.LENGTH_SHORT).show();
                 } else {
                     updatePackage(Integer.parseInt(ID.get(globalPosition)),
-                            Float.parseFloat(editTextPackage.getText().toString()),seekBarCritical.getProgress());
+                            Float.parseFloat(editTextPackage.getText().toString()), seekBarCritical.getProgress());
                 }
 
             }
@@ -99,19 +99,21 @@ public class SettingsFragment extends Fragment implements AdapterView.OnItemSele
         seekBarCritical.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                criticalPrediction(progress);
                 int package_weight = Integer.parseInt(package_fullDB.get(globalPosition));
 
-                if(progress==1){
-                    textViewPercentage.setText("10%"+" ("+ decimalFormat.format(package_weight*0.1) +" kg)");
-                }else if(progress==2){
-                    textViewPercentage.setText("20%"+" ("+ decimalFormat.format(package_weight*0.2) +" kg)");
-                }else if(progress==3){
-                    textViewPercentage.setText("30%"+" ("+ decimalFormat.format(package_weight*0.3) +" kg)");
-                }else if(progress==4){
-                    textViewPercentage.setText("40%"+" ("+ decimalFormat.format(package_weight*0.4) +" kg)");
-                }else{
-                    textViewPercentage.setText("50%"+" ("+ decimalFormat.format(package_weight*0.5) +" kg)");
+                if (progress == 1) {
+                    textViewPercentage.setText("10%" + " (" + decimalFormat.format(package_weight * 0.1) + " kg)");
+                } else if (progress == 2) {
+                    textViewPercentage.setText("20%" + " (" + decimalFormat.format(package_weight * 0.2) + " kg)");
+                } else if (progress == 3) {
+                    textViewPercentage.setText("30%" + " (" + decimalFormat.format(package_weight * 0.3) + " kg)");
+                } else if (progress == 4) {
+                    textViewPercentage.setText("40%" + " (" + decimalFormat.format(package_weight * 0.4) + " kg)");
+                } else {
+                    textViewPercentage.setText("50%" + " (" + decimalFormat.format(package_weight * 0.5) + " kg)");
                 }
+
             }
 
             @Override
@@ -147,7 +149,6 @@ public class SettingsFragment extends Fragment implements AdapterView.OnItemSele
 //        });
 
     }
-
 
 
     private void updatePackage(int id, float packageWeight, int sbprogress) {
@@ -207,10 +208,10 @@ public class SettingsFragment extends Fragment implements AdapterView.OnItemSele
 
         } else {
             editTextPackage.setText((package_fullDB.get(globalPosition)));
-            if(packageDB.get(globalPosition).equals("0")){
+            if (packageDB.get(globalPosition).equals("0")) {
                 seekBarCritical.setProgress(3);
-            }else{
-                seekBarCritical.setProgress( Integer.parseInt(packageDB.get(globalPosition)) );
+            } else {
+                seekBarCritical.setProgress(Integer.parseInt(packageDB.get(globalPosition)));
             }
             int notkar = 0, notwet = 0;
             notkar = Integer.parseInt(notkarDB.get(globalPosition));
@@ -225,10 +226,10 @@ public class SettingsFragment extends Fragment implements AdapterView.OnItemSele
             } else {
 //                swithcWeterynarz.setChecked(true);
             }
-
-            float packageWeight = Float.parseFloat(packageDB.get(globalPosition));
-            int eating = Integer.parseInt(eatingDB.get(globalPosition)), daysRemaining = 0;
-            float daysRemainingF = 0;
+            int eating = Integer.parseInt(eatingDB.get(globalPosition)),
+                    daysRemaining = 0;
+            float daysRemainingF = 0,
+                    packageWeight = Float.parseFloat(package_fullDB.get(globalPosition));
 
 
             if (packageWeight > 0 && eating > 0) {
@@ -252,8 +253,67 @@ public class SettingsFragment extends Fragment implements AdapterView.OnItemSele
                 settingsWarning1.setVisibility(View.INVISIBLE);
                 settingsWarning2.setVisibility(View.INVISIBLE);
             }
+
+            if(Integer.parseInt(packageDB.get(globalPosition))>0){
+                criticalPrediction(Integer.parseInt(packageDB.get(globalPosition)));
+            }else{
+                criticalPrediction(0);
+            }
+
+
         }
 
+
+    }
+
+    private void criticalPrediction(int progress) {
+        int eating = Integer.parseInt(eatingDB.get(globalPosition)),
+                daysRemainingCritical = 0;
+        float daysRemainingFCritical = 0,
+                packageWeight = Float.parseFloat(package_fullDB.get(globalPosition)),
+                packageWeightCritical = progress;
+        if (packageWeightCritical > 0 && eating > 0 && packageWeight > 0) {
+            textViewPrediction.setVisibility(View.VISIBLE);
+            textViewCriticalDay.setVisibility(View.VISIBLE);
+
+            if (packageWeightCritical == 1) {
+                packageWeight = packageWeight*0.9f;
+                daysRemainingFCritical = packageWeight / eating;
+                daysRemainingCritical = (int) daysRemainingFCritical;
+            } else if (packageWeightCritical == 2) {
+                packageWeight = packageWeight*0.8f;
+                daysRemainingFCritical = packageWeight / eating;
+                daysRemainingCritical = (int) daysRemainingFCritical;
+            } else if (packageWeightCritical == 3) {
+                packageWeight = packageWeight*0.7f;
+                daysRemainingFCritical = packageWeight / eating;
+                daysRemainingCritical = (int) daysRemainingFCritical;
+            } else if (packageWeightCritical == 4) {
+                packageWeight = packageWeight*0.6f;
+                daysRemainingFCritical = packageWeight / eating;
+                daysRemainingCritical = (int) daysRemainingFCritical;
+            } else{
+                packageWeight = packageWeight*0.5f;
+                daysRemainingFCritical = packageWeight / eating;
+                daysRemainingCritical = (int) daysRemainingFCritical;
+            }
+
+
+//                settingsWarning2.setText(Integer.toString(daysRemaining)); //to pokazuje ile dni jest do końca karmy
+
+            DateFormat dateformat = new SimpleDateFormat("dd/MM/yyyy");
+
+            Date currentDate = new Date();
+            Calendar c = Calendar.getInstance();
+            c.setTime(currentDate);
+            c.add(Calendar.DATE, daysRemainingCritical);
+            Date remainingDate = c.getTime();
+            textViewCriticalDay.setText(dateformat.format(remainingDate));
+
+        } else {
+            textViewCriticalDay.setVisibility(View.INVISIBLE);
+            textViewPrediction.setVisibility(View.INVISIBLE);
+        }
     }
 
     @Override
@@ -268,6 +328,7 @@ public class SettingsFragment extends Fragment implements AdapterView.OnItemSele
     public void onNothingSelected(AdapterView<?> parent) {
 
     }
+
     private void updateNotKarmienie(int id, int switchKarmienie) {
         dogsDB.updateNotKarmienie(id, switchKarmienie);
         ID.clear();
