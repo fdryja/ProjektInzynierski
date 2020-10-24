@@ -24,9 +24,6 @@
         <receiver android:name=".AlertsSzczepienie"/>
         <receiver android:name=".AlertReceiver"/>
         <receiver android:name=".AlertsOdrobaczanie"/>
-        <service
-            android:name=".AlarmReactivation"
-            android:permission="android.permission.BIND_JOB_SERVICE" />
 
     </application>
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>

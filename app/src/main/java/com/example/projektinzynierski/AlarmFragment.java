@@ -10,6 +10,8 @@ import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.os.Looper;
+import android.os.Message;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -33,11 +35,17 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.logging.Handler;
+import java.util.logging.LogRecord;
 import java.util.logging.SimpleFormatter;
 
 import static android.content.Context.ALARM_SERVICE;
 //import static com.example.projektinzynierski.App.CHANNEL_1_ID;
 //import static com.example.projektinzynierski.App.CHANNEL_2_ID;
+
+
 
 public class AlarmFragment extends Fragment implements AdapterView.OnItemSelectedListener {
     private static final long ONE_DAY_INTERVAL = 24 * 60 * 60 * 1000L;
@@ -53,10 +61,20 @@ public class AlarmFragment extends Fragment implements AdapterView.OnItemSelecte
     private NotificationManagerCompat notificationManagerCompat;
     private ArrayList<AlarmManager> alarmManager;
     //    private ArrayList<Intent> intent;
+
 //    private AlarmManager[] alarmManager;
     private int ileAlarmow;
 
     ArrayList<PendingIntent> intentArrayList;
+
+
+
+    Timer timer = new Timer();
+    TimerTask task = new TimerTask() {
+        public void run() {
+            saveAllAlarms();
+        }
+    };
 
     @Nullable
     @Override
@@ -322,9 +340,154 @@ public class AlarmFragment extends Fragment implements AdapterView.OnItemSelecte
         }
 //        passName();
 
-        AlarmReactivation.schedule(getContext(),60000 );
+
+        timer = new Timer();
+        timer.scheduleAtFixedRate(createTimerTask(), 0, ONE_DAY_INTERVAL);
+
+
     }
 
+    private void saveAllAlarmsTimer() {
+        int dogId;
+        String name;
+        ID.clear();
+        names.clear();
+        alarm.clear();
+        alarmManager.clear();
+        intentArrayList.clear();
+        Log.e("USTAWIANIE ALARMU", "ODPALONA FUNKCJA");
+        //funkcja która ładuje wszystkie rekordy z tabeli alarmów i aktywuje każdy istniejący w niej alarm, jeżeli jest "Brak" to
+        //nie aktywuje tego alarmu;
+        Cursor data = dogsDB.joinEating();
+        ileAlarmow = 0;
+        if (data.getCount() == 0) {
+//            Toast.makeText(getActivity().getApplicationContext(), "baza danych jest pusta", Toast.LENGTH_SHORT).show();
+        } else {
+            while (data.moveToNext()) {
+                alarm.add(data.getString(2));
+                alarmName.add(data.getString(1));
+                dogName.add(data.getString(3));
+                eating_count.add(data.getString(4));
+                eating.add(data.getString(5));
+                Log.e("alarm",data.getString(2));
+                Log.e("alarmname",data.getString(1));
+                Log.e("dog",data.getString(3));
+                ileAlarmow++;
+            }
+        }
+
+        for (int k = 0; k < alarm.size(); k++) {
+
+            if (alarm.get(k).equals("Brak")) {
+                ileAlarmow--;
+                alarm.remove(k);
+            }
+
+
+        }
+
+//        alarmManager = new AlarmManager[ileAlarmow];
+        Intent[] intent = new Intent[ileAlarmow];
+
+        int ileAlarmowPo = 0;
+
+
+        Log.e("USTAWIANIE ALARMU", "LICZBA ALARMOW: " + ileAlarmow);
+        for (int i = 0; i < ileAlarmow; i++) {
+
+            intent[i] = new Intent(getContext().getApplicationContext(), AlertReceiver.class);
+            intent[i].addFlags(Intent.FLAG_RECEIVER_FOREGROUND);
+            intent[i].putExtra("name",dogName.get(i));
+            intent[i].putExtra("eating_count",eating_count.get(i));
+            intent[i].putExtra("eating",eating.get(i));
+            String h = "", m = "";
+            if (alarm.get(i).equals("Brak")) {
+                alarmManager.add((AlarmManager) getContext().getApplicationContext().getSystemService(ALARM_SERVICE));
+                intentArrayList.add(PendingIntent.getBroadcast(getActivity(), i, intent[i], PendingIntent.FLAG_UPDATE_CURRENT));
+            } else {
+                String[] parts = alarm.get(i).split(":");
+                h = parts[0];
+                m = parts[1];
+
+//            dogId = Integer.parseInt(alarmName.get(i)) ;
+                Calendar c = Calendar.getInstance();
+                c.getTimeInMillis();
+                c.set(Calendar.HOUR_OF_DAY, Integer.parseInt(h));
+                c.set(Calendar.MINUTE, Integer.parseInt(m));
+                c.set(Calendar.SECOND, 0);
+//            Log.e("PRZESZLO DALEJ", "W TELEFONIE: " + new Date());
+                Log.e("PRZESZLO DALEJ", "DATA: " + c.getTime());
+//                startAlarm(c,i);
+
+
+                if (c.before(Calendar.getInstance())) {
+                    c.add(Calendar.DATE, 1);
+                    Log.e("UPDATED INSTANCE", c.getTime().toString());
+                }
+
+                alarmManager.add((AlarmManager) getContext().getApplicationContext().getSystemService(ALARM_SERVICE));
+
+//                Notification notification = new NotificationCompat.Builder(getContext(), CHANNEL_1_ID).setContentTitle("tytuł")
+//                        .setContentText("treść")
+//                        .setPriority(NotificationCompat.PRIORITY_MAX)
+//                        .setCategory(NotificationCompat.CATEGORY_ALARM)
+//                        .build();
+
+                PendingIntent pendingIntent = PendingIntent.getBroadcast(getActivity(), i, intent[i], PendingIntent.FLAG_UPDATE_CURRENT);
+                //wywołanie na czas
+                //tutaj wywala     java.lang.IndexOutOfBoundsException: Index: 1, Size: 1
+                alarmManager.get(i).setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, c.getTimeInMillis(), pendingIntent);
+                ileAlarmowPo++;
+                Log.e("CREATED ALARM", c.getTime().toString());
+
+                intentArrayList.add(pendingIntent);
+
+//            Cursor nameCursor = dogsDB.showName(dogId);
+//            while (nameCursor.moveToNext()) {
+//                dogName.add(nameCursor.getString(0));
+//            }
+
+            }
+
+
+
+        }
+        Log.e("USTAWIANIE ALARMU", "LICZBA ALARMOW PO: " + ileAlarmowPo);
+        Cursor cursor = dogsDB.showData();
+        if (cursor.getCount() == 0) {
+//            Toast.makeText(getActivity().getApplicationContext(), "baza danych jest pusta", Toast.LENGTH_SHORT).show();
+        } else {
+            while (cursor.moveToNext()) {
+                ID.add(cursor.getString(0));
+                names.add(cursor.getString(1));
+
+            }
+        }
+//        passName();
+//        timer.cancel();
+//        task.cancel();
+//        timer.scheduleAtFixedRate(task, 0, 60000);
+
+//        timer = new Timer();
+//        timer.scheduleAtFixedRate(createTimerTask(), 0, 100);
+
+//        AlarmReactivation.schedule(getContext(),60000 );
+    }
+
+    private TimerTask createTimerTask() {
+        return new TimerTask() {
+            @Override
+            public void run() {
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        saveAllAlarmsTimer();
+                    }
+
+                });
+            }
+        };
+    }
 
     public ArrayList<String> passName() {
         return dogName;
