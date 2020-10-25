@@ -65,6 +65,13 @@ public class EatingFragment extends Fragment implements AdapterView.OnItemSelect
 
         eatingCountChange();
         loadEating();
+        if (TextUtils.isEmpty(eating.getText())) {
+
+        } else {
+            grams = Integer.parseInt(eating.getText().toString());
+        }
+        int result = grams / eatingCount.getProgress();
+        wielkoscPorcji.setText("Wielkość porcji: " + result + "g");
 
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -193,6 +200,13 @@ public class EatingFragment extends Fragment implements AdapterView.OnItemSelect
         selectedDog = parent.getItemAtPosition(position).toString();
         globalPosition = position;
         loadEating();
+        if (TextUtils.isEmpty(eating.getText())) {
+
+        } else {
+            grams = Integer.parseInt(eating.getText().toString());
+        }
+        int result = grams / eatingCount.getProgress();
+        wielkoscPorcji.setText("Wielkość porcji: " + result + "g");
     }
 
     @Override

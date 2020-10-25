@@ -9,6 +9,7 @@
 <ScrollView
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -16,30 +17,37 @@
         <Button
             android:id="@+id/resetAlarm"
             android:layout_width="wrap_content"
+            android:background="@drawable/rounded_corner_button"
             android:layout_height="wrap_content"
             android:layout_marginStart="28dp"
+            android:padding="5dp"
             android:text="Reset"
             android:visibility="invisible"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/alarmView4" />
 
         <Button
-            android:visibility="invisible"
             android:id="@+id/saveAlarm"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:padding="5dp"
             android:layout_marginEnd="28dp"
             android:text="Zapisz"
+            android:background="@drawable/rounded_corner_button"
+            android:visibility="invisible"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/alarmView4" />
 
         <Button
-            android:visibility="invisible"
             android:id="@+id/setAlarm4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Ustaw alarm 4"
+            android:visibility="invisible"
+            android:padding="5dp"
             app:layout_constraintEnd_toEndOf="parent"
+            android:background="@drawable/rounded_corner__minor_button"
+            android:textColor="#FFFFFF"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/alarmView4" />
 
@@ -49,88 +57,115 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="32dp"
             android:text="Brak"
+            android:padding="5dp"
             android:textSize="22sp"
             android:visibility="invisible"
+            android:textColor="#000000"
+
+            android:background="@drawable/rounded_corner"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/setAlarm3" />
 
         <Button
-            android:visibility="invisible"
             android:id="@+id/setAlarm3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Ustaw alarm 3"
+            android:visibility="invisible"
+            android:padding="5dp"
+            android:background="@drawable/rounded_corner__minor_button"
+            android:textColor="#FFFFFF"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/alarmView3" />
 
         <TextView
-            android:visibility="invisible"
             android:id="@+id/alarmView3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="32dp"
             android:text="Brak"
             android:textSize="22sp"
+            android:visibility="invisible"
+            android:background="@drawable/rounded_corner"
+            android:padding="5dp"
+            android:textColor="#000000"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/setAlarm2" />
 
         <Button
-            android:visibility="invisible"
             android:id="@+id/setAlarm2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Ustaw alarm 2"
+            android:visibility="invisible"
+            android:background="@drawable/rounded_corner__minor_button"
+            android:textColor="#FFFFFF"
+            android:padding="5dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/alarmView2" />
 
         <TextView
-            android:visibility="invisible"
             android:id="@+id/alarmView2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="32dp"
             android:text="Brak"
+            android:padding="5dp"
             android:textSize="22sp"
+            android:visibility="invisible"
+            android:textColor="#000000"
+
+            android:background="@drawable/rounded_corner"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/setAlarm1" />
 
         <Button
-            android:visibility="invisible"
             android:id="@+id/setAlarm1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Ustaw alarm 1"
+            android:visibility="invisible"
+            android:padding="5dp"
+            android:background="@drawable/rounded_corner__minor_button"
+            android:textColor="#FFFFFF"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/alarmView1" />
 
         <TextView
-            android:visibility="invisible"
             android:id="@+id/alarmView1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:background="@drawable/rounded_corner"
+            android:padding="5dp"
             android:text="Brak"
-            android:layout_marginTop="52dp"
+            android:textColor="#000000"
             android:textSize="22sp"
+            android:visibility="invisible"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.498"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/spinnerAlarm" />
 
         <TextView
             android:id="@+id/textView3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
+            android:layout_width="278dp"
+            android:layout_height="101dp"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/rounded_corner"
             android:gravity="center"
+            android:padding="5dp"
             android:text="Ustal godziny powiadomimeń"
             android:textSize="36sp"
+            android:textColor="#000000"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
