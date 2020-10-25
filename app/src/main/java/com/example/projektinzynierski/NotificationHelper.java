@@ -66,7 +66,7 @@ public class NotificationHelper extends ContextWrapper {
         return new NotificationCompat.Builder(getApplicationContext(), CHANNEL_1_ID)
                 .setContentTitle("Nakarm psa o imieniu "+intent.getExtras().getString("name"))
                 .setStyle(new NotificationCompat.BigTextStyle().bigText(text))
-                .setSmallIcon(R.drawable.ic_android);
+                .setSmallIcon(R.drawable.ic_baseline_restaurant_menu_24);
     }
 
     public NotificationCompat.Builder getChannelNotificationSzczepienie(Intent intent) {
@@ -74,7 +74,7 @@ public class NotificationHelper extends ContextWrapper {
         return new NotificationCompat.Builder(getApplicationContext(), CHANNEL_2_ID)
                 .setContentTitle("Dzisiaj upływa termin szczepienia dla psa "+ intent.getExtras().get("name") +"!")
                 .setStyle(new NotificationCompat.BigTextStyle().bigText(text))
-                .setSmallIcon(R.drawable.ic_android);
+                .setSmallIcon(R.drawable.ic_baseline_colorize_24);
     }
 
     public NotificationCompat.Builder getChannelNotificationOdrobaczanie(Intent intent) {
@@ -82,7 +82,7 @@ public class NotificationHelper extends ContextWrapper {
         return new NotificationCompat.Builder(getApplicationContext(), CHANNEL_2_ID)
                 .setContentTitle("Dzisiaj upływa termin odrobaczania dla psa "+ intent.getExtras().get("name") +"!")
                 .setStyle(new NotificationCompat.BigTextStyle().bigText(text))
-                .setSmallIcon(R.drawable.ic_android);
+                .setSmallIcon(R.drawable.ic_baseline_local_hospital_24);
     }
 
     public NotificationCompat.Builder getChannelNotificationCritical(Intent intent) {
@@ -105,6 +105,6 @@ public class NotificationHelper extends ContextWrapper {
         return new NotificationCompat.Builder(getApplicationContext(), CHANNEL_1_ID)
                 .setContentTitle("Zosatło tylko "+ procent+ " karmy dla psa "+ intent.getExtras().get("name") +"!")
                 .setStyle(new NotificationCompat.BigTextStyle().bigText(text))
-                .setSmallIcon(R.drawable.ic_android);
+                .setSmallIcon(R.drawable.ic_baseline_published_with_changes_24);
     }
 }
