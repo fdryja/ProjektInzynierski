@@ -8,10 +8,11 @@
     android:background="@android:color/holo_purple">
 <ScrollView
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    tools:ignore="UselessParent">
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
 
         <Button
             android:id="@+id/odrobaczanieButton"
@@ -20,7 +21,7 @@
             android:layout_marginTop="4dp"
             android:background="@drawable/rounded_corner__minor_button"
             android:padding="5dp"
-            android:text="Ustaw następną datę"
+            android:text="@string/ustaw_nast_pn_dat"
             android:textColor="#ffffff"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -31,7 +32,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:text="zapisz"
+            android:text="@string/zapisz"
             android:background="@drawable/rounded_corner_button"
             android:textColor="#000000"
             android:padding="5dp"
@@ -62,7 +63,7 @@
             android:background="@drawable/rounded_corner"
             android:gravity="center"
             android:padding="5dp"
-            android:text="Ustal daty wizyt u weterynarza"
+            android:text="@string/ustal_daty_wizyt_u_weterynarza"
             android:textColor="#000000"
             android:textSize="36sp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -110,7 +111,7 @@
             android:layout_marginTop="4dp"
             android:background="@drawable/rounded_corner__minor_button"
             android:padding="5dp"
-            android:text="Ustaw następną datę"
+            android:text="@string/ustaw_nast_pn_dat"
             android:textColor="#ffffff"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -124,7 +125,7 @@
             android:padding="5dp"
             android:background="@drawable/rounded_corner"
             android:textColor="#000000"
-            android:text="Data następnego szczepienia"
+            android:text="@string/data_nast_pnego_szczepienia"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.497"
             app:layout_constraintStart_toStartOf="parent"
@@ -135,7 +136,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="56dp"
-            android:text="Data następnego odrobaczania"
+            android:text="@string/data_nast_pnego_odrobaczania"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.497"
             android:padding="5dp"
@@ -150,7 +151,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="28dp"
             android:layout_marginTop="64dp"
-            android:text="Dzisiaj Szczepienie"
+            android:text="@string/dzisiaj_szczepienie"
             android:background="@drawable/rounded_corner_button"
             android:textColor="#000000"
             android:padding="5dp"
@@ -166,7 +167,7 @@
             android:textColor="#000000"
             android:padding="5dp"
             android:layout_marginEnd="16dp"
-            android:text="Dzisiaj odrobaczanie"
+            android:text="@string/dzisiaj_odrobaczanie"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/odrobaczanieButton" />
 

@@ -1,15 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@android:color/holo_orange_light">
 <ScrollView
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    tools:ignore="UselessParent">
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
 
         <TextView
             android:id="@+id/textView3"
@@ -19,7 +21,7 @@
             android:padding="5dp"
             android:background="@drawable/rounded_corner"
             android:textColor="#000000"
-            android:text="Ustal ilość karmy"
+            android:text="@string/ustal_ilo_karmy"
             android:textSize="36sp"
             android:gravity="center"
             app:layout_constraintEnd_toEndOf="parent"
@@ -61,13 +63,15 @@
             android:visibility="visible"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/spinner" />
+            app:layout_constraintTop_toBottomOf="@+id/spinner"
+            android:importantForAutofill="no"
+            tools:ignore="LabelFor" />
 
         <TextView
             android:id="@+id/karmyNadzien"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Ilość karmy na dzień (w gramach)"
+            android:text="@string/ilo_karmy_na_dzie_w_gramach"
             android:visibility="visible"
             app:layout_constraintEnd_toEndOf="parent"
             android:padding="5dp"
@@ -95,7 +99,7 @@
             android:id="@+id/textViewCount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="2 razy dziennie"
+            android:text="@string/_2_razy_dziennie"
             app:layout_constraintEnd_toEndOf="parent"
             android:visibility="visible"
             android:padding="5dp"
@@ -126,7 +130,7 @@
             android:layout_marginTop="132dp"
             android:visibility="visible"
             android:background="@drawable/rounded_corner_button"
-            android:text="Zapisz"
+            android:text="@string/zapisz"
             android:textColor="#000000"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.498"

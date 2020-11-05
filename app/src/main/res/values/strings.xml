@@ -2,5 +2,37 @@
     <string name="app_name">Organizer dla psa</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="dodaj_psa">Dodaj psa</string>
+    <string name="imi">Imię</string>
+    <string name="masa_kg">Masa (kg)</string>
+    <string name="poziom_aktywno_ci_fizycznej">Poziom aktywności fizycznej</string>
+    <string name="dodaj">Dodaj</string>
+    <string name="reset">Reset</string>
+    <string name="zapisz">Zapisz</string>
+    <string name="ustaw_alarm_4">Ustaw alarm 4</string>
+    <string name="brak">Brak</string>
+    <string name="ustaw_alarm_3">Ustaw alarm 3</string>
+    <string name="ustaw_alarm_2">Ustaw alarm 2</string>
+    <string name="ustaw_alarm_1">Ustaw alarm 1</string>
+    <string name="ustal_godziny_powiadomime">Ustal godziny powiadomimeń</string>
+    <string name="ustaw_nast_pn_dat">Ustaw następną datę</string>
+    <string name="ustal_daty_wizyt_u_weterynarza">Ustal daty wizyt u weterynarza</string>
+    <string name="data_nast_pnego_szczepienia">Data następnego szczepienia</string>
+    <string name="data_nast_pnego_odrobaczania">Data następnego odrobaczania</string>
+    <string name="dzisiaj_szczepienie">Dzisiaj Szczepienie</string>
+    <string name="dzisiaj_odrobaczanie">Dzisiaj odrobaczanie</string>
+    <string name="lista_ps_w">Lista psów</string>
+    <string name="ustal_ilo_karmy">Ustal ilość karmy</string>
+    <string name="ilo_karmy_na_dzie_w_gramach">Ilość karmy na dzień (w gramach)</string>
+    <string name="_2_razy_dziennie">2 razy dziennie</string>
+    <string name="ustawienia">Ustawienia</string>
+    <string name="wielko_opakowania_karmy_w_kilogramach">Wielkość opakowania karmy w kilogramach</string>
+    <string name="karma_sko_czy_si_w_dniu">Karma skończy się w dniu</string>
+    <string name="karma_osi_gnie_poziom_krytyczny_w_dniu">Karma osiągnie poziom krytyczny w dniu</string>
+    <string name="ustal_poziom_krytyczny_karmy">Ustal poziom krytyczny karmy</string>
+    <string name="masa">Masa</string>
+    <string name="normalny">Normalny</string>
+    <string name="organizer">Organizer</string>
+    <string name="projekt_in_ynierski">Projekt inżynierski</string>
 
 </resources>

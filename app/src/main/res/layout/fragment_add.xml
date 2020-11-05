@@ -9,11 +9,12 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        tools:ignore="UselessParent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content">
 
             <TextView
                 android:id="@+id/textView2"
@@ -22,7 +23,7 @@
                 android:layout_marginTop="24dp"
                 android:background="@drawable/rounded_corner"
                 android:padding="5dp"
-                android:text="Dodaj psa"
+                android:text="@string/dodaj_psa"
                 android:textColor="#000000"
                 android:textSize="36sp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -36,14 +37,15 @@
                 android:layout_marginTop="64dp"
                 android:background="@drawable/rounded_corner"
                 android:ems="10"
-                android:hint="Imię "
+                android:hint="@string/imi"
                 android:inputType="textPersonName"
                 android:padding="5dp"
                 android:selectAllOnFocus="true"
                 android:textAlignment="center"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView2" />
+                app:layout_constraintTop_toBottomOf="@+id/textView2"
+                android:importantForAutofill="no" />
 
             <EditText
                 android:id="@+id/masaPsa"
@@ -52,14 +54,15 @@
                 android:layout_marginTop="84dp"
                 android:background="@drawable/rounded_corner"
                 android:ems="10"
-                android:hint="Masa (kg)"
+                android:hint="@string/masa_kg"
                 android:inputType="number"
                 android:padding="5dp"
                 android:selectAllOnFocus="true"
                 android:textAlignment="center"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/imiePsa" />
+                app:layout_constraintTop_toBottomOf="@+id/imiePsa"
+                android:importantForAutofill="no" />
 
             <SeekBar
                 android:id="@+id/seekBar"
@@ -81,7 +84,7 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/rounded_corner"
                 android:padding="5dp"
-                android:text="Poziom aktywności fizycznej"
+                android:text="@string/poziom_aktywno_ci_fizycznej"
                 android:textColor="#000000"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -104,13 +107,12 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="44dp"
                 android:background="@drawable/rounded_corner_button"
-                android:text="Dodaj"
+                android:text="@string/dodaj"
                 android:textColor="#000000"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.498"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/poziomAktywnosci" />
-            app:layout_constraintTop_toBottomOf="@+id/masaPsa" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>

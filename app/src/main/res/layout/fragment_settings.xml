@@ -8,11 +8,12 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        tools:ignore="UselessParent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content">
 
             <TextView
                 android:id="@+id/textView3"
@@ -23,7 +24,7 @@
                 android:textColor="#000000"
                 android:padding="5dp"
                 android:gravity="center"
-                android:text="Ustawienia"
+                android:text="@string/ustawienia"
                 android:textSize="36sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -63,14 +64,16 @@
                 android:textColor="#000000"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textViewCriticalDay" />
+                app:layout_constraintTop_toBottomOf="@+id/textViewCriticalDay"
+                android:importantForAutofill="no"
+                tools:ignore="LabelFor" />
 
             <Button
                 android:id="@+id/saveSettings"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:text="Zapisz"
+                android:text="@string/zapisz"
                 app:layout_constraintEnd_toEndOf="parent"
                 android:background="@drawable/rounded_corner_button"
                 android:textColor="#000000"
@@ -85,7 +88,7 @@
                 android:layout_marginTop="4dp"
                 android:background="@drawable/rounded_corner"
                 android:padding="5dp"
-                android:text="Wielkość opakowania karmy w kilogramach"
+                android:text="@string/wielko_opakowania_karmy_w_kilogramach"
                 android:textColor="#000000"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.504"
@@ -98,7 +101,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="28dp"
                 android:shadowColor="@color/design_default_color_on_secondary"
-                android:text="Karma skończy się w dniu"
+                android:text="@string/karma_sko_czy_si_w_dniu"
                 android:background="@drawable/rounded_corner"
                 android:padding="5dp"
                 android:textColor="@color/design_default_color_error"
@@ -156,7 +159,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:text="Karma osiągnie poziom krytyczny w dniu"
+                android:text="@string/karma_osi_gnie_poziom_krytyczny_w_dniu"
                 app:layout_constraintEnd_toEndOf="parent"
                 android:padding="5dp"
                 android:background="@drawable/rounded_corner"
@@ -185,7 +188,7 @@
                 android:background="@drawable/rounded_corner"
                 android:textColor="#000000"
                 android:layout_marginTop="40dp"
-                android:text="Ustal poziom krytyczny karmy"
+                android:text="@string/ustal_poziom_krytyczny_karmy"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/spinnerSettings" />

@@ -7,15 +7,18 @@
         android:id="@+id/editName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Imię" />
+        android:hint="@string/imi"
+        android:importantForAutofill="no"
+        android:inputType="text" />
     <EditText
         android:id="@+id/editWeight"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Masa"
+        android:hint="@string/masa"
         android:inputType="number"
         android:layout_below="@+id/editName"
-        android:layout_alignParentStart="true"/>
+        android:layout_alignParentStart="true"
+        android:importantForAutofill="no" />
 
     <SeekBar
         android:id="@+id/seekBarDialog"
@@ -29,14 +32,14 @@
         android:id="@+id/poziomAktywnosciDialog"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Normalny"
+        android:text="@string/normalny"
         android:layout_below="@+id/activityLevelDialog"
         android:layout_centerInParent="true"/>
     <TextView
         android:id="@+id/activityLevelDialog"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Poziom aktywności fizycznej"
+        android:text="@string/poziom_aktywno_ci_fizycznej"
         android:layout_below="@+id/seekBarDialog"
         android:layout_centerInParent="true"/>
 </RelativeLayout>

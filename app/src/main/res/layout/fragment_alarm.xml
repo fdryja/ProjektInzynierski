@@ -8,11 +8,12 @@
 
 <ScrollView
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    tools:ignore="UselessParent">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
 
         <Button
             android:id="@+id/resetAlarm"
@@ -21,7 +22,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="28dp"
             android:padding="5dp"
-            android:text="Reset"
+            android:text="@string/reset"
             android:visibility="invisible"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/alarmView4" />
@@ -32,7 +33,7 @@
             android:layout_height="wrap_content"
             android:padding="5dp"
             android:layout_marginEnd="28dp"
-            android:text="Zapisz"
+            android:text="@string/zapisz"
             android:background="@drawable/rounded_corner_button"
             android:visibility="invisible"
             app:layout_constraintEnd_toEndOf="parent"
@@ -42,7 +43,7 @@
             android:id="@+id/setAlarm4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Ustaw alarm 4"
+            android:text="@string/ustaw_alarm_4"
             android:visibility="invisible"
             android:padding="5dp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -56,7 +57,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="32dp"
-            android:text="Brak"
+            android:text="@string/brak"
             android:padding="5dp"
             android:textSize="22sp"
             android:visibility="invisible"
@@ -71,7 +72,7 @@
             android:id="@+id/setAlarm3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Ustaw alarm 3"
+            android:text="@string/ustaw_alarm_3"
             android:visibility="invisible"
             android:padding="5dp"
             android:background="@drawable/rounded_corner__minor_button"
@@ -85,7 +86,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="32dp"
-            android:text="Brak"
+            android:text="@string/brak"
             android:textSize="22sp"
             android:visibility="invisible"
             android:background="@drawable/rounded_corner"
@@ -99,7 +100,7 @@
             android:id="@+id/setAlarm2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Ustaw alarm 2"
+            android:text="@string/ustaw_alarm_2"
             android:visibility="invisible"
             android:background="@drawable/rounded_corner__minor_button"
             android:textColor="#FFFFFF"
@@ -113,7 +114,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="32dp"
-            android:text="Brak"
+            android:text="@string/brak"
             android:padding="5dp"
             android:textSize="22sp"
             android:visibility="invisible"
@@ -128,7 +129,7 @@
             android:id="@+id/setAlarm1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Ustaw alarm 1"
+            android:text="@string/ustaw_alarm_1"
             android:visibility="invisible"
             android:padding="5dp"
             android:background="@drawable/rounded_corner__minor_button"
@@ -144,7 +145,7 @@
             android:layout_marginTop="24dp"
             android:background="@drawable/rounded_corner"
             android:padding="5dp"
-            android:text="Brak"
+            android:text="@string/brak"
             android:textColor="#000000"
             android:textSize="22sp"
             android:visibility="invisible"
@@ -161,7 +162,7 @@
             android:background="@drawable/rounded_corner"
             android:gravity="center"
             android:padding="5dp"
-            android:text="Ustal godziny powiadomimeń"
+            android:text="@string/ustal_godziny_powiadomime"
             android:textSize="36sp"
             android:textColor="#000000"
             app:layout_constraintEnd_toEndOf="parent"
