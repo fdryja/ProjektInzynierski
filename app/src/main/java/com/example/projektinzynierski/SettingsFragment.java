@@ -43,7 +43,7 @@ public class SettingsFragment extends Fragment implements AdapterView.OnItemSele
     //    Switch switchKarmienie, swithcWeterynarz;
     SeekBar seekBarCritical;
     private String selectedDog;
-    private ArrayList<String> dogsList, ID, packageDB, package_fullDB, notkarDB, notwetDB, eatingDB;
+    private ArrayList<String> dogsList, ID, packageDB, package_fullDB, eatingDB;
     private ArrayAdapter<String> dogsAdapter;
     Button saveSettings;
     EditText editTextPackage;
@@ -79,8 +79,8 @@ public class SettingsFragment extends Fragment implements AdapterView.OnItemSele
         packageDB = new ArrayList<>();
         package_fullDB = new ArrayList<>();
         eatingDB = new ArrayList<>();
-        notkarDB = new ArrayList<>();
-        notwetDB = new ArrayList<>();
+//        notkarDB = new ArrayList<>();
+//        notwetDB = new ArrayList<>();
         alarmManager = new ArrayList<>();
         intentArrayList = new ArrayList<>();
         saveSettings = getActivity().findViewById(R.id.saveSettings);
@@ -181,8 +181,8 @@ public class SettingsFragment extends Fragment implements AdapterView.OnItemSele
             packageDB.clear();
             eatingDB.clear();
             package_fullDB.clear();
-            notwetDB.clear();
-            notkarDB.clear();
+//            notwetDB.clear();
+//            notkarDB.clear();
             spinnerSettings.setAdapter(null);
             loadData(getView());
             loadSettings();
@@ -219,8 +219,8 @@ public class SettingsFragment extends Fragment implements AdapterView.OnItemSele
         dogsList.clear();
         package_fullDB.clear();
         packageDB.clear();
-        notkarDB.clear();
-        notwetDB.clear();
+//        notkarDB.clear();
+//        notwetDB.clear();
         eatingDB.clear();
         //wypełnienie tablicy
         Cursor data = dogsDB.showData();
@@ -235,8 +235,8 @@ public class SettingsFragment extends Fragment implements AdapterView.OnItemSele
                 dogsList.add(data.getString(1));
                 package_fullDB.add(data.getString(6));
                 packageDB.add(data.getString(7));
-                notkarDB.add(data.getString(8));
-                notwetDB.add(data.getString(9));
+//                notkarDB.add(data.getString(8));
+//                notwetDB.add(data.getString(9));
                 eatingDB.add(data.getString(5));
 
             }
@@ -259,19 +259,19 @@ public class SettingsFragment extends Fragment implements AdapterView.OnItemSele
             } else {
                 seekBarCritical.setProgress(Integer.parseInt(packageDB.get(globalPosition)));
             }
-            int notkar = 0, notwet = 0;
-            notkar = Integer.parseInt(notkarDB.get(globalPosition));
-            notwet = Integer.parseInt(notwetDB.get(globalPosition));
-            if (notkar == 0) {
-//                switchKarmienie.setChecked(false);
-            } else {
-//                switchKarmienie.setChecked(true);
-            }
-            if (notwet == 0) {
-//                swithcWeterynarz.setChecked(false);
-            } else {
-//                swithcWeterynarz.setChecked(true);
-            }
+//            int notkar = 0, notwet = 0;
+//            notkar = Integer.parseInt(notkarDB.get(globalPosition));
+//            notwet = Integer.parseInt(notwetDB.get(globalPosition));
+//            if (notkar == 0) {
+////                switchKarmienie.setChecked(false);
+//            } else {
+////                switchKarmienie.setChecked(true);
+//            }
+//            if (notwet == 0) {
+////                swithcWeterynarz.setChecked(false);
+//            } else {
+////                swithcWeterynarz.setChecked(true);
+//            }
             int eating = Integer.parseInt(eatingDB.get(globalPosition)),
                     daysRemaining = 0;
             float daysRemainingF = 0,
@@ -380,35 +380,35 @@ public class SettingsFragment extends Fragment implements AdapterView.OnItemSele
 
     }
 
-    private void updateNotKarmienie(int id, int switchKarmienie) {
-        dogsDB.updateNotKarmienie(id, switchKarmienie);
-        ID.clear();
-        dogsList.clear();
-        packageDB.clear();
-        package_fullDB.clear();
-        notwetDB.clear();
-        notkarDB.clear();
-        eatingDB.clear();
-        spinnerSettings.setAdapter(null);
-        loadData(getView());
-        loadSettings();
-        spinnerSettings.setSelection(globalPosition);
-//        Toast.makeText(getActivity().getApplicationContext(), "Zapisano", Toast.LENGTH_SHORT).show();
-    }
-
-    private void updateNotWet(int id, int switchWeterynarz) {
-        dogsDB.updateNotWet(id, switchWeterynarz);
-        ID.clear();
-        dogsList.clear();
-        packageDB.clear();
-        eatingDB.clear();
-        package_fullDB.clear();
-        notwetDB.clear();
-        notkarDB.clear();
-        spinnerSettings.setAdapter(null);
-        loadData(getView());
-        loadSettings();
-        spinnerSettings.setSelection(globalPosition);
-//        Toast.makeText(getActivity().getApplicationContext(), "Zapisano", Toast.LENGTH_SHORT).show();
-    }
+//    private void updateNotKarmienie(int id, int switchKarmienie) {
+//        dogsDB.updateNotKarmienie(id, switchKarmienie);
+//        ID.clear();
+//        dogsList.clear();
+//        packageDB.clear();
+//        package_fullDB.clear();
+//        notwetDB.clear();
+//        notkarDB.clear();
+//        eatingDB.clear();
+//        spinnerSettings.setAdapter(null);
+//        loadData(getView());
+//        loadSettings();
+//        spinnerSettings.setSelection(globalPosition);
+////        Toast.makeText(getActivity().getApplicationContext(), "Zapisano", Toast.LENGTH_SHORT).show();
+//    }
+//
+//    private void updateNotWet(int id, int switchWeterynarz) {
+//        dogsDB.updateNotWet(id, switchWeterynarz);
+//        ID.clear();
+//        dogsList.clear();
+//        packageDB.clear();
+//        eatingDB.clear();
+//        package_fullDB.clear();
+//        notwetDB.clear();
+//        notkarDB.clear();
+//        spinnerSettings.setAdapter(null);
+//        loadData(getView());
+//        loadSettings();
+//        spinnerSettings.setSelection(globalPosition);
+////        Toast.makeText(getActivity().getApplicationContext(), "Zapisano", Toast.LENGTH_SHORT).show();
+//    }
 }

@@ -29,8 +29,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String COL6 = "EATING";
     public static final String COL7 = "PACKAGE_FULL";
     public static final String COL8 = "PACKAGE";
-    public static final String COL9 = "NOTKAR";
-    public static final String COL10 = "NOTWET";
+//    public static final String COL9 = "NOTKAR";
+//    public static final String COL10 = "NOTWET";
 
 
     public static final String COL1D = "ID";
@@ -58,9 +58,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 "EATING_COUNT INTEGER DEFAULT 0, " +
                 "EATING INTEGER DEFAULT 0, " +
                 "PACKAGE_FULL DECIMAL(8,2) DEFAULT 0, "+
-                "PACKAGE DECIMAL(8,2) DEFAULT 0," +
-                "NOTKAR INTEGER DEFAULT 1," +
-                "NOTWET INTEGER DEFAULT 1)";
+                "PACKAGE DECIMAL(8,2) DEFAULT 0)";
         db.execSQL(createTable);
 
         createTable = "CREATE TABLE "+TABLE_DATES+" (ID INTEGER PRIMARY KEY AUTOINCREMENT, SZCZEPIENIE TEXT DEFAULT 0, " +
@@ -247,30 +245,30 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 
 
-    public void updateNotKarmienie(int id, int notKarmienie){
-        SQLiteDatabase db = this.getWritableDatabase();
-        String query = "UPDATE "+ TABLE_DOGS + " SET " + COL9 + "=" + notKarmienie
-                +" WHERE "+COL1+"="+id;
-        try {
-            db.execSQL(query);
-            Log.e("tag",query);
-        } catch (SQLException e) {
-            e.printStackTrace();
-            Log.e("tag",query);
-        }
-    }
-    public void updateNotWet(int id, int notWet){
-        SQLiteDatabase db = this.getWritableDatabase();
-        String query = "UPDATE "+ TABLE_DOGS + " SET " + COL10 + "=" + notWet
-                +" WHERE "+COL1+"="+id;
-        try {
-            db.execSQL(query);
-            Log.e("tag",query);
-        } catch (SQLException e) {
-            e.printStackTrace();
-            Log.e("tag",query);
-        }
-    }
+//    public void updateNotKarmienie(int id, int notKarmienie){
+//        SQLiteDatabase db = this.getWritableDatabase();
+//        String query = "UPDATE "+ TABLE_DOGS + " SET " + COL9 + "=" + notKarmienie
+//                +" WHERE "+COL1+"="+id;
+//        try {
+//            db.execSQL(query);
+//            Log.e("tag",query);
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//            Log.e("tag",query);
+//        }
+//    }
+//    public void updateNotWet(int id, int notWet){
+//        SQLiteDatabase db = this.getWritableDatabase();
+//        String query = "UPDATE "+ TABLE_DOGS + " SET " + COL10 + "=" + notWet
+//                +" WHERE "+COL1+"="+id;
+//        try {
+//            db.execSQL(query);
+//            Log.e("tag",query);
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//            Log.e("tag",query);
+//        }
+//    }
 
 
     public void updateDogData(String newName, int id, int newWeight, int newActivityLevel) {
