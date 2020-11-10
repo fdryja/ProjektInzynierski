@@ -1,20 +1,10 @@
 package com.example.projektinzynierski;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
-
-import android.annotation.SuppressLint;
-import android.app.IntentService;
-import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.EditText;
-import android.widget.SeekBar;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.widget.Toolbar;
@@ -26,9 +16,9 @@ import com.google.android.material.navigation.NavigationView;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
-    private EditText editTextInput;
+
     private DrawerLayout drawer;
-    NotificationHelper notificationHelper;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,9 +41,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             navigationView.setCheckedItem(R.id.nav_dogs);
         }
 
-
-
-//        editTextInput = findViewById(R.id.edit_text_input);
     }
 
     @Override

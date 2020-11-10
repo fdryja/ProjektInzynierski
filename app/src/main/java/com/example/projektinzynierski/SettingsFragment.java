@@ -5,14 +5,8 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
-import android.hardware.SensorEventListener;
 import android.os.Bundle;
-import android.os.RemoteCallbackList;
-import android.provider.ContactsContract;
-import android.text.TextUtils;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,7 +16,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.SeekBar;
 import android.widget.Spinner;
-import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -40,7 +33,6 @@ import java.util.Date;
 public class SettingsFragment extends Fragment implements AdapterView.OnItemSelectedListener {
     DatabaseHelper dogsDB;
     Spinner spinnerSettings;
-    //    Switch switchKarmienie, swithcWeterynarz;
     SeekBar seekBarCritical;
     private String selectedDog;
     private ArrayList<String> dogsList, ID, packageDB, package_fullDB, eatingDB;
@@ -64,8 +56,7 @@ public class SettingsFragment extends Fragment implements AdapterView.OnItemSele
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-//        switchKarmienie = getActivity().findViewById(R.id.switchKarmienie);
-//        swithcWeterynarz = getActivity().findViewById(R.id.switchWeterynarz);
+
 
         seekBarCritical = getActivity().findViewById(R.id.seekBarCritical);
         textViewPercentage = getActivity().findViewById(R.id.textViewPercentage);
@@ -79,8 +70,6 @@ public class SettingsFragment extends Fragment implements AdapterView.OnItemSele
         packageDB = new ArrayList<>();
         package_fullDB = new ArrayList<>();
         eatingDB = new ArrayList<>();
-//        notkarDB = new ArrayList<>();
-//        notwetDB = new ArrayList<>();
         alarmManager = new ArrayList<>();
         intentArrayList = new ArrayList<>();
         saveSettings = getActivity().findViewById(R.id.saveSettings);
@@ -136,26 +125,6 @@ public class SettingsFragment extends Fragment implements AdapterView.OnItemSele
             }
         });
 
-//        switchKarmienie.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                if (ID.isEmpty()) {
-//                    Toast.makeText(getActivity(), "Baza danych jest pusta", Toast.LENGTH_SHORT).show();
-//                } else {
-//                    updateNotKarmienie(Integer.parseInt(ID.get(globalPosition)),(switchKarmienie.isChecked()) ? 1:0);
-//                }
-//            }
-//        });
-//        swithcWeterynarz.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                if (ID.isEmpty()) {
-//                    Toast.makeText(getActivity(), "Baza danych jest pusta", Toast.LENGTH_SHORT).show();
-//                } else {
-//                    updateNotWet(Integer.parseInt(ID.get(globalPosition)),(swithcWeterynarz.isChecked()) ? 1:0);
-//                }
-//            }
-//        });
 
     }
 
@@ -174,15 +143,11 @@ public class SettingsFragment extends Fragment implements AdapterView.OnItemSele
                 makeCritAlert();
             }
 
-
-
             ID.clear();
             dogsList.clear();
             packageDB.clear();
             eatingDB.clear();
             package_fullDB.clear();
-//            notwetDB.clear();
-//            notkarDB.clear();
             spinnerSettings.setAdapter(null);
             loadData(getView());
             loadSettings();
@@ -204,8 +169,6 @@ public class SettingsFragment extends Fragment implements AdapterView.OnItemSele
         intent.putExtra("full",package_fullDB.get(globalPosition));
         PendingIntent pendingIntent = PendingIntent.getBroadcast(getActivity(), 0, intent, 0);
         alarmManager.add((AlarmManager)getContext().getApplicationContext().getSystemService(Context.ALARM_SERVICE));
-//        Date date = new Date();
-//        criticalDate.setTime(date.getTime());
         alarmManager.get(0).setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP,criticalDate.getTime(),pendingIntent);
         intentArrayList.add(pendingIntent);
 
@@ -219,24 +182,18 @@ public class SettingsFragment extends Fragment implements AdapterView.OnItemSele
         dogsList.clear();
         package_fullDB.clear();
         packageDB.clear();
-//        notkarDB.clear();
-//        notwetDB.clear();
         eatingDB.clear();
         //wypełnienie tablicy
         Cursor data = dogsDB.showData();
         if (data.getCount() == 0) {
             Toast.makeText(getActivity().getApplicationContext(), "baza danych jest pusta", Toast.LENGTH_SHORT).show();
         } else {
-//            editTextPackage.setClickable(true);
-
             while (data.moveToNext()) {
                 Log.e("tag", data.getString(0));
                 ID.add(data.getString(0));
                 dogsList.add(data.getString(1));
                 package_fullDB.add(data.getString(6));
                 packageDB.add(data.getString(7));
-//                notkarDB.add(data.getString(8));
-//                notwetDB.add(data.getString(9));
                 eatingDB.add(data.getString(5));
 
             }
@@ -259,19 +216,7 @@ public class SettingsFragment extends Fragment implements AdapterView.OnItemSele
             } else {
                 seekBarCritical.setProgress(Integer.parseInt(packageDB.get(globalPosition)));
             }
-//            int notkar = 0, notwet = 0;
-//            notkar = Integer.parseInt(notkarDB.get(globalPosition));
-//            notwet = Integer.parseInt(notwetDB.get(globalPosition));
-//            if (notkar == 0) {
-////                switchKarmienie.setChecked(false);
-//            } else {
-////                switchKarmienie.setChecked(true);
-//            }
-//            if (notwet == 0) {
-////                swithcWeterynarz.setChecked(false);
-//            } else {
-////                swithcWeterynarz.setChecked(true);
-//            }
+
             int eating = Integer.parseInt(eatingDB.get(globalPosition)),
                     daysRemaining = 0;
             float daysRemainingF = 0,
@@ -284,7 +229,6 @@ public class SettingsFragment extends Fragment implements AdapterView.OnItemSele
                 packageWeight = packageWeight * 1000;
                 daysRemainingF = packageWeight / eating;
                 daysRemaining = (int) daysRemainingF;
-//                settingsWarning2.setText(Integer.toString(daysRemaining)); //to pokazuje ile dni jest do końca karmy
 
                 DateFormat dateformat = new SimpleDateFormat("dd/MM/yyyy");
 
@@ -305,10 +249,7 @@ public class SettingsFragment extends Fragment implements AdapterView.OnItemSele
             }else{
                 criticalPrediction(0);
             }
-
-
         }
-
 
     }
 
@@ -346,8 +287,6 @@ public class SettingsFragment extends Fragment implements AdapterView.OnItemSele
             }
 
 
-//                settingsWarning2.setText(Integer.toString(daysRemaining)); //to pokazuje ile dni jest do końca karmy
-
             DateFormat dateformat = new SimpleDateFormat("dd/MM/yyyy");
 
             Date currentDate = new Date();
@@ -380,35 +319,4 @@ public class SettingsFragment extends Fragment implements AdapterView.OnItemSele
 
     }
 
-//    private void updateNotKarmienie(int id, int switchKarmienie) {
-//        dogsDB.updateNotKarmienie(id, switchKarmienie);
-//        ID.clear();
-//        dogsList.clear();
-//        packageDB.clear();
-//        package_fullDB.clear();
-//        notwetDB.clear();
-//        notkarDB.clear();
-//        eatingDB.clear();
-//        spinnerSettings.setAdapter(null);
-//        loadData(getView());
-//        loadSettings();
-//        spinnerSettings.setSelection(globalPosition);
-////        Toast.makeText(getActivity().getApplicationContext(), "Zapisano", Toast.LENGTH_SHORT).show();
-//    }
-//
-//    private void updateNotWet(int id, int switchWeterynarz) {
-//        dogsDB.updateNotWet(id, switchWeterynarz);
-//        ID.clear();
-//        dogsList.clear();
-//        packageDB.clear();
-//        eatingDB.clear();
-//        package_fullDB.clear();
-//        notwetDB.clear();
-//        notkarDB.clear();
-//        spinnerSettings.setAdapter(null);
-//        loadData(getView());
-//        loadSettings();
-//        spinnerSettings.setSelection(globalPosition);
-////        Toast.makeText(getActivity().getApplicationContext(), "Zapisano", Toast.LENGTH_SHORT).show();
-//    }
 }

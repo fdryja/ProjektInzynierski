@@ -1,12 +1,8 @@
 package com.example.projektinzynierski;
 
 import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteOpenHelper;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -35,7 +31,6 @@ public class AddFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-//        ViewData();
 
         poziomAktywnosci = getView().findViewById(R.id.poziomAktywnosci);
         seekBar = getView().findViewById(R.id.seekBar);
@@ -73,36 +68,6 @@ public class AddFragment extends Fragment {
             }
         });
 
-//        ViewData(getView());
-
-
-    }
-
-
-    public void ViewData(View v){
-        poziomAktywnosci.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Cursor data = dogsDB.showData();
-                if(data.getCount() == 0){
-                    //message
-                    display("Error","No data found");
-                }
-                StringBuffer buffer = new StringBuffer();
-                while(data.moveToNext()){
-                    buffer.append("ID: "+ data.getString(0)+ "\n");
-                    buffer.append("Name: "+ data.getString(1)+ "\n");
-                    buffer.append("Weight: "+ data.getString(2)+ "\n");
-                    buffer.append("Activity Level: "+ data.getString(3)+ "\n");
-
-                    //display message
-                    display("All stored data:", buffer.toString());
-
-
-                }
-
-            }
-        });
     }
 
     private void display(String title, String message){
@@ -118,11 +83,6 @@ public class AddFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         return inflater.inflate(R.layout.fragment_add, container, false);
-    }
-
-
-    public int passDogID(int id){
-        return id;
     }
 
     private void dodajPsa(View view){

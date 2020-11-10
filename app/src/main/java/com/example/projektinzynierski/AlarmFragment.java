@@ -1,17 +1,13 @@
 package com.example.projektinzynierski;
 
 import android.app.AlarmManager;
-import android.app.Notification;
 import android.app.PendingIntent;
 import android.app.TimePickerDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.os.Looper;
-import android.os.Message;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,7 +22,6 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 import androidx.fragment.app.Fragment;
 
@@ -37,13 +32,9 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
-import java.util.logging.Handler;
-import java.util.logging.LogRecord;
-import java.util.logging.SimpleFormatter;
 
 import static android.content.Context.ALARM_SERVICE;
-//import static com.example.projektinzynierski.App.CHANNEL_1_ID;
-//import static com.example.projektinzynierski.App.CHANNEL_2_ID;
+
 
 
 
@@ -60,9 +51,7 @@ public class AlarmFragment extends Fragment implements AdapterView.OnItemSelecte
     private TimePickerDialog.OnTimeSetListener setListenerAlarm1, setListenerAlarm2, setListenerAlarm3, setListenerAlarm4;
     private NotificationManagerCompat notificationManagerCompat;
     private ArrayList<AlarmManager> alarmManager;
-    //    private ArrayList<Intent> intent;
 
-//    private AlarmManager[] alarmManager;
     private int ileAlarmow;
 
     ArrayList<PendingIntent> intentArrayList;
@@ -223,8 +212,6 @@ public class AlarmFragment extends Fragment implements AdapterView.OnItemSelecte
     }
 
     private void saveAllAlarms() {
-        int dogId;
-        String name;
         ID.clear();
         names.clear();
         alarm.clear();
@@ -247,9 +234,6 @@ public class AlarmFragment extends Fragment implements AdapterView.OnItemSelecte
                 dogName.add(data.getString(3));
                 eating_count.add(data.getString(4));
                 eating.add(data.getString(5));
-//                Log.e("alarm",data.getString(2));
-//                Log.e("alarmname",data.getString(1));
-//                Log.e("dog",data.getString(3));
                 ileAlarmow++;
             }
         }
@@ -270,12 +254,9 @@ public class AlarmFragment extends Fragment implements AdapterView.OnItemSelecte
 
         }
 
-//        alarmManager = new AlarmManager[ileAlarmow];
         Intent[] intent = new Intent[ileAlarmow];
 
         int ileAlarmowPo = 0;
-
-
         Log.e("USTAWIANIE ALARMU", "LICZBA ALARMOW: " + ileAlarmow);
         for (int i = 0; i < ileAlarmow; i++) {
 
@@ -298,15 +279,14 @@ public class AlarmFragment extends Fragment implements AdapterView.OnItemSelecte
                 h = parts[0];
                 m = parts[1];
 
-//            dogId = Integer.parseInt(alarmName.get(i)) ;
                 Calendar c = Calendar.getInstance();
                 c.getTimeInMillis();
                 c.set(Calendar.HOUR_OF_DAY, Integer.parseInt(h));
                 c.set(Calendar.MINUTE, Integer.parseInt(m));
                 c.set(Calendar.SECOND, 0);
-//            Log.e("PRZESZLO DALEJ", "W TELEFONIE: " + new Date());
+
                 Log.e("PRZESZLO DALEJ", "DATA: " + c.getTime());
-//                startAlarm(c,i);
+
 
 
                 if (c.before(Calendar.getInstance())) {
@@ -316,25 +296,15 @@ public class AlarmFragment extends Fragment implements AdapterView.OnItemSelecte
 
                 alarmManager.add((AlarmManager) getContext().getApplicationContext().getSystemService(ALARM_SERVICE));
 
-//                Notification notification = new NotificationCompat.Builder(getContext(), CHANNEL_1_ID).setContentTitle("tytuł")
-//                        .setContentText("treść")
-//                        .setPriority(NotificationCompat.PRIORITY_MAX)
-//                        .setCategory(NotificationCompat.CATEGORY_ALARM)
-//                        .build();
+
 
                 PendingIntent pendingIntent = PendingIntent.getBroadcast(getActivity(), i, intent[i], PendingIntent.FLAG_UPDATE_CURRENT);
                 //wywołanie na czas
-                //tutaj wywala     java.lang.IndexOutOfBoundsException: Index: 1, Size: 1
                 alarmManager.get(i).setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, c.getTimeInMillis(), pendingIntent);
                 ileAlarmowPo++;
                 Log.e("CREATED ALARM", c.getTime().toString());
 
                 intentArrayList.add(pendingIntent);
-
-//            Cursor nameCursor = dogsDB.showName(dogId);
-//            while (nameCursor.moveToNext()) {
-//                dogName.add(nameCursor.getString(0));
-//            }
 
             }
 
@@ -352,7 +322,7 @@ public class AlarmFragment extends Fragment implements AdapterView.OnItemSelecte
 
             }
         }
-//        passName();
+
 
 
         timer = new Timer();
@@ -362,8 +332,6 @@ public class AlarmFragment extends Fragment implements AdapterView.OnItemSelecte
     }
 
     private void saveAllAlarmsTimer() {
-        int dogId;
-        String name;
         ID.clear();
         names.clear();
         alarm.clear();
@@ -378,7 +346,6 @@ public class AlarmFragment extends Fragment implements AdapterView.OnItemSelecte
         Cursor data = dogsDB.joinEating();
         ileAlarmow = 0;
         if (data.getCount() == 0) {
-//            Toast.makeText(getActivity().getApplicationContext(), "baza danych jest pusta", Toast.LENGTH_SHORT).show();
         } else {
             while (data.moveToNext()) {
                 alarm.add(data.getString(2));
@@ -386,9 +353,6 @@ public class AlarmFragment extends Fragment implements AdapterView.OnItemSelecte
                 dogName.add(data.getString(3));
                 eating_count.add(data.getString(4));
                 eating.add(data.getString(5));
-//                Log.e("alarm",data.getString(2));
-//                Log.e("alarmname",data.getString(1));
-//                Log.e("dog",data.getString(3));
                 ileAlarmow++;
             }
         }
@@ -407,13 +371,10 @@ public class AlarmFragment extends Fragment implements AdapterView.OnItemSelecte
 
         }
 
-//        alarmManager = new AlarmManager[ileAlarmow];
         Intent[] intent = new Intent[ileAlarmow];
 
         int ileAlarmowPo = 0;
 
-
-        //nie powinno lecieć po ile alarmów tylko po ogólnej liczbie alarmów, a tam gdzie jest brak to pominąć i iść dalej
         Log.e("USTAWIANIE ALARMU", "LICZBA ALARMOW: " + ileAlarmow);
         for (int i = 0; i < ileAlarmow; i++) {
 
@@ -431,15 +392,14 @@ public class AlarmFragment extends Fragment implements AdapterView.OnItemSelecte
                 h = parts[0];
                 m = parts[1];
 
-//            dogId = Integer.parseInt(alarmName.get(i)) ;
                 Calendar c = Calendar.getInstance();
                 c.getTimeInMillis();
                 c.set(Calendar.HOUR_OF_DAY, Integer.parseInt(h));
                 c.set(Calendar.MINUTE, Integer.parseInt(m));
                 c.set(Calendar.SECOND, 0);
-//            Log.e("PRZESZLO DALEJ", "W TELEFONIE: " + new Date());
+
                 Log.e("PRZESZLO DALEJ", "DATA: " + c.getTime());
-//                startAlarm(c,i);
+
 
 
                 if (c.before(Calendar.getInstance())) {
@@ -449,25 +409,15 @@ public class AlarmFragment extends Fragment implements AdapterView.OnItemSelecte
 
                 alarmManager.add((AlarmManager) getContext().getApplicationContext().getSystemService(ALARM_SERVICE));
 
-//                Notification notification = new NotificationCompat.Builder(getContext(), CHANNEL_1_ID).setContentTitle("tytuł")
-//                        .setContentText("treść")
-//                        .setPriority(NotificationCompat.PRIORITY_MAX)
-//                        .setCategory(NotificationCompat.CATEGORY_ALARM)
-//                        .build();
 
                 PendingIntent pendingIntent = PendingIntent.getBroadcast(getActivity(), i, intent[i], PendingIntent.FLAG_UPDATE_CURRENT);
                 //wywołanie na czas
-                //tutaj wywala     java.lang.IndexOutOfBoundsException: Index: 1, Size: 1
                 alarmManager.get(i).setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, c.getTimeInMillis(), pendingIntent);
                 ileAlarmowPo++;
                 Log.e("CREATED ALARM", c.getTime().toString());
 
                 intentArrayList.add(pendingIntent);
 
-//            Cursor nameCursor = dogsDB.showName(dogId);
-//            while (nameCursor.moveToNext()) {
-//                dogName.add(nameCursor.getString(0));
-//            }
 
             }
 
@@ -477,7 +427,6 @@ public class AlarmFragment extends Fragment implements AdapterView.OnItemSelecte
         Log.e("USTAWIANIE ALARMU", "LICZBA ALARMOW PO: " + ileAlarmowPo);
         Cursor cursor = dogsDB.showData();
         if (cursor.getCount() == 0) {
-//            Toast.makeText(getActivity().getApplicationContext(), "baza danych jest pusta", Toast.LENGTH_SHORT).show();
         } else {
             while (cursor.moveToNext()) {
                 ID.add(cursor.getString(0));
@@ -485,15 +434,7 @@ public class AlarmFragment extends Fragment implements AdapterView.OnItemSelecte
 
             }
         }
-//        passName();
-//        timer.cancel();
-//        task.cancel();
-//        timer.scheduleAtFixedRate(task, 0, 60000);
 
-//        timer = new Timer();
-//        timer.scheduleAtFixedRate(createTimerTask(), 0, 100);
-
-//        AlarmReactivation.schedule(getContext(),60000 );
     }
 
     private TimerTask createTimerTask() {
@@ -511,15 +452,7 @@ public class AlarmFragment extends Fragment implements AdapterView.OnItemSelecte
         };
     }
 
-    public ArrayList<String> passName() {
-        return dogName;
-    }
-//    public String passname(){
-//
-//    }
-    public int getGlobalPosition(){
-        return globalPosition;
-    }
+
 
     private void cancelAlarm() {
         Log.e("CO JEST NULL", Integer.toString(intentArrayList.size()));
@@ -745,7 +678,6 @@ public class AlarmFragment extends Fragment implements AdapterView.OnItemSelecte
                 alarm.add(data.getString(2));
             }
             //tutaj wpisywanie alarmów z bazy danych do pól tekstowych
-//             Log.e("długość tablicy z alarmami", Integer.toString( alarm.size()));
             if (alarm.size() == 0) {
                 Toast.makeText(getActivity().getApplicationContext(), "baza danych jest pusta", Toast.LENGTH_SHORT).show();
             } else if (alarm.size() == 1) {
@@ -781,7 +713,6 @@ public class AlarmFragment extends Fragment implements AdapterView.OnItemSelecte
             Toast.makeText(getActivity().getApplicationContext(), "baza danych jest pusta", Toast.LENGTH_SHORT).show();
         } else {
             while (data.moveToNext()) {
-//                Log.e("id", data.getString(0));
                 ID.add(data.getString(0));
                 names.add(data.getString(1));
             }
@@ -810,7 +741,6 @@ public class AlarmFragment extends Fragment implements AdapterView.OnItemSelecte
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-//        loadData(getView());
         globalPosition = position;
         Log.e("id teraz", ID.get(globalPosition));
         getAlarmCount(Integer.parseInt(ID.get(globalPosition)));

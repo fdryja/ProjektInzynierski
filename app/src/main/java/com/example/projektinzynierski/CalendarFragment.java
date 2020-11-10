@@ -45,7 +45,7 @@ public class CalendarFragment extends Fragment implements AdapterView.OnItemSele
     private ArrayList<AlarmManager> alarmManager;
     private boolean isDbEmpty = false;
     int globalPosition = 0;
-    private ArrayList<PendingIntent> intentArrayList, intentArrayListO;
+    private ArrayList<PendingIntent> intentArrayList;
 
 
     @Nullable
@@ -281,26 +281,8 @@ public class CalendarFragment extends Fragment implements AdapterView.OnItemSele
                 Intent[] intentO = new Intent[ileAlarmow];
 
                 int sd, sm, sy, od, om, oy;
+
                 //alerty na szczepienia
-//                for (int k = 0; k < szczepienia.size(); k++) {
-//                    if (szczepienia.get(k).equals("0")|| szczepienia.get(k).equals("Brak")) {
-//                        ileAlarmow--;
-//                        szczepienia.remove(k);
-//                        ID.remove(k);
-//                    }
-//                }
-//
-//                for (int k = 0; k < odrobaczenia.size(); k++) {
-//
-//                    if (odrobaczenia.get(k).equals("0") || odrobaczenia.get(k).equals("Brak")) {
-//                        ileAlarmow--;
-//                        odrobaczenia.remove(k);
-//                        ID.remove(k);
-//                        name.remove(k);
-//                    }
-//                }
-
-
                 Log.e("USTAWIANIE ALARMU", "LICZBA ALARMOW: " + ileAlarmow);
                 for (int i = 0; i < ileAlarmow; i++) {
                     intent[i] = new Intent(getContext().getApplicationContext(), AlertsSzczepienie.class);
@@ -333,7 +315,7 @@ public class CalendarFragment extends Fragment implements AdapterView.OnItemSele
                         c.set(Calendar.YEAR, sy);
                         PendingIntent pendingIntent = PendingIntent.getBroadcast(getActivity(), i, intent[i], 0);
                         if (c.before(Calendar.getInstance())) {
-//                            c.add(Calendar.DATE, 1);
+                            c.add(Calendar.DATE, 1);
                             Log.e("UPDATED INSTANCE SZ", c.getTime().toString());
                         }
                         alarmManager.add((AlarmManager) getContext().getApplicationContext().getSystemService(ALARM_SERVICE));
@@ -375,7 +357,7 @@ public class CalendarFragment extends Fragment implements AdapterView.OnItemSele
                         c.set(Calendar.YEAR, oy);
                         PendingIntent pendingIntent = PendingIntent.getBroadcast(getActivity(), i, intentO[i], 0);
                         if (c.before(Calendar.getInstance())) {
-//                            c.add(Calendar.DATE, 1);
+                            c.add(Calendar.DATE, 1);
                             Log.e("UPDATED INSTANCE OD", c.getTime().toString());
                         }
                         alarmManager.add((AlarmManager) getContext().getApplicationContext().getSystemService(ALARM_SERVICE));
@@ -419,14 +401,8 @@ public class CalendarFragment extends Fragment implements AdapterView.OnItemSele
             Intent[] intent = new Intent[ileAlarmow];
 
             int sd, sm, sy;
+
             //alerty na szczepienia
-//            for (int k = 0; k < szczepienia.size(); k++) {
-//
-//                if (szczepienia.get(k).equals("0")) {
-//                    ileAlarmow--;
-////                        szczepienia.remove(k);
-//                }
-//            }
             Log.e("USTAWIANIE ALARMU", "LICZBA ALARMOW: " + ileAlarmow);
             for (int i = 0; i < ileAlarmow; i++) {
                 intent[i] = new Intent(getContext().getApplicationContext(), AlertsSzczepienie.class);
@@ -498,14 +474,8 @@ public class CalendarFragment extends Fragment implements AdapterView.OnItemSele
             Intent[] intentO = new Intent[ileAlarmow];
 
             int od, om, oy;
+
             //alerty na odrobaczania
-//            for (int k = 0; k < odrobaczenia.size(); k++) {
-//
-//                if (odrobaczenia.get(k).equals("0")) {
-//                    ileAlarmow--;
-////                        szczepienia.remove(k);
-//                }
-//            }
             Log.e("USTAWIANIE ALARMU", "LICZBA ALARMOW: " + ileAlarmow);
             for (int i = 0; i < ileAlarmow; i++) {
                 intentO[i] = new Intent(getContext().getApplicationContext(), AlertsOdrobaczanie.class);
@@ -558,7 +528,6 @@ public class CalendarFragment extends Fragment implements AdapterView.OnItemSele
         Log.e("CO JEST NULL", Integer.toString(alarmManager.size()));
 
         for (int i = 0; i < intentArrayList.size(); i++) {
-            // index out of bound tutaj
             alarmManager.get(i).cancel(intentArrayList.get(i));
         }
 

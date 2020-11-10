@@ -6,10 +6,8 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.os.strictmode.SqliteObjectLeakedViolation;
 import android.util.Log;
-import android.view.View;
-import android.widget.Toast;
+
 
 import androidx.annotation.Nullable;
 
@@ -29,8 +27,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String COL6 = "EATING";
     public static final String COL7 = "PACKAGE_FULL";
     public static final String COL8 = "PACKAGE";
-//    public static final String COL9 = "NOTKAR";
-//    public static final String COL10 = "NOTWET";
+
 
 
     public static final String COL1D = "ID";
@@ -182,11 +179,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         Cursor data = db.rawQuery("SELECT * FROM " + TABLE_DATES+" WHERE "+COL4D+"="+id, null);
         return data;
     }
-    public Cursor showDates(){
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor data = db.rawQuery("SELECT * FROM " + TABLE_DATES, null);
-        return data;
-    }
+
     public Cursor getLastId(){
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor data = db.rawQuery("SELECT last_insert_rowid()", null);
@@ -243,34 +236,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
     }
 
-
-
-//    public void updateNotKarmienie(int id, int notKarmienie){
-//        SQLiteDatabase db = this.getWritableDatabase();
-//        String query = "UPDATE "+ TABLE_DOGS + " SET " + COL9 + "=" + notKarmienie
-//                +" WHERE "+COL1+"="+id;
-//        try {
-//            db.execSQL(query);
-//            Log.e("tag",query);
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//            Log.e("tag",query);
-//        }
-//    }
-//    public void updateNotWet(int id, int notWet){
-//        SQLiteDatabase db = this.getWritableDatabase();
-//        String query = "UPDATE "+ TABLE_DOGS + " SET " + COL10 + "=" + notWet
-//                +" WHERE "+COL1+"="+id;
-//        try {
-//            db.execSQL(query);
-//            Log.e("tag",query);
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//            Log.e("tag",query);
-//        }
-//    }
-
-
     public void updateDogData(String newName, int id, int newWeight, int newActivityLevel) {
         SQLiteDatabase db = this.getWritableDatabase();
         String query = "UPDATE " + TABLE_DOGS + " SET " + COL2 + "='" + newName + "', " + COL3 + "=" + newWeight + ", "
@@ -298,12 +263,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return data;
     }
 
-    public Cursor showName(int dogId) {
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor data = db.rawQuery("SELECT NAME FROM " + TABLE_DOGS+ " WHERE ID="+dogId, null);
-        return data;
-    }
-
     public Cursor showCount(int dogId) {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor data = db.rawQuery("SELECT EATING_COUNT FROM " + TABLE_DOGS+ " WHERE ID="+dogId, null);
@@ -315,16 +274,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         Cursor data = db.rawQuery("SELECT * FROM " + TABLE_ALARM+" WHERE DOG_ID="+id, null);
         return data;
     }
-    public Cursor showAlarm(){
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor data = db.rawQuery("SELECT * FROM " + TABLE_ALARM, null);
-        return data;
-    }
-    public Cursor alarmCount(int dogId){
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor data = db.rawQuery("SELECT COUNT(*) FROM " + TABLE_ALARM+" WHERE DOG_ID="+dogId, null);
-        return data;
-    }
+
     public Cursor joinEating(){
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor data = db.rawQuery("SELECT a.ID, a.ALARM_NUMBER, a.ALARM, d.NAME, d.EATING_COUNT, d.EATING FROM " + TABLE_ALARM+" a INNER JOIN "+TABLE_DOGS +" d ON d.ID=a.DOG_ID", null);

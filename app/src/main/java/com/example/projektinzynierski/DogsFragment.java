@@ -40,7 +40,6 @@ public class DogsFragment extends Fragment implements UpdateDialog.UpdateDialogL
         listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-//                Toast.makeText(getActivity().getApplicationContext(), "Wybrano: "+ dogsList.get(position), Toast.LENGTH_SHORT).show();
                 deleteDog(position);
                 return true;
             }
@@ -62,7 +61,6 @@ public class DogsFragment extends Fragment implements UpdateDialog.UpdateDialogL
     public void applyTexts(String name, int weightt, int activityLevell) {
         dogsDB.updateDogData(name,globalPosition,weightt,activityLevell);
         globalPosition = 0;
-//        Toast.makeText(getActivity().getApplicationContext(), "Usunięto psa o imieniu " + imie, Toast.LENGTH_SHORT).show();
         dogsAdapter.clear();
         dogsList.clear();
         activityLevel.clear();

@@ -8,7 +8,6 @@ import android.content.Intent;
 import androidx.core.app.NotificationCompat;
 
 import java.util.Date;
-import java.util.Random;
 
 
 public class AlertsOdrobaczanie extends BroadcastReceiver {
