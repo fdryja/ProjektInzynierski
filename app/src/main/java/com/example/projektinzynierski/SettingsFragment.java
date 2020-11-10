@@ -109,7 +109,7 @@ public class SettingsFragment extends Fragment implements AdapterView.OnItemSele
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 criticalPrediction(progress);
-                int package_weight = Integer.parseInt(package_fullDB.get(globalPosition));
+                float package_weight = Float.parseFloat(package_fullDB.get(globalPosition));
 
                 if (progress == 1) {
                     textViewPercentage.setText("10%" + " (" + decimalFormat.format(package_weight * 0.1) + " kg)");
