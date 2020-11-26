@@ -54,9 +54,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                         new AlarmFragment()).commit();
                 break;
-            case R.id.nav_help:
-                Toast.makeText(this, "Pomoc", Toast.LENGTH_SHORT).show();
-                break;
             case R.id.nav_settings:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                         new SettingsFragment()).commit();
@@ -74,9 +71,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         new CalendarFragment()).commit();
                 break;
         }
-
         drawer.closeDrawer(GravityCompat.START);
-
         return true;
     }
 
